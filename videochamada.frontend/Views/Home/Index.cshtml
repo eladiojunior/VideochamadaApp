@@ -1,0 +1,62 @@
+﻿@model ClienteModel
+@{
+    ViewData["Title"] = "Video-chamada";
+}
+<h3>Atendimento via Video-chamada</h3>
+@if (Model == null)
+{
+    <div class="row pt-2">
+        <div class="col-12 text-center">
+            @Html.ActionLink("Novo Registro", "Registrar", "Cliente", null, new { @class="btn btn-success"})
+        </div>
+    </div>    
+} 
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <h4>Dados do Cliente</h4>
+            <p class="font-weight-normal"><strong>Nome: </strong> @Model.Nome</p>
+            <p class="font-weight-normal"><strong>E-mail: </strong> @Model.Email</p>
+            <p class="font-weight-normal"><strong>Telefone: </strong> @Model.Telefone</p>
+        </div>
+    </div>    
+    <div class="row pt-2">
+        <div class="col-12 text-center">
+            @Html.ActionLink("Novo Atendimento", "NovoAtendimento", "Cliente", null, new { @class="btn btn-success"})
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-12">
+            <h4>Atendimentos</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Data inicial</th>
+                    <th scope="col">Data final</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Nota</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (Model.Atendimentos != null)
+                {
+                    foreach (var item in Model.Atendimentos)
+                    {
+                        <tr>
+                            <th>@item.DataInicial.ToString("g")</th>
+                            <th>@item.DataFinal.ToString("g")</th>
+                            <td>@item.Situacao</td>
+                            <td>@item.Nota.ToString("F")</td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>    
+}

@@ -1,0 +1,18 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/.idea.VideoChatApp.iml
+/projectSettingsUpdater.xml
+/contentModel.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Binario
+/videochamada.frontend/bin/
+/videochamada.frontend/obj/
+/videochamada.backend/bin/
+/videochamada.backend/obj/
