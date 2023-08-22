@@ -5,6 +5,35 @@ body {
   margin: 0;
   padding: 20px;
 }
+.area-camera-teste {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+  min-height: 200px;
+}
+.area-camera-teste video {
+  max-width: 160px;
+  border-radius: 25px;
+}
+.area-microfone-teste {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-width: 200px;
+  min-height: 200px;
+  padding-bottom: 30px;
+}
+#progressMicrofone {
+  width: 88px;
+  height: 0px;
+  background-color: #037ea3;
+  text-align: center;
+  color: black;
+  border-radius: 15px;
+}
 
 .text-dispositivo {
   position: absolute;
