@@ -7,13 +7,14 @@ body {
 }
 
 .text-dispositivo {
-  position: fixed;
-  padding-top: 120px;
+  position: absolute;
+  display: flex;
   font-size: 20px;
   color: #000000;
-  padding-left: 95px;
-  text-align: center;
-  min-width: 180px;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+  min-height: 200px;
 }
 
 .posicao {

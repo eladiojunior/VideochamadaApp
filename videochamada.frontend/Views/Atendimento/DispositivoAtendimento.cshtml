@@ -15,17 +15,50 @@
     <div class="col-8">
         @await Html.PartialAsync("_DadosClientePartial", Model.Cliente)
         <div class="row pt-2">
-            <div class="col-4">
-                <span class="text-dispositivo">Câmera</span>
-                <img id="icon-camera" src="~/imgs/verificacao2.gif" class="img-fluid" alt="Icon Verificação Camera"/>
+            <div class="col-4 text-center">
+                <div class="icon-verificacao">
+                    <div class="text-dispositivo">Câmera</div>
+                    <img src="~/imgs/verificacao.gif" class="img-fluid camera" alt="Icon Verificação Camera"/>
+                </div>
+                <img src="~/imgs/camera-On.png" class="img-fluid camera icon-on" alt="Icon Câmera On"/>
+                <img src="~/imgs/camera-Off.png" class="img-fluid camera icon-off" alt="Icon Câmera Off"/>
             </div>
-            <div class="col-4">
-                <span class="text-dispositivo">Microfone</span>
-                <img id="icon-microfone" src="~/imgs/verificacao2.gif" class="img-fluid" alt="Icon Verificação Microfone"/>
+            <div class="col-4 text-center">
+                <div class="icon-verificacao">
+                    <div class="text-dispositivo">Microfone</div>
+                    <img src="~/imgs/verificacao.gif" class="img-fluid microfone" alt="Icon Verificação Microfone"/>
+                </div>
+                <img src="~/imgs/microfone-On.png" class="img-fluid microfone icon-on" alt="Icon Microfone On"/>
+                <img src="~/imgs/microfone-Off.png" class="img-fluid microfone icon-off" alt="Icon Microfone Off"/>
             </div>
-            <div class="col-4">
-                <span class="text-dispositivo">Áudio</span>
-                <img id="icon-audio" src="~/imgs/verificacao2.gif" class="img-fluid" alt="Icon Verificação Audio"/>
+            <div class="col-4 text-center">
+                <div class="icon-verificacao">
+                    <div class="text-dispositivo">Áudio</div>
+                    <img src="~/imgs/verificacao.gif" class="img-fluid audio" alt="Icon Verificação Audio"/>
+                </div>
+                <img src="~/imgs/audio-On.png" class="img-fluid audio icon-on" alt="Icon Audio On"/>
+                <img src="~/imgs/audio-Off.png" class="img-fluid audio icon-off" alt="Icon Audio Off"/>
+            </div>
+        </div>
+        <div class="row pt-2 buttons-test">
+            <div class="col-4 text-center">
+                <button class="btn btn-light button-test-camara">Teste Câmera</button>
+            </div>
+            <div class="col-4 text-center">
+                <button class="btn btn-light button-test-microfone">Teste Microfone</button>
+            </div>
+            <div class="col-4 text-center">
+                <button class="btn btn-light button-test-audio">Teste Áudio</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 pt-2">
+                <div class="alert alert-danger erro-dispositivo">
+                    Ocorreu erro ao solicita permissão de acesso aos dispositivos de Câmera, Microfone e Áudio do seu navegado.
+                    <button class="btn btn-light button-verificacao">Verificar Novamente</button>
+                </div>
+                <video id="localVideo" autoplay playsinline></video>
+                <audio id="testAudio" src="~/mp3/audioTeste.mp3"></audio>
             </div>
         </div>
         <div class="row pt-2">
@@ -35,3 +68,111 @@
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <script type="application/javascript">
+        var streamMedia = null;
+        var timeVerificacao = null;
+        ativarVerificacaoDispositivo();
+        function ativarVerificacaoDispositivo() {
+            $(".icon-verificacao").show();
+            $(".icon-off").hide();
+            $(".icon-on").hide();
+            $(".buttons-test").hide();
+            $(".erro-dispositivo").hide();
+            timeVerificacao = setTimeout(verificacaoMediaPermissions, 6000);
+        }
+        function verificacaoMediaPermissions() {
+            // Request media stream
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    streamMedia = stream;
+                    sucessoPermissaoDispositivos();
+                })
+                .catch(error => {
+                    erroPermissaoDispositivos();
+                });
+            clearTimeout(timeVerificacao);
+        }
+        function sucessoPermissaoDispositivos() {
+            $(".icon-verificacao").hide();
+            $(".icon-off").hide();
+            $(".icon-on").show();
+            $(".erro-dispositivo").hide();
+            $(".buttons-test").show();
+        }
+        function erroPermissaoDispositivos() {
+            $(".icon-verificacao").hide();
+            $(".icon-on").hide();
+            $(".icon-off").show();
+            $(".erro-dispositivo").show();
+            $(".buttons-test").show();
+        }
+        $(".button-verificacao").click(function () {
+             ativarVerificacaoDispositivo();
+        });
+        $(".button-test-camara").click(function () {
+              console.log('Iniciando teste da Camera.');
+              try {
+                  const videoElement = document.getElementById('localVideo');
+                  videoElement.srcObject = streamMedia;
+
+                //Teste com sucesso...
+                console.log('Teste da câmera finalizado com sucesso.');
+                $(".camera .icon-off").hide();
+                $(".camera .icon-on").show();
+                  
+              } catch (e) {
+                  console.log('Erro no teste da Câmera: ' + e);
+              }
+        });
+        $(".button-test-microfone").click(function () {
+            console.log('Iniciando teste do Microfone.');
+            try {
+                const audioContext = new AudioContext();
+                const analyser = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(streamMedia);
+                const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 1024;
+                microphone.connect(analyser);
+                analyser.connect(javascriptNode);
+                javascriptNode.connect(audioContext.destination);
+                javascriptNode.onaudioprocess = function() {
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    let values = 0;
+                    const length = array.length;
+                    for (let i = 0; i < length; i++) {
+                      values += array[i];
+                    }
+                    const average = values / length;
+                    if (average > 0) {
+                        console.log('Microphone is working');
+                    }
+                };
+                
+                //Teste com sucesso...
+                console.log('Teste do microfone finalizado com sucesso.');
+                $(".microfone .icon-off").hide();
+                $(".microfone .icon-on").show();
+
+            } catch (e) {
+                console.log('Erro no teste do Microfone: ' + e);
+            }    
+        });
+        $(".button-test-audio").click(function () {
+            console.log('Iniciando teste de Áudio.');
+            try {
+                const audioElement = document.getElementById('testAudio');
+                audioElement.play();
+                //Teste com sucesso...
+                console.log('Teste do áudio finalizado com sucesso.');
+                $(".audio .icon-off").hide();
+                $(".audio .icon-on").show();
+            } catch (e) {
+                console.log('Erro no teste da Áudio: ' + e);
+            }
+        });
+    </script>
+}
