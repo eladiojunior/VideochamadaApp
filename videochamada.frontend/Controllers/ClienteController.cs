@@ -27,19 +27,10 @@ public class ClienteController : GenericController
             return View("Registrar", model);
 
         model.Id = ObterIdUsuario();
-        var modelAtendimento = _serviceCliente.Registrar(model);
+        _serviceCliente.RegistrarCliente(model);
         
-        return View("Atendimento", modelAtendimento);
+        return RedirectToAction("NovoAtendimento", "Atendimento");
         
     }
 
-    [HttpGet]
-    public IActionResult NovoAtendimento()
-    {
-        var idUsuario = ObterIdUsuario();
-        var modelAtendimento = _serviceCliente.Obter(idUsuario);
-        if (modelAtendimento == null)
-            return RedirectToAction("Index", "Home");
-        return View("Atendimento", modelAtendimento);
-    }
 }

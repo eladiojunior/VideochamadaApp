@@ -1,0 +1,37 @@
+﻿@model ClienteAtendimentoModel
+@{
+    ViewBag.Title = "Atendimento [Dispositivos]";
+}
+<div class="row">
+    <div class="col-12">
+        <h1>Atendimento - Verificar dispositivos...</h1>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <img src="~/imgs/clienteAtendimento.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Atendimento"/>
+    </div>
+    <div class="col-8">
+        @await Html.PartialAsync("_DadosClientePartial", Model.Cliente)
+        <div class="row pt-2">
+            <div class="col-4">
+                <span class="text-dispositivo">Câmera</span>
+                <img id="icon-camera" src="~/imgs/verificacao2.gif" class="img-fluid" alt="Icon Verificação Camera"/>
+            </div>
+            <div class="col-4">
+                <span class="text-dispositivo">Microfone</span>
+                <img id="icon-microfone" src="~/imgs/verificacao2.gif" class="img-fluid" alt="Icon Verificação Microfone"/>
+            </div>
+            <div class="col-4">
+                <span class="text-dispositivo">Áudio</span>
+                <img id="icon-audio" src="~/imgs/verificacao2.gif" class="img-fluid" alt="Icon Verificação Audio"/>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-12 text-center">
+                <a asp-action="FilaAtendimento" asp-controller="Atendimento" class="btn btn-info">Entrar na Fila</a>
+            </div>
+        </div>
+    </div>
+</div>

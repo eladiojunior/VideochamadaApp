@@ -1,0 +1,44 @@
+﻿@model List<AtendimentoModel>
+
+<div class="row pt-2">
+    <div class="col-12">
+        <h4>Atendimentos</h4>
+        <hr/>
+    </div>
+</div>
+@if (Model == null)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info">Você não realizou nenhum atendimento de video-chamada!</div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Data inicial</th>
+                    <th scope="col">Data final</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Nota</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th>@item.DataInicial.ToString("g")</th>
+                        <th>@(item.DataFinal.HasValue?item.DataFinal.Value.ToString("g"):"")</th>
+                        <td>@item.Situacao</td>
+                        <td>@item.Nota.ToString("F")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>    
+}

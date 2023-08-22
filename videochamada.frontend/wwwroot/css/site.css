@@ -6,6 +6,69 @@ body {
   padding: 20px;
 }
 
+.text-dispositivo {
+  position: fixed;
+  padding-top: 120px;
+  font-size: 20px;
+  color: #000000;
+  padding-left: 95px;
+  text-align: center;
+  min-width: 180px;
+}
+
+.posicao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+}
+
+.posicao-fila {
+  width: 60px;
+  height: 60px;
+  border: none;
+  background-color: #3549b7;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: transform 0.2s;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+}
+
+.rating-button {
+  width: 60px;
+  height: 60px;
+  border: none;
+  background-color: #3549b7;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: transform 0.2s;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.rating-button:hover {
+  transform: scale(1.1);
+  background-color: #111966;
+}
+
+.rating-button.ativo {
+  background-color: #11662f;
+}
+
 .video-container {
   position: relative;
   padding-bottom: 56.25%; /* Aspect ratio 16:9 */

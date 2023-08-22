@@ -1,0 +1,35 @@
+﻿@model ClienteAtendimentoModel
+@{
+    ViewBag.Title = "Atendimento [Dispositivos]";
+}
+<div class="row">
+    <div class="col-12">
+        <h1>Atendimento - Fila de Atendimento</h1>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <img src="~/imgs/clienteAtendimento.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Atendimento"/>
+    </div>
+    <div class="col-8">
+        @await Html.PartialAsync("_DadosClientePartial", Model.Cliente)
+        <div class="row pt-2">
+            <div class="col-12">
+                <div class="alert alert-info">Aguarde um pouco, logo você será atendido!</div>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-12">
+                <div class="posicao">
+                    <div class="posicao-fila">21</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <a asp-action="SairFilaAtendimento" asp-controller="Atendimento" class="btn btn-danger">Sair da Fila</a>
+            </div>
+        </div>
+    </div>
+</div>

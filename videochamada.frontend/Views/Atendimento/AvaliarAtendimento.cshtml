@@ -1,0 +1,74 @@
+﻿@model AvaliacaoAtendimentoModel
+@{
+    ViewBag.Title = "Atendimento [Avalida]";
+}
+<div class="row">
+    <div class="col-12">
+        <h1>Atendimento - Avaliação</h1>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <img src="~/imgs/clienteAtendimento.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Atendimento"/>
+    </div>
+    <div class="col-8">
+        <div class="row pt-2">
+            <div class="col-12">
+                @if (Model.HasDesistencia)
+                {
+                    <div class="alert alert-warning">Percebemos que você <strong>desistiu do atendimento</strong>, poderia nós avaliar e comentar porque desistiu do atendimento (opcional)?</div>                    
+                }
+                else
+                {
+                    <div class="alert alert-info">Obrigado! Poderia avaliar nosso atendimento?<br/>Aguardaremos um novo atendimento. Até mais!</div>    
+                }
+            </div>
+        </div>
+        <div class="row ">
+            <form asp-action="AvaliarAtendimento" asp-controller="Atendimento" method="post">
+                <input type="hidden" asp-for="IdCliente"/>
+                <input type="hidden" asp-for="IdAtendimento"/>
+                <input type="hidden" asp-for="HasDesistencia"/>
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="hidden" asp-for="Nota"/>
+                        <span asp-validation-for="Nota" class="text-danger"></span>
+                        <div class="rating">
+                            <div class="rating-button" data-nota="1">1</div>
+                            <div class="rating-button" data-nota="2">2</div>
+                            <div class="rating-button" data-nota="3">3</div>
+                            <div class="rating-button" data-nota="4">4</div>
+                            <div class="rating-button" data-nota="5">5</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <textarea asp-for="Comentario" class="form-control" placeholder="Comentário (Opcional)"></textarea>
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-12 text-center">
+                        <button class="btn btn-primary" type="submit">Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $(".rating-button").on("click", function () {
+            $(".rating-button").removeClass("ativo");
+            $(this).addClass("ativo");
+            const nota = $(this).data("nota");
+            $("#Nota").val(nota);
+        });
+    </script>
+}

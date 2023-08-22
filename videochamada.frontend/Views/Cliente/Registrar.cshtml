@@ -2,41 +2,54 @@
 @{
     ViewData["Title"] = "Registrar Cliente";
 }
-<form asp-action="Registrar" asp-controller="Cliente" method="post">
-    <div class="row">
-        <div class="col-12">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        </div>
+<div class="row">
+    <div class="col-12">
+        <h1>Registro de Novo Cliente</h1>
+        <hr/>
     </div>
-    <div class="row">
-        <div class="col-8">
-            <div class="form-group">
-                <label asp-for="Nome" class="form-label"></label>
-                <input asp-for="Nome" class="form-control" required="required" placeholder="Nome do usuário" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="form-group">
-                <label asp-for="Telefone" class="form-label"></label>
-                <input asp-for="Telefone" class="form-control" required="required" placeholder="Telefone (00) 00000-0000"/>
-                <span asp-validation-for="Telefone" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="form-group">
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-        </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <img src="~/imgs/clienteRegistro.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Cliente"/>
     </div>
-    <div class="row pt-2">
-        <div class="col-12 text-center">
-            <button class="btn btn-primary" type="submit">Registrar</button>
-        </div>
+    <div class="col-8">
+        <form asp-action="Registrar" asp-controller="Cliente" method="post">
+            <div class="row">
+                <div class="col-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label asp-for="Nome" class="form-label"></label>
+                        <input asp-for="Nome" class="form-control" required="required" placeholder="Nome do usuário"/>
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label asp-for="Telefone" class="form-label"></label>
+                        <input asp-for="Telefone" class="form-control" required="required" placeholder="Telefone (00) 00000-0000"/>
+                        <span asp-validation-for="Telefone" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary" type="submit">Registrar</button>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
