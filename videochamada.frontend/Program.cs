@@ -15,6 +15,7 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddScoped<IServiceCliente, ServiceCliente>();
+builder.Services.AddScoped<IServiceEquipeSaude, ServiceEquipeSaude>();
 
 builder.Services.AddRazorPages().AddMvcOptions(options =>
     {

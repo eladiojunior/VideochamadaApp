@@ -21,6 +21,7 @@ else
             <table class="table">
                 <thead>
                 <tr>
+                    <th scope="col">Data registro</th>
                     <th scope="col">Data inicial</th>
                     <th scope="col">Data final</th>
                     <th scope="col">Status</th>
@@ -31,7 +32,8 @@ else
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <th>@item.DataInicial.ToString("g")</th>
+                        <th>@item.DataRegistro.ToString("g")</th>
+                        <th>@(item.DataInicial.HasValue?item.DataInicial.Value.ToString("g"):"")</th>
                         <th>@(item.DataFinal.HasValue?item.DataFinal.Value.ToString("g"):"")</th>
                         <td>@item.Situacao</td>
                         <td>@item.Nota.ToString("F")</td>

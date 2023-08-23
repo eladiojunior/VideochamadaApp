@@ -20,7 +20,7 @@ public class HomeController : GenericController
 
     public IActionResult Index()
     {
-        var idUsuario = ObterIdUsuario();
+        var idUsuario = ObterIdClienteSession();
         var cliente = _serviceCliente.ObterCliente(idUsuario);
         return View(cliente);
     }

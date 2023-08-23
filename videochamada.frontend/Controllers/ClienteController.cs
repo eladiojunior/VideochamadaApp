@@ -26,8 +26,8 @@ public class ClienteController : GenericController
         if (!ModelState.IsValid)
             return View("Registrar", model);
 
-        model.Id = ObterIdUsuario();
-        _serviceCliente.RegistrarCliente(model);
+        var clienteModel = _serviceCliente.RegistrarCliente(model);
+        GravarIdClienteSession(clienteModel.Id);
         
         return RedirectToAction("NovoAtendimento", "Atendimento");
         

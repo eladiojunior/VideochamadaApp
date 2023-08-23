@@ -1,19 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using videochamada.frontend.Models;
 
 namespace VideoChatApp.FrontEnd.Controllers;
 
 public class GenericController : Controller
 {
-    internal string ObterIdUsuario()
+    private const string KeyIdClienteSession = "KEY_ID_CLIENTE_SESSION";
+    
+    
+    /// <summary>
+    ///     Cria um retorno Json de Sucesso (Result = true) com mensagem para o usuário (opcional).
+    /// </summary>
+    /// <param name="mensagemAlerta">Mensagem de alerta que deve ser apresentada ao usuário.</param>
+    /// <returns></returns>
+    internal JsonResult JsonResultSucesso(string mensagemAlerta = "")
     {
-        var idUsuario = HttpContext.Session.GetString("ID_USUARIO");
-        if (!string.IsNullOrEmpty(idUsuario))
-            return idUsuario;
-        
-        var guidId = Guid.NewGuid();
-        idUsuario = guidId.ToString();
-        HttpContext.Session.SetString("ID_USUARIO", idUsuario);
-        return idUsuario;
+        return Json(new { HasErro = false, Mensagem = mensagemAlerta });
+    }
+
+    /// <summary>
+    ///     Cria um retorno Json de Sucesso (Result = true) com Model e mensagem para o usuário (opcional).
+    /// </summary>
+    /// <param name="model">Informações do Model para renderizar a view.</param>
+    /// <param name="mensagemAlerta">Mensagem de alerta que deve ser apresentada ao usuário.</param>
+    /// <returns></returns>
+    internal JsonResult JsonResultSucesso(object model, string mensagemAlerta = "")
+    {
+        return Json(new { HasErro = false, Model = model, Mensagem = mensagemAlerta });
+    }
+
+    internal string? ObterIdClienteSession()
+    {
+        var idCliente = HttpContext.Session.GetString(KeyIdClienteSession);
+        return string.IsNullOrEmpty(idCliente) ? null : idCliente;
     }
     
+    internal void GravarIdClienteSession(string idCliente)
+    {
+        HttpContext.Session.SetString(KeyIdClienteSession, idCliente);
+    }
 }

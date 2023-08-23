@@ -13,7 +13,6 @@ function ativarVerificacaoDispositivo() {
     timeVerificacao = setTimeout(verificacaoMediaPermissions, 3000);
 }
 function verificacaoMediaPermissions() {
-    // Request media stream
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         .then(stream => {
             streamMedia = stream;
@@ -41,8 +40,17 @@ function erroPermissaoDispositivos() {
 $(".button-verificacao").click(function () {
     ativarVerificacaoDispositivo();
 });
-$(".button-test-camara").click(function () {
+$(".button-test-camera").click(function () {
     try {
+        if (streamMedia == null) {
+            $(this).text("Erro na Câmera!");
+            let timeTesteCamera = setTimeout(function () {
+                $(".button-test-camera").text("Testar Câmera");
+                clearTimeout(timeTesteCamera);
+            }, 3000);
+            console.error("Dispositivo de câmera não existente ou sendo utilizado por outro aplicativo.");
+            return;
+        }
         const videoElement = document.getElementById('localVideo');
         if (testantoCamera===false) {
             $(this).text("Parar Teste");
@@ -55,18 +63,26 @@ $(".button-test-camara").click(function () {
             videoElement.srcObject = null;
             testantoCamera=false;
         }
-        //Teste com sucesso...
-        $(".camera .icon-off").hide();
-        $(".camera .icon-on").show();
+        $(".camera.icon-off").hide();
+        $(".camera.icon-on").show();
     } catch (e) {
         $(this).text("Testar Câmera");
         $(".area-camera-teste").hide();
         testantoCamera=false;
-        console.log('Erro no teste da Câmera: ' + e);
+        console.log('Erro no teste da câmera: ' + e);
     }
 });
 $(".button-test-microfone").click(function () {
     try {
+        if (streamMedia == null) {
+            $(this).text("Erro no Microfone!");
+            let timeTesteMicrofone = setTimeout(function () {
+                $(".button-test-microfone").text("Testar Microfone");
+                clearTimeout(timeTesteMicrofone);
+            }, 3000);
+            console.error("Dispositivo de microfone não existente ou desabilitado.");
+            return;
+        }
         if (testantoMicrofone===false) {
             $(this).text("Parar Teste");
             $(".area-microfone-teste").show();
@@ -104,10 +120,12 @@ $(".button-test-microfone").click(function () {
             javascriptNode.onaudioprocess = null;
             testantoMicrofone=false;
         }
-        $(".microfone .icon-off").hide();
-        $(".microfone .icon-on").show();
+        $(".microfone.icon-off").hide();
+        $(".microfone.icon-on").show();
     } catch (e) {
         testantoMicrofone=false;
+        $(this).text("Testar Microfone");
+        $(".area-microfone-teste").hide();
         console.log('Erro no teste do Microfone: ' + e);
     }
 });
@@ -119,13 +137,16 @@ $(".button-test-audio").click(function () {
         $(this).text("Testando...");
         const audioElement = document.getElementById('testAudio');
         audioElement.play();
-        $(".audio .icon-off").hide();
-        $(".audio .icon-on").show();
-        testantoAudio=false;
-        $(this).text("Testar Áudio");
+        let timeTesteAudio = setTimeout(function () {
+            $(".audio.icon-off").hide();
+            $(".audio.icon-on").show();
+            testantoAudio = false;
+            $(".button-test-audio").text("Testar Áudio");
+            clearTimeout(timeTesteAudio);
+        }, 5000);
     } catch (e) {
         testantoAudio=false;
         $(this).text("Testar Áudio");
-        console.log('Erro no teste da Áudio: ' + e);
+        console.log('Erro no teste do áudio: ' + e);
     }
 });

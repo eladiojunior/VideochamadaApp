@@ -14,8 +14,8 @@
     </div>
     <div class="col-8">
         @await Html.PartialAsync("_DadosClientePartial", Model.Cliente)
-        <div class="row pt-2">
-            <div class="col-4">
+        <div class="row pt-2 justify-content-center">
+            <div class="col-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Câmera</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid camera" alt="Icon Verificação Camera"/>
@@ -26,7 +26,7 @@
                 <img src="~/imgs/camera-On.png" class="img-fluid camera icon-on" alt="Icon Câmera On"/>
                 <img src="~/imgs/camera-Off.png" class="img-fluid camera icon-off" alt="Icon Câmera Off"/>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Microfone</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid microfone" alt="Icon Verificação Microfone"/>
@@ -37,7 +37,7 @@
                 <img src="~/imgs/microfone-On.png" class="img-fluid microfone icon-on" alt="Icon Microfone On"/>
                 <img src="~/imgs/microfone-Off.png" class="img-fluid microfone icon-off" alt="Icon Microfone Off"/>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Áudio</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid audio" alt="Icon Verificação Audio"/>
@@ -47,15 +47,15 @@
                 <audio id="testAudio" src="~/mp3/audioTeste.mp3"></audio>
             </div>
         </div>
-        <div class="row pt-2 buttons-test">
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light button-test-camara">Testar Câmera</button>
+        <div class="row pt-2 buttons-test justify-content-center">
+            <div class="col-3 text-center">
+                <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-camera">Testar Câmera</button>
             </div>
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light button-test-microfone">Testar Microfone</button>
+            <div class="col-3 text-center">
+                <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-microfone">Testar Microfone</button>
             </div>
-            <div class="col-4 text-center">
-                <button type="button" class="btn btn-light button-test-audio">Testar Áudio</button>
+            <div class="col-3 text-center">
+                <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-audio">Testar Áudio</button>
             </div>
         </div>
         <div class="row">

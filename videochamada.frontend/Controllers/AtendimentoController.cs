@@ -8,28 +8,31 @@ public class AtendimentoController : GenericController
 {
 
     private readonly IServiceCliente _serviceCliente;
+    private readonly IServiceAtendimento _serviceAtendimento;
+    private readonly IServiceEquipeSaude _serviceEquipeSaude;
     
-    public AtendimentoController(IServiceCliente cliente)
+    public AtendimentoController(IServiceCliente serviceCliente, IServiceAtendimento serviceAtendimento, IServiceEquipeSaude serviceEquipeSaude)
     {
-        _serviceCliente = cliente;
+        _serviceCliente = serviceCliente;
+        _serviceAtendimento = serviceAtendimento;
+        _serviceEquipeSaude = serviceEquipeSaude;
     }
     
     [HttpGet]
     public IActionResult NovoAtendimento()
     {
-        var idUsuario = ObterIdUsuario();
-        var modelCliente = _serviceCliente.ObterCliente(idUsuario);
-        if (modelCliente == null)
+        var idCliente = ObterIdClienteSession();
+        var modelAtendimento = _serviceAtendimento.CriarAtendimento(idCliente);
+        if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
-        var modelAtendimento = _serviceCliente.NovoAtendimento(modelCliente);
         return View("InicioAtendimento", modelAtendimento);
     }
     
     [HttpGet]
     public IActionResult VerificarDispositivo()
     {
-        var idUsuario = ObterIdUsuario();
-        var modelAtendimento = _serviceCliente.ObterAtendimentoAberto(idUsuario);
+        var idCliente = ObterIdClienteSession();
+        var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
         return View("DispositivoAtendimento", modelAtendimento);
@@ -38,25 +41,30 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult FilaAtendimento()
     {
-        var idUsuario = ObterIdUsuario();
-        var modelAtendimento = _serviceCliente.ObterAtendimentoAberto(idUsuario);
+        var idCliente = ObterIdClienteSession();
+        var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
+        modelAtendimento = _serviceAtendimento.EntrarFilaAtendimento(modelAtendimento);
         return View("FilaAtendimento", modelAtendimento);
     }
 
     [HttpGet]
     public IActionResult SairFilaAtendimento()
     {
-        var idUsuario = ObterIdUsuario();
-        var modelAtendimento = _serviceCliente.ObterAtendimentoAberto(idUsuario);
+        
+        var idCliente = ObterIdClienteSession();
+        var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
+        
         var modelAvaliacao = new AvaliacaoAtendimentoModel();
         modelAvaliacao.IdCliente = modelAtendimento.IdCliente;
-        modelAvaliacao.IdAtendimento = modelAtendimento.IdAtendimento;
+        modelAvaliacao.IdAtendimento = modelAtendimento.Id;
         modelAvaliacao.HasDesistencia = true;
+        
         return View("AvaliarAtendimento", modelAvaliacao);
+        
     }
 
     [HttpPost]
@@ -66,9 +74,24 @@ public class AtendimentoController : GenericController
         if (!ModelState.IsValid)
             return View("AvaliarAtendimento", model);
 
-        _serviceCliente.EncerrarAtendimento(model);
-        
+        _serviceAtendimento.EncerrarAtendimento(model);
         return RedirectToAction("Index", "Home");
         
     }
+
+    [HttpGet]
+    public IActionResult PosicaoFilaAtendimento()
+    {
+        var posicaoAtendimento = new PosicaoAtencimentoModel();
+        var idCliente = ObterIdClienteSession();
+        if (!string.IsNullOrEmpty(idCliente))
+        {
+            posicaoAtendimento.IdCliente = idCliente;
+            posicaoAtendimento.PosicaoNaFila = _serviceAtendimento.PosicaoFilaAtendimento(idCliente);
+            posicaoAtendimento.QtdClientesFila = _serviceAtendimento.QtdClienteFilaAtendimento();
+            posicaoAtendimento.QtdProfissionaisOnline = _serviceEquipeSaude.QtdProfissionalSaudeOnline();
+        }
+        return JsonResultSucesso(new JsonResultModel(posicaoAtendimento));
+    }
+    
 }
