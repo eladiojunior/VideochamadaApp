@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Consultar Cliente";
+}
+<div class="row">
+    <div class="col-12">
+        <h1>Consultar Cliente</h1>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/imgConsultarCliente.png" class="img-fluid" alt="Imagem de Consulta Cliente"/>
+    </div>
+    <div class="col-12 col-xl-8">
+        <form asp-action="Consultar" asp-controller="Cliente" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="form-floating">
+                        <input name="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
+                        <label for="Email" class="form-label">E-mail do cliente</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary" type="submit">Consultar</button>
+                    <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-secondary">Quero me Registrar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

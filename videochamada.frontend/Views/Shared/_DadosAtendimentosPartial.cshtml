@@ -17,30 +17,32 @@
 else
 {
     <div class="row">
-        <div class="col-12">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Data registro</th>
-                    <th scope="col">Data inicial</th>
-                    <th scope="col">Data final</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Nota</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="col-12 table-responsive">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                    <thead>
                     <tr>
-                        <th>@item.DataRegistro.ToString("g")</th>
-                        <th>@(item.DataInicial.HasValue?item.DataInicial.Value.ToString("g"):"")</th>
-                        <th>@(item.DataFinal.HasValue?item.DataFinal.Value.ToString("g"):"")</th>
-                        <td>@item.Situacao</td>
-                        <td>@item.Nota.ToString("F")</td>
+                        <th class="col">Data registro</th>
+                        <th class="col">Data inicial</th>
+                        <th class="col">Data final</th>
+                        <th class="col">Status</th>
+                        <th class="col">Nota</th>
                     </tr>
-                }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th>@item.DataRegistro.ToString("g")</th>
+                            <th>@(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g") : "")</th>
+                            <th>@(item.DataFinal.HasValue ? item.DataFinal.Value.ToString("g") : "")</th>
+                            <td>@item.Situacao</td>
+                            <td>@item.Nota.ToString("F")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>    
 }

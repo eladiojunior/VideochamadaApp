@@ -16,6 +16,11 @@
       <Folder Include="wwwroot\mp3\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-mask\jquery-mask.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-mask\jquery-mask.min.js" />
+    </ItemGroup>
+
 
 
 

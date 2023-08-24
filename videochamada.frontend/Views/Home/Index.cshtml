@@ -4,25 +4,48 @@
 }
 <div class="row">
     <div class="col-12 text-center">
-        <h1>Atendimento de Cliente - Videochamadas</h1>
+        <h1>Atendimento de Cliente :: Video-chamadas</h1>
         <hr/>
     </div>
 </div>    
-@if (Model == null)
-{
-    <div class="row pt-2">
-        <div class="col-12 text-center">
-            @Html.ActionLink("Novo Registro", "Registrar", "Cliente", null, new { @class="btn btn-success"})
-        </div>
-    </div>    
-} 
-else
-{
-    @await Html.PartialAsync("_DadosClientePartial", Model)
-    <div class="row pt-2">
-        <div class="col-12 text-center">
-            <a asp-action="NovoAtendimento" asp-controller="Atendimento" class="btn btn-success">Novo Atendimento</a>
-        </div>
+<div class="row">
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/videoChamada.png" class="img-fluid" alt="Imagem de Cliente"/>
     </div>
-    @await Html.PartialAsync("_DadosAtendimentosPartial", Model.Atendimentos)
-}
+    <div class="col-12 col-xl-8">
+        <div class="row pt-2">
+            <div class="col">
+                <p>Desenvolvemos uma solução moderna e eficiente de videochamada destinada ao atendimento médico, oferecendo um canal direto e seguro entre pacientes e profissionais de saúde.</p>
+                <div class="d-none d-xl-block">
+                    <p><strong>Funcionalidades e Fluxo do Cliente</strong></p>
+                    <ol>
+                        <li><strong>Registro: </strong>Inicialmente, o cliente realiza um registro simplificado e seguro na plataforma.</li>
+                        <li><strong>Teste de Dispositivos: </strong>Antes de entrar na fila de atendimento, o cliente tem a oportunidade de testar seus dispositivos (câmera e microfone), garantindo que a videochamada ocorra sem interrupções ou problemas técnicos.</li>
+                        <li><strong>Fila de Espera: </strong>Uma vez registrado e após a verificação dos dispositivos, o cliente entra em uma fila de espera digital. A plataforma informa ao paciente sua posição na fila.</li>
+                        <li><strong>Atendimento: </strong>Quando chega a vez do cliente, ele é conectado imediatamente a um profissional de saúde para um atendimento via videochamada.</li>
+                        <li><strong>Avaliação: </strong>Após o término do atendimento, o cliente tem a opção de avaliar seu atendimento, fornecendo feedback valioso para os profissionais e para a melhoria contínua da plataforma.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    @if (Model == null)
+    {
+        <div class="row pt-2">
+            <div class="col text-center">
+                <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-success">Novo Registro</a>
+                <a asp-action="Consultar" asp-controller="Cliente" class="btn btn-secondary">Já sou Registrado</a>
+            </div>
+        </div>
+    } 
+    else
+    {
+        @await Html.PartialAsync("_DadosClientePartial", Model)
+        <div class="row pt-2">
+            <div class="col text-center">
+                <a asp-action="NovoAtendimento" asp-controller="Atendimento" class="btn btn-success">Novo Atendimento</a>
+            </div>
+        </div>
+        @await Html.PartialAsync("_DadosAtendimentosPartial", Model.Atendimentos)
+    }
+    </div>
+</div>

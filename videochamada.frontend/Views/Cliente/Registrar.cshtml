@@ -4,47 +4,44 @@
 }
 <div class="row">
     <div class="col-12">
-        <h1>Registro de Novo Cliente</h1>
+        <h1>Registrar Cliente</h1>
         <hr/>
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
-        <img src="~/imgs/clienteRegistro.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Cliente"/>
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/clienteRegistro.png" class="img-fluid" alt="Imagem de Cliente"/>
     </div>
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
         <form asp-action="Registrar" asp-controller="Cliente" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="row">
-                <div class="col-12">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-8">
-                    <div class="form-group">
-                        <label asp-for="Nome" class="form-label"></label>
+                <div class="col-12 col-sm-8 mb-3">
+                    <div class="form-floating">
                         <input asp-for="Nome" class="form-control" required="required" placeholder="Nome do usuário"/>
-                        <span asp-validation-for="Nome" class="text-danger"></span>
+                        <label asp-for="Nome" class="form-label"></label>
                     </div>
+                    <span asp-validation-for="Nome" class="text-danger"></span>
                 </div>
-                <div class="col-4">
-                    <div class="form-group">
+                <div class="col-12 col-sm-4 mb-3">
+                    <div class="form-floating">
+                        <input asp-for="Telefone" class="form-control" data-mask="phone" required="required" placeholder="(00) 00000-0000"/>
                         <label asp-for="Telefone" class="form-label"></label>
-                        <input asp-for="Telefone" class="form-control" required="required" placeholder="Telefone (00) 00000-0000"/>
-                        <span asp-validation-for="Telefone" class="text-danger"></span>
                     </div>
+                    <span asp-validation-for="Telefone" class="text-danger"></span>
                 </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        <label asp-for="Email" class="form-label"></label>
+                <div class="col-12  mb-3">
+                    <div class="form-floating">
                         <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <label asp-for="Email" class="form-label"></label>
                     </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="row pt-2">
                 <div class="col-12 text-center">
                     <button class="btn btn-primary" type="submit">Registrar</button>
+                    <a asp-action="Consultar" asp-controller="Cliente" class="btn btn-secondary">Já sou Registrado</a>
                 </div>
             </div>
         </form>

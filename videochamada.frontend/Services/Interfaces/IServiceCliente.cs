@@ -7,4 +7,5 @@ public interface IServiceCliente
     ClienteModel RegistrarCliente(ClienteRegistroModel cliente);
     ClienteModel ObterCliente(string id);
     List<ClienteModel> ListarCliente();
+    ClienteModel ObterClientePorEmail(string email);
 }
