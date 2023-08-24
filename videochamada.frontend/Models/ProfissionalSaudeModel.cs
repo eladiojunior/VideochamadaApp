@@ -7,4 +7,7 @@ public class ProfissionalSaudeModel
     public string Email { get; set; }
     public string Telefone { get; set; }
     public string Especialidade { get; set; }
+    
+    public bool Online { get; set; }
+    
 }

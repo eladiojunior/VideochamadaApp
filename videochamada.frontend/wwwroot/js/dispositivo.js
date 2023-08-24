@@ -10,6 +10,8 @@ function ativarVerificacaoDispositivo() {
     $(".icon-on").hide();
     $(".buttons-test").hide();
     $(".erro-dispositivo").hide();
+    $(".area-microfone-teste").hide();
+    $(".area-camera-teste").hide();
     timeVerificacao = setTimeout(verificacaoMediaPermissions, 3000);
 }
 function verificacaoMediaPermissions() {
@@ -149,4 +151,19 @@ $(".button-test-audio").click(function () {
         $(this).text("Testar Áudio");
         console.log('Erro no teste do áudio: ' + e);
     }
+});
+
+//Teste de audio
+const audioContext = new AudioContext();
+const startAudio = async (context) => {
+    await context.audioWorklet.addModule('bypass-processor.js');
+    const oscillator = new OscillatorNode(context);
+    const bypasser = new AudioWorkletNode(context, 'bypass-processor');
+    oscillator.connect(bypasser).connect(context.destination);
+    oscillator.start();
+};
+
+$(".audio.icon-on").click(async () => {
+    await startAudio(audioContext);
+    audioContext.resume();
 });

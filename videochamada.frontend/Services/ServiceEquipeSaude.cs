@@ -11,32 +11,40 @@ public class ServiceEquipeSaude : IServiceEquipeSaude
     public ProfissionalSaudeModel RegistrarEquipeSaude(ProfissionalSaudeRegistroModel profissionalSaude)
     {
         var profissionalSaudeNovo = new ProfissionalSaudeModel();
+        
         profissionalSaudeNovo.Id = ServiceHelper.GerarId();
         profissionalSaudeNovo.Nome = profissionalSaude.Nome;
         profissionalSaudeNovo.Email = profissionalSaude.Email;
         profissionalSaudeNovo.Telefone = profissionalSaude.Telefone;
         profissionalSaudeNovo.Especialidade = profissionalSaude.Especialidade;
+        profissionalSaudeNovo.Online = false;
+            
         _profissionais.TryAdd(profissionalSaudeNovo.Id, profissionalSaudeNovo);
         return profissionalSaudeNovo;
     }
 
-    public ProfissionalSaudeModel ObterProfissionalSaude(string id)
+    public ProfissionalSaudeModel ObterProfissionalSaude(string idProfissional)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(idProfissional))
+            return null;
+        return _profissionais.GetValueOrDefault(idProfissional);
     }
 
     public List<ProfissionalSaudeModel> ListarProfissionalSaude()
     {
-        throw new NotImplementedException();
+        return _profissionais.Values.ToList();
     }
 
     public List<ProfissionalSaudeModel> ListarProfissionalSaudeOnline()
     {
-        throw new NotImplementedException();
+        var listaOnline = _profissionais.Values.Where(w => w.Online == true);
+        return listaOnline.ToList();
     }
 
     public int QtdProfissionalSaudeOnline()
     {
-        throw new NotImplementedException();
+        var qtd = _profissionais.Values.Count(w => w.Online == true);
+        return qtd;
     }
+    
 }

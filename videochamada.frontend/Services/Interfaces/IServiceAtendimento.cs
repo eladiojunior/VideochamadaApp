@@ -12,4 +12,5 @@ public interface IServiceAtendimento
     void EncerrarAtendimento(AvaliacaoAtendimentoModel atendimento);
     AtendimentoModel IniciarAtendimentoProfissionalSaude(AtendimentoModel atendimento, ProfissionalSaudeModel profissional);
     int QtdClienteFilaAtendimento();
+    List<AtendimentoModel> ListarAtendimentosCliente(string idCliente);
 }

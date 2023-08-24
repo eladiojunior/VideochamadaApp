@@ -1,53 +1,63 @@
-﻿using videochamada.frontend.Models;
+﻿using System.Collections.Concurrent;
+using videochamada.frontend.Models;
 
 namespace videochamada.frontend.Helper;
 
 public class GerenciadorFilaCliente
 {
     private static GerenciadorFilaCliente instancia = null;
-    private Queue<ClienteModel> _fila = null;
+    private static ConcurrentQueue<ItemFila> _fila = null;
 
     private GerenciadorFilaCliente()
     {
-        _fila = new Queue<ClienteModel>();
+        _fila = new ConcurrentQueue<ItemFila>();
     }
 
     public static GerenciadorFilaCliente Get()
     {
-        return instancia ??= new GerenciadorFilaCliente();
+        if (instancia == null)
+            instancia = new GerenciadorFilaCliente();
+        return instancia;
     }
     
     public int EntrarNaFila(ClienteModel cliente)
     {
-        _fila.Enqueue(cliente);
+        _fila.Enqueue(new ItemFila(cliente));
         return PosicaoNaFila(cliente.Id);
     }
 
     public ClienteModel AtenderCliente()
     {
-        return _fila.Count == 0 ? null : _fila.Dequeue();
+        if (_fila.Count == 0) return null;
+        while (_fila.TryDequeue(out var itemFila))
+            if (!itemFila.HasRemovido)
+                return itemFila.Cliente;
+        return null;
     }
 
     public List<ClienteModel> ListarClientesFila()
     {
-        return _fila.ToList();
+        return _fila.Where(w => w.HasRemovido == false).Select(s => s.Cliente).ToList();
     }
 
     public int QuantidadeClientesFila()
     {
-        return _fila.Count;
+        return _fila.Count(w => w.HasRemovido == false);
     }
     
     public int PosicaoNaFila(string idCliente)
     {
         var posicao = 0;
-        foreach (var cliente in _fila)
+        var hasExiste = false;
+        var listaClientes = ListarClientesFila();
+        foreach (var cliente in listaClientes)
         {
-            if (cliente.Id == idCliente)
-                return posicao;
             posicao++;
+            if (cliente.Id != idCliente) continue;
+            hasExiste = true;
+            break;
         }
-        return posicao;  // Cliente não encontrado
+        return hasExiste ? posicao : 0;
     }
 
     public void RemoverDaFila(string idCliente)
@@ -55,7 +65,23 @@ public class GerenciadorFilaCliente
         var posicaoNaFila = PosicaoNaFila(idCliente);
         if (posicaoNaFila != 0)
         {//Está na fila... remover
-            _fila.Where(w => w.Id.Equals(idCliente));
+            var item = _fila.Where(w => w.Cliente.Id.Equals(idCliente)).FirstOrDefault();
+            item.Remover();
         }
+    }
+}
+
+class ItemFila
+{
+    public ItemFila(ClienteModel cliente)
+    {
+        Cliente = cliente;
+    }
+    private bool hasRemovido = false;
+    public ClienteModel Cliente { get; set; }
+    public bool HasRemovido => hasRemovido;
+    internal void Remover()
+    {
+        hasRemovido = true;
     }
 }

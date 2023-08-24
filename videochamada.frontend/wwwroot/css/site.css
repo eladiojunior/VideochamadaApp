@@ -6,53 +6,43 @@ body {
   padding: 20px;
 }
 .area-camera-teste {
-  position: absolute;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-width: 200px;
-  min-height: 200px;
 }
 .area-camera-teste video {
+  position: absolute;
   max-width: 160px;
   border-radius: 25px;
 }
 .area-microfone-teste {
-  position: absolute;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  min-width: 200px;
-  min-height: 200px;
-  padding-bottom: 30px;
 }
 #progressMicrofone {
-  width: 88px;
-  height: 0px;
-  background-color: #037ea3;
+  width: 50px;
+  background-color: #02a246;
   text-align: center;
-  color: black;
-  border-radius: 15px;
+  color: #cdcdcd;
+  border-radius: 10px;
+  position: absolute;
+  margin-top: 15px;
 }
 
 .text-dispositivo {
   position: absolute;
-  display: flex;
   font-size: 20px;
   color: #000000;
+}
+.icon-verificacao {
+  display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 200px;
-  min-height: 200px;
 }
-
 .area-posicao-fila {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px 0;
 }
-
 .text-posicao-fila {
   position: absolute;
   display: flex;
@@ -64,7 +54,25 @@ body {
   min-height: 200px;
   border-radius: 50%;
 }
-
+.area-qtd-profissionais {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.text-qtd-profissionais {
+  position: absolute;
+  display: flex;
+  font-size: 40px;
+  color: #000000;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+  min-height: 200px;
+  border-radius: 50%;
+}
+.titulo-posicao-fila {
+  
+}
 .rating {
   display: flex;
   justify-content: center;

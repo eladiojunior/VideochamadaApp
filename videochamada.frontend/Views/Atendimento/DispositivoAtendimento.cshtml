@@ -1,4 +1,4 @@
-﻿@model ClienteAtendimentoModel
+﻿@model ClienteModel
 @{
     ViewBag.Title = "Atendimento [Dispositivos]";
 }
@@ -13,7 +13,7 @@
         <img src="~/imgs/clienteAtendimento.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Atendimento"/>
     </div>
     <div class="col-8">
-        @await Html.PartialAsync("_DadosClientePartial", Model.Cliente)
+        @await Html.PartialAsync("_DadosClientePartial", Model)
         <div class="row pt-2 justify-content-center">
             <div class="col-3">
                 <div class="icon-verificacao">
@@ -32,7 +32,7 @@
                     <img src="~/imgs/verificacao.gif" class="img-fluid microfone" alt="Icon Verificação Microfone"/>
                 </div>
                 <div class="area-microfone-teste">
-                  <div id="progressMicrofone"></div>
+                  <div id="progressMicrofone">fale</div>
                 </div>
                 <img src="~/imgs/microfone-On.png" class="img-fluid microfone icon-on" alt="Icon Microfone On"/>
                 <img src="~/imgs/microfone-Off.png" class="img-fluid microfone icon-off" alt="Icon Microfone Off"/>

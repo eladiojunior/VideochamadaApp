@@ -1,9 +1,8 @@
 ﻿namespace videochamada.frontend.Models;
 
-public class PosicaoAtencimentoModel
+public class ClienteFilaAtendimentoModel
 {
-    public string IdCliente { get; set; }
+    public ClienteModel Cliente { get; set; }
     public int PosicaoNaFila { get; set; }
-    public int QtdClientesFila { get; set; }
     public int QtdProfissionaisOnline { get; set; }
 }

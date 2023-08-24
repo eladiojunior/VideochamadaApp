@@ -22,31 +22,48 @@ public class AtendimentoController : GenericController
     public IActionResult NovoAtendimento()
     {
         var idCliente = ObterIdClienteSession();
+        var modelCliente = _serviceCliente.ObterCliente(idCliente);
+        if (modelCliente == null)
+            return RedirectToAction("Index", "Home");
         var modelAtendimento = _serviceAtendimento.CriarAtendimento(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
-        return View("InicioAtendimento", modelAtendimento);
+        return View("InicioAtendimento", modelCliente);
     }
     
     [HttpGet]
     public IActionResult VerificarDispositivo()
     {
         var idCliente = ObterIdClienteSession();
+        var modelCliente = _serviceCliente.ObterCliente(idCliente);
+        if (modelCliente == null)
+            return RedirectToAction("Index", "Home");
         var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
-        return View("DispositivoAtendimento", modelAtendimento);
+        return View("DispositivoAtendimento", modelCliente);
     }
 
     [HttpGet]
     public IActionResult FilaAtendimento()
     {
         var idCliente = ObterIdClienteSession();
+        var modelCliente = _serviceCliente.ObterCliente(idCliente);
+        if (modelCliente == null)
+            return RedirectToAction("Index", "Home");
         var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
-        modelAtendimento = _serviceAtendimento.EntrarFilaAtendimento(modelAtendimento);
-        return View("FilaAtendimento", modelAtendimento);
+        
+        _serviceAtendimento.EntrarFilaAtendimento(modelAtendimento);
+
+        var model = new ClienteFilaAtendimentoModel();
+        model.Cliente = modelCliente;
+        model.PosicaoNaFila = _serviceAtendimento.PosicaoFilaAtendimento(idCliente);
+        model.QtdProfissionaisOnline = _serviceEquipeSaude.QtdProfissionalSaudeOnline();
+        
+        return View("FilaAtendimento", model);
+        
     }
 
     [HttpGet]
@@ -82,7 +99,7 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult PosicaoFilaAtendimento()
     {
-        var posicaoAtendimento = new PosicaoAtencimentoModel();
+        var posicaoAtendimento = new PosicaoAtendimentoModel();
         var idCliente = ObterIdClienteSession();
         if (!string.IsNullOrEmpty(idCliente))
         {

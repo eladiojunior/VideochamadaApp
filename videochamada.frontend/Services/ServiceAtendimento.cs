@@ -29,6 +29,9 @@ public class ServiceAtendimento : IServiceAtendimento
         atendimento.DataRegistro = DateTime.Now;  
         atendimento.DataInicial = null;
         atendimento.DataFinal = null;
+        
+        _atendimentos.TryAdd(atendimento.Id, atendimento);
+        
         return atendimento;
         
     }
@@ -100,5 +103,9 @@ public class ServiceAtendimento : IServiceAtendimento
     {
         return GerenciadorFilaCliente.Get().QuantidadeClientesFila();
     }
-    
+
+    public List<AtendimentoModel> ListarAtendimentosCliente(string idCliente)
+    {
+        return _atendimentos.Values.Where(w => w.IdCliente.Equals(idCliente)).ToList();
+    }
 }

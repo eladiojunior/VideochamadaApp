@@ -9,19 +9,21 @@ namespace videochamada.frontend.Controllers;
 
 public class HomeController : GenericController
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IServiceCliente _serviceCliente;
+    private readonly IServiceAtendimento _serviceAtendimento;
 
-    public HomeController(ILogger<HomeController> logger, IServiceCliente cliente)
+    public HomeController(IServiceCliente cliente, IServiceAtendimento atendimento)
     {
-        _logger = logger;
         _serviceCliente = cliente;
+        _serviceAtendimento = atendimento;
     }
 
     public IActionResult Index()
     {
-        var idUsuario = ObterIdClienteSession();
-        var cliente = _serviceCliente.ObterCliente(idUsuario);
+        var idCliente = ObterIdClienteSession();
+        var cliente = _serviceCliente.ObterCliente(idCliente);
+        if (cliente != null)
+            cliente.Atendimentos = _serviceAtendimento.ListarAtendimentosCliente(idCliente);
         return View(cliente);
     }
 
