@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using videochamada.frontend.Models;
 
 namespace VideoChatApp.FrontEnd.Controllers;
 
 public class GenericController : Controller
 {
     private const string KeyIdClienteSession = "KEY_ID_CLIENTE_SESSION";
+    internal const string KeyMensagemErros = "KEY_MENSAGEM_ERRO";
+    private List<string> _erros;
     internal const string KeyMensagemAlerta = "KEY_MENSAGEM_ALERTA";
     
     /// <summary>
@@ -41,15 +41,21 @@ public class GenericController : Controller
         HttpContext.Session.SetString(KeyIdClienteSession, idCliente);
     }
 
-    private bool _hasAlerta = false;
+    internal void ExibirErro(string mensagem)
+    {
+        if (_erros == null) 
+            _erros = new List<string>();
+        _erros.Add(mensagem);
+        TempData[KeyMensagemErros] = _erros;
+    }
+    internal bool HasErros()
+    {
+        return (_erros!=null && _erros.Count!=0);
+    }
     internal void ExibirAlerta(string mensagem)
     {
-        TempData[KeyMensagemAlerta] = mensagem;
-        _hasAlerta = true;
+        if (!string.IsNullOrEmpty(mensagem))
+            TempData[KeyMensagemAlerta] = mensagem;
     }
 
-    internal bool HasAlerta()
-    {
-        return _hasAlerta;
-    }
 }

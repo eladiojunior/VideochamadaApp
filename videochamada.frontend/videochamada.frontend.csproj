@@ -19,6 +19,7 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-mask\jquery-mask.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-mask\jquery-mask.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\audio\bypass-processor.js" />
     </ItemGroup>
 
 

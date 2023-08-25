@@ -13,7 +13,7 @@
     </div>
     <div class="col-12 col-xl-8">
         <form asp-action="Consultar" asp-controller="Cliente" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-black"></div>
+            @await Html.PartialAsync("_MensagensPartial")
             <div class="row">
                 <div class="col-12 mb-3">
                     <div class="form-floating">

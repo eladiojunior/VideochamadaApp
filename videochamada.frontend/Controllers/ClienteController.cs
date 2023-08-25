@@ -32,6 +32,7 @@ public class ClienteController : GenericController
         {
             var clienteModel = _serviceCliente.RegistrarCliente(model);
             GravarIdClienteSession(clienteModel.Id);
+            ExibirAlerta("Cliente registrado com sucesso.");
             return RedirectToAction("NovoAtendimento", "Atendimento");
         }
         catch (ServiceException erro)

@@ -19,6 +19,7 @@ public class AtendimentoModel
             {
                 SituacaoAtendimentoEnum.Registrado, 
                 SituacaoAtendimentoEnum.EmAtendimento,
+                SituacaoAtendimentoEnum.VerificacaoDispositivo,
                 SituacaoAtendimentoEnum.FilaAtendimento
             };
             return listaSituacaoAberto.Contains(Situacao);

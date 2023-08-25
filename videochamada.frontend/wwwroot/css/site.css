@@ -6,6 +6,12 @@ body {
   padding: 20px;
 }
 
+.icon-on {
+  cursor: pointer;
+}
+.icon-off {
+  cursor: pointer;
+}
 .area-camera-teste {
   display: flex;
   justify-content: center;
@@ -31,8 +37,26 @@ body {
 
 .text-dispositivo {
   position: absolute;
-  font-size: 20px;
+  font-size: 10px;
   color: #000000;
+}
+
+@media (min-width: 576px) {
+  .text-dispositivo {
+    font-size: 20px;
+  }
+}
+@media (min-width: 768px) { 
+  
+}
+@media (min-width: 992px) {
+  
+}
+@media (min-width: 1200px) { 
+  
+}
+@media (min-width: 1400px) { 
+  
 }
 .icon-verificacao {
   display: flex;
@@ -128,4 +152,19 @@ body {
   max-width: 200px;
   border: 1px solid #0a58ca;
   border-radius: 5px;
+}
+
+.mensagem-erros {
+  padding: 5px;
+  margin: 10px 0px 10px 0px;
+}
+.mensagem-erros ul {
+  padding: 5px;
+  margin: 5px;
+}
+.mensagem-erros ul li {
+  list-style: none;
+}
+.mensagem-erros.validation-summary-valid {
+  display: none;
 }

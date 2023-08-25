@@ -42,10 +42,10 @@ function erroPermissaoDispositivos() {
 $(".button-verificacao").click(function () {
     ativarVerificacaoDispositivo();
 });
-$(".button-test-camera").click(function () {
+$(".test-camera").click(function () {
     try {
         if (streamMedia == null) {
-            $(this).text("Erro na Câmera!");
+            $(".button-test-camera").text("Erro na Câmera!");
             let timeTesteCamera = setTimeout(function () {
                 $(".button-test-camera").text("Testar Câmera");
                 clearTimeout(timeTesteCamera);
@@ -55,12 +55,12 @@ $(".button-test-camera").click(function () {
         }
         const videoElement = document.getElementById('localVideo');
         if (testantoCamera===false) {
-            $(this).text("Parar Teste");
+            $(".button-test-camera").text("Parar Teste");
             $(".area-camera-teste").show();
             videoElement.srcObject = streamMedia;
             testantoCamera=true;
         } else {
-            $(this).text("Testar Câmera");
+            $(".button-test-camera").text("Testar Câmera");
             $(".area-camera-teste").hide();
             videoElement.srcObject = null;
             testantoCamera=false;
@@ -68,16 +68,16 @@ $(".button-test-camera").click(function () {
         $(".camera.icon-off").hide();
         $(".camera.icon-on").show();
     } catch (e) {
-        $(this).text("Testar Câmera");
+        $(".button-test-camera").text("Testar Câmera");
         $(".area-camera-teste").hide();
         testantoCamera=false;
         console.log('Erro no teste da câmera: ' + e);
     }
 });
-$(".button-test-microfone").click(function () {
+$(".test-microfone").click(function () {
     try {
         if (streamMedia == null) {
-            $(this).text("Erro no Microfone!");
+            $(".button-test-microfone").text("Erro no Microfone!");
             let timeTesteMicrofone = setTimeout(function () {
                 $(".button-test-microfone").text("Testar Microfone");
                 clearTimeout(timeTesteMicrofone);
@@ -86,7 +86,7 @@ $(".button-test-microfone").click(function () {
             return;
         }
         if (testantoMicrofone===false) {
-            $(this).text("Parar Teste");
+            $(".button-test-microfone").text("Parar Teste");
             $(".area-microfone-teste").show();
             const audioContext = new AudioContext();
             const analyser = audioContext.createAnalyser();
@@ -115,7 +115,7 @@ $(".button-test-microfone").click(function () {
             };
             testantoMicrofone=true;
         } else {
-            $(this).text("Testar Microfone");
+            $(".button-test-microfone").text("Testar Microfone");
             $(".area-microfone-teste").hide();
             const audioContext = new AudioContext();
             const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
@@ -126,17 +126,17 @@ $(".button-test-microfone").click(function () {
         $(".microfone.icon-on").show();
     } catch (e) {
         testantoMicrofone=false;
-        $(this).text("Testar Microfone");
+        $(".button-test-microfone").text("Testar Microfone");
         $(".area-microfone-teste").hide();
         console.log('Erro no teste do Microfone: ' + e);
     }
 });
-$(".button-test-audio").click(function () {
+$(".test-audio").click(function () {
     try {
         if (testantoAudio===true)
             return;
         testantoAudio=true;
-        $(this).text("Testando...");
+        $(".button-test-audio").text("Testando...");
         const audioElement = document.getElementById('testAudio');
         audioElement.play();
         let timeTesteAudio = setTimeout(function () {
@@ -145,25 +145,10 @@ $(".button-test-audio").click(function () {
             testantoAudio = false;
             $(".button-test-audio").text("Testar Áudio");
             clearTimeout(timeTesteAudio);
-        }, 5000);
+        }, 8000);
     } catch (e) {
         testantoAudio=false;
-        $(this).text("Testar Áudio");
+        $(".button-test-audio").text("Testar Áudio");
         console.log('Erro no teste do áudio: ' + e);
     }
-});
-
-//Teste de audio
-const audioContext = new AudioContext();
-const startAudio = async (context) => {
-    await context.audioWorklet.addModule('bypass-processor.js');
-    const oscillator = new OscillatorNode(context);
-    const bypasser = new AudioWorkletNode(context, 'bypass-processor');
-    oscillator.connect(bypasser).connect(context.destination);
-    oscillator.start();
-};
-
-$(".audio.icon-on").click(async () => {
-    await startAudio(audioContext);
-    audioContext.resume();
 });

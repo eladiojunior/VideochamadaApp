@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using videochamada.frontend.Models;
 using VideoChatApp.FrontEnd.Services.Enums;
 using VideoChatApp.FrontEnd.Services.Interfaces;
@@ -27,7 +28,7 @@ public class AtendimentoController : GenericController
         var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento != null)
         {
-            ExibirAlerta($"Existe um atendimento na situação [{modelAtendimento.Situacao.ObterTextoEnum()}] continue o atendimento ou cancele.");
+            ExibirErro($"Existe um atendimento em aberto [{modelAtendimento.Situacao.ObterTextoEnum()}] continue o atendimento ou cancele.");
             return RedirectToAction("Index", "Home");
         }
         
@@ -46,7 +47,7 @@ public class AtendimentoController : GenericController
         var modelCliente = _serviceCliente.ObterCliente(idCliente);
         if (modelCliente == null)
         {
-            ExibirAlerta("Erro ao identificar o Cliente do atendimento.");
+            ExibirErro("Erro ao identificar o Cliente do atendimento.");
             return RedirectToAction("Index", "Home");
         }
 
@@ -61,12 +62,21 @@ public class AtendimentoController : GenericController
         var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
         if (atendimento == null)
         {
-            ExibirAlerta("Atendimento não encontrado para continuar.");
+            ExibirErro("Atendimento não encontrado para continuar.");
             return RedirectToAction("Index", "Home");
         }
 
-        return RedirectToAction("InicioAtendimento", "Atendimento");
-        
+        switch (atendimento.Situacao)
+        {
+            case SituacaoAtendimentoEnum.Registrado:
+                return RedirectToAction("InicioAtendimento", "Atendimento");
+            case SituacaoAtendimentoEnum.VerificacaoDispositivo:
+                return RedirectToAction("VerificarDispositivo", "Atendimento");
+            case SituacaoAtendimentoEnum.FilaAtendimento:
+                return RedirectToAction("FilaAtendimento", "Atendimento");
+            default:
+                return RedirectToAction("Index", "Home");
+        }
     }
 
     [HttpGet]
@@ -76,15 +86,15 @@ public class AtendimentoController : GenericController
         var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
         if (atendimento == null)
         {
-            ExibirAlerta("Atendimento não encontrado para continuar.");
+            ExibirErro("Atendimento não encontrado para continuar.");
         }
         var modelCliente = _serviceCliente.ObterCliente(atendimento.IdCliente);
         if (modelCliente == null)
         {
-            ExibirAlerta("Erro ao identificar o Cliene do atendimento.");
+            ExibirErro("Erro ao identificar o Cliene do atendimento.");
         }
 
-        if (HasAlerta())
+        if (!HasErros())
         {//Cancelar atendimento
             var avaliacaoAtendimento = new AvaliacaoAtendimentoModel();
             avaliacaoAtendimento.IdAtendimento = idAtendimento;
@@ -93,6 +103,7 @@ public class AtendimentoController : GenericController
             _serviceAtendimento.EncerrarAtendimento(avaliacaoAtendimento, SituacaoAtendimentoEnum.Cancelado);            
         }
         
+        ExibirAlerta("Cancelamos seu atendimento em aberto, ficará no seu histórico para consulta.");
         return RedirectToAction("Index", "Home");
         
     }
@@ -107,6 +118,9 @@ public class AtendimentoController : GenericController
         var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
+
+        _serviceAtendimento.VerificarDispositivoParaAtendimento(modelAtendimento.Id);
+        
         return View("DispositivoAtendimento", modelCliente);
     }
 

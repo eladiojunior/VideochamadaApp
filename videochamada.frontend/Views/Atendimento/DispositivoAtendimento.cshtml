@@ -20,42 +20,57 @@
                     <div class="text-dispositivo">Câmera</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid camera" alt="Icon Verificação Camera"/>
                 </div>
-                <div class="area-camera-teste">
+                <div class="area-camera-teste" style="display: none;">
                     <video id="localVideo" autoplay playsinline></video>
                 </div>
-                <img src="~/imgs/camera-On.png" class="img-fluid camera icon-on" alt="Icon Câmera On"/>
-                <img src="~/imgs/camera-Off.png" class="img-fluid camera icon-off" alt="Icon Câmera Off"/>
+                <div class="test-camera">
+                    <img src="~/imgs/camera-On.png" class="img-fluid camera icon-on" alt="Icon Câmera On" style="display: none;"/>
+                    <img src="~/imgs/camera-Off.png" class="img-fluid camera icon-off" alt="Icon Câmera Off" style="display: none;"/>
+                </div>
             </div>
             <div class="col-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Microfone</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid microfone" alt="Icon Verificação Microfone"/>
                 </div>
-                <div class="area-microfone-teste">
-                  <div id="progressMicrofone">fale</div>
+                <div class="area-microfone-teste" style="display: none;">
+                    <div id="progressMicrofone">fale</div>
                 </div>
-                <img src="~/imgs/microfone-On.png" class="img-fluid microfone icon-on" alt="Icon Microfone On"/>
-                <img src="~/imgs/microfone-Off.png" class="img-fluid microfone icon-off" alt="Icon Microfone Off"/>
+                <div class="test-microfone">
+                    <img src="~/imgs/microfone-On.png" class="img-fluid microfone icon-on" alt="Icon Microfone On" style="display: none;"/>
+                    <img src="~/imgs/microfone-Off.png" class="img-fluid microfone icon-off" alt="Icon Microfone Off" style="display: none;"/>
+                </div>
             </div>
             <div class="col-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Áudio</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid audio" alt="Icon Verificação Audio"/>
                 </div>
-                <img src="~/imgs/audio-On.png" class="img-fluid audio icon-on" alt="Icon Audio On"/>
-                <img src="~/imgs/audio-Off.png" class="img-fluid audio icon-off" alt="Icon Audio Off"/>
-                <audio id="testAudio" src="~/mp3/audioTeste.mp3"></audio>
+                <div class="test-audio">
+                    <img src="~/imgs/audio-On.png" class="img-fluid audio icon-on" alt="Icon Audio On" style="display: none;"/>
+                    <img src="~/imgs/audio-Off.png" class="img-fluid audio icon-off" alt="Icon Audio Off" style="display: none;"/>
+                    <audio id="testAudio" src="~/mp3/audioTeste.mp3"></audio>
+                </div>
             </div>
         </div>
-        <div class="row pt-2 buttons-test justify-content-center">
-            <div class="col-3 text-center">
-                <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-camera">Testar Câmera</button>
+        <div class="d-none d-sm-block">
+            <div class="row pt-2 buttons-test justify-content-center" style="display: none;">
+                <div class="col-3 text-center">
+                    <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-camera test-camera">Testar Câmera</button>
+                </div>
+                <div class="col-3 text-center">
+                    <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-microfone test-microfone">Testar Microfone</button>
+                </div>
+                <div class="col-3 text-center">
+                    <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-audio test-audio">Testar Áudio</button>
+                </div>
             </div>
-            <div class="col-3 text-center">
-                <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-microfone">Testar Microfone</button>
-            </div>
-            <div class="col-3 text-center">
-                <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-audio">Testar Áudio</button>
+        </div>
+        <div class="d-sm-none d-block">
+            <div class="row buttons-test" style="display: none;">
+                <div class="col-12 pt-2">
+                    <span class="badge bg-secondary">Clique no ícone para testar o dispositivo...</span>
+                </div>
             </div>
         </div>
         <div class="row">

@@ -47,6 +47,7 @@ public class ServiceAtendimento : IServiceAtendimento
         {
             SituacaoAtendimentoEnum.Registrado, 
             SituacaoAtendimentoEnum.EmAtendimento,
+            SituacaoAtendimentoEnum.VerificacaoDispositivo,
             SituacaoAtendimentoEnum.FilaAtendimento
         };
         
@@ -75,11 +76,9 @@ public class ServiceAtendimento : IServiceAtendimento
 
     private void AtualizarSituacaoAtendimento(string idAtendimento, SituacaoAtendimentoEnum situacaoAtendimento)
     {
-        
         var atendimento = _atendimentos.GetValueOrDefault(idAtendimento);
         if (atendimento != null)
             atendimento.Situacao = situacaoAtendimento;
-        
     }
 
     public int PosicaoFilaAtendimento(string idCliente)
@@ -137,5 +136,11 @@ public class ServiceAtendimento : IServiceAtendimento
             return null;
         return atendimento;
     }
-    
+
+    public void VerificarDispositivoParaAtendimento(string idAtendimento)
+    {
+        if (string.IsNullOrEmpty(idAtendimento)) 
+            return;
+        AtualizarSituacaoAtendimento(idAtendimento, SituacaoAtendimentoEnum.VerificacaoDispositivo);
+    }
 }
