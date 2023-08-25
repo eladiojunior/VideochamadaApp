@@ -38,14 +38,25 @@ public class ServiceAtendimento : IServiceAtendimento
 
     public AtendimentoModel ObterAtendimentoAberto(string idCliente)
     {
+        
         var clienteModel = _serviceCliente.ObterCliente(idCliente);
         if (clienteModel == null)
             return null;
+        
+        var listaSituacaoAberto = new[]
+        {
+            SituacaoAtendimentoEnum.Registrado, 
+            SituacaoAtendimentoEnum.EmAtendimento,
+            SituacaoAtendimentoEnum.FilaAtendimento
+        };
+        
         var atendimentoAberto = _atendimentos.Values.FirstOrDefault(c => 
-            c.IdCliente.Equals(clienteModel.Id) && c.Situacao == SituacaoAtendimentoEnum.Registrado && c.DataFinal == null);
+            c.IdCliente.Equals(clienteModel.Id) && listaSituacaoAberto.Contains(c.Situacao) && c.DataFinal == null);
         if (atendimentoAberto == null)
             return null;
+        
         return atendimentoAberto;
+        
     }
 
     public AtendimentoModel EntrarFilaAtendimento(AtendimentoModel atendimento)
@@ -56,9 +67,19 @@ public class ServiceAtendimento : IServiceAtendimento
         var posicaoFila = GerenciadorFilaCliente.Get().PosicaoNaFila(atendimento.IdCliente);
         if (posicaoFila == 0) 
         {//Registrar cliente na fila...
+            AtualizarSituacaoAtendimento(atendimento.Id, SituacaoAtendimentoEnum.FilaAtendimento);
             GerenciadorFilaCliente.Get().EntrarNaFila(clienteModel);
         }
         return atendimento;
+    }
+
+    private void AtualizarSituacaoAtendimento(string idAtendimento, SituacaoAtendimentoEnum situacaoAtendimento)
+    {
+        
+        var atendimento = _atendimentos.GetValueOrDefault(idAtendimento);
+        if (atendimento != null)
+            atendimento.Situacao = situacaoAtendimento;
+        
     }
 
     public int PosicaoFilaAtendimento(string idCliente)
@@ -66,7 +87,7 @@ public class ServiceAtendimento : IServiceAtendimento
         return GerenciadorFilaCliente.Get().PosicaoNaFila(idCliente);
     }
 
-    public void EncerrarAtendimento(AvaliacaoAtendimentoModel atendimento)
+    public void EncerrarAtendimento(AvaliacaoAtendimentoModel atendimento, SituacaoAtendimentoEnum situacaoAtendimento)
     {
         var clienteModel = _serviceCliente.ObterCliente(atendimento.IdCliente);
         if (clienteModel == null)
@@ -77,7 +98,7 @@ public class ServiceAtendimento : IServiceAtendimento
             return;
         
         atendimentoModel.DataFinal = DateTime.Now;
-        atendimentoModel.Situacao = atendimento.HasDesistencia ? SituacaoAtendimentoEnum.Desistencia : SituacaoAtendimentoEnum.Finalizado;
+        atendimentoModel.Situacao = situacaoAtendimento;
         atendimentoModel.Nota = atendimento.Nota;
         atendimentoModel.ComentarioNota = atendimento.Comentario;
 
@@ -106,6 +127,15 @@ public class ServiceAtendimento : IServiceAtendimento
 
     public List<AtendimentoModel> ListarAtendimentosCliente(string idCliente)
     {
-        return _atendimentos.Values.Where(w => w.IdCliente.Equals(idCliente)).ToList();
+        return _atendimentos.Values.Where(w => w.IdCliente.Equals(idCliente)).OrderByDescending(o => o.DataRegistro).ToList();
     }
+
+    public AtendimentoModel ObterAtendimento(string idAtendimento)
+    {
+        var atendimento = _atendimentos.Values.FirstOrDefault(c => c.Id.Equals(idAtendimento));
+        if (atendimento == null)
+            return null;
+        return atendimento;
+    }
+    
 }

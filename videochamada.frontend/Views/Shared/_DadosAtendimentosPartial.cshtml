@@ -19,14 +19,13 @@ else
     <div class="row">
         <div class="col-12 table-responsive">
             <div class="table-responsive">
-                <table class="table table-sm table-striped">
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th class="col">Data registro</th>
-                        <th class="col">Data inicial</th>
-                        <th class="col">Data final</th>
-                        <th class="col">Status</th>
-                        <th class="col">Nota</th>
+                        <th class="col">Situação</th>
+                        <th class="col text-center">Nota</th>
+                        <th class="col text-center">Ação</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,10 +33,15 @@ else
                     {
                         <tr>
                             <th>@item.DataRegistro.ToString("g")</th>
-                            <th>@(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g") : "")</th>
-                            <th>@(item.DataFinal.HasValue ? item.DataFinal.Value.ToString("g") : "")</th>
                             <td>@item.Situacao</td>
-                            <td>@item.Nota.ToString("F")</td>
+                            <td class="text-center">@(item.Nota==0?"-":item.Nota.ToString("F"))</td>
+                            <td class="text-end">
+                                @if (item.HasRetomarAtendimento)
+                                {
+                                    <a asp-action="ContinuarAtendimento" asp-controller="Atendimento" asp-route-idAtendimento="@item.Id" class="btn btn-info btn-sm">Continuar</a>
+                                    <a asp-action="CancelarAtendimento" asp-controller="Atendimento" asp-route-idAtendimento="@item.Id" class="btn btn-danger btn-sm">Cancelar</a>
+                                }
+                            </td>
                         </tr>
                     }
                     </tbody>

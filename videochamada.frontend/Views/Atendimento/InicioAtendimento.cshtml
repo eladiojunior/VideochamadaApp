@@ -9,10 +9,10 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
-        <img src="~/imgs/clienteAtendimento.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Atendimento"/>
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/orientacaoCliente.png" class="img-fluid" alt="Imagem de Orientação do Cliente"/>
     </div>
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
         @await Html.PartialAsync("_DadosClientePartial", Model)
         <div class="row pt-2">
             <div class="col-12">
@@ -23,7 +23,8 @@
         </div>
         <div class="row">
             <div class="col-12 text-center">
-                <a asp-action="VerificarDispositivo" asp-controller="Atendimento" class="btn btn-info">Avançar</a>
+                <a asp-action="VerificarDispositivo" asp-controller="Atendimento" class="btn btn-success">Continuar</a>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-light">Retornar</a>
             </div>
         </div>
     </div>

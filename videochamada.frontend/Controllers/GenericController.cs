@@ -7,7 +7,7 @@ namespace VideoChatApp.FrontEnd.Controllers;
 public class GenericController : Controller
 {
     private const string KeyIdClienteSession = "KEY_ID_CLIENTE_SESSION";
-    
+    internal const string KeyMensagemAlerta = "KEY_MENSAGEM_ALERTA";
     
     /// <summary>
     ///     Cria um retorno Json de Sucesso (Result = true) com mensagem para o usuário (opcional).
@@ -39,5 +39,17 @@ public class GenericController : Controller
     internal void GravarIdClienteSession(string idCliente)
     {
         HttpContext.Session.SetString(KeyIdClienteSession, idCliente);
+    }
+
+    private bool _hasAlerta = false;
+    internal void ExibirAlerta(string mensagem)
+    {
+        TempData[KeyMensagemAlerta] = mensagem;
+        _hasAlerta = true;
+    }
+
+    internal bool HasAlerta()
+    {
+        return _hasAlerta;
     }
 }

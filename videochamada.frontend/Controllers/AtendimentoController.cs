@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using videochamada.frontend.Models;
+using VideoChatApp.FrontEnd.Services.Enums;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 
 namespace VideoChatApp.FrontEnd.Controllers;
@@ -21,14 +22,79 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult NovoAtendimento()
     {
+        
+        var idCliente = ObterIdClienteSession();
+        var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
+        if (modelAtendimento != null)
+        {
+            ExibirAlerta($"Existe um atendimento na situação [{modelAtendimento.Situacao.ObterTextoEnum()}] continue o atendimento ou cancele.");
+            return RedirectToAction("Index", "Home");
+        }
+        
+        modelAtendimento = _serviceAtendimento.CriarAtendimento(idCliente);
+        if (modelAtendimento == null)
+            return RedirectToAction("Index", "Home");
+        
+        return RedirectToAction("InicioAtendimento", "Atendimento");
+        
+    }
+
+    [HttpGet]
+    public IActionResult InicioAtendimento()
+    {
         var idCliente = ObterIdClienteSession();
         var modelCliente = _serviceCliente.ObterCliente(idCliente);
         if (modelCliente == null)
+        {
+            ExibirAlerta("Erro ao identificar o Cliente do atendimento.");
             return RedirectToAction("Index", "Home");
-        var modelAtendimento = _serviceAtendimento.CriarAtendimento(idCliente);
-        if (modelAtendimento == null)
-            return RedirectToAction("Index", "Home");
+        }
+
         return View("InicioAtendimento", modelCliente);
+
+    }
+
+    [HttpGet]
+    public IActionResult ContinuarAtendimento(string idAtendimento)
+    {
+        
+        var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+        {
+            ExibirAlerta("Atendimento não encontrado para continuar.");
+            return RedirectToAction("Index", "Home");
+        }
+
+        return RedirectToAction("InicioAtendimento", "Atendimento");
+        
+    }
+
+    [HttpGet]
+    public IActionResult CancelarAtendimento(string idAtendimento)
+    {
+        
+        var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+        {
+            ExibirAlerta("Atendimento não encontrado para continuar.");
+        }
+        var modelCliente = _serviceCliente.ObterCliente(atendimento.IdCliente);
+        if (modelCliente == null)
+        {
+            ExibirAlerta("Erro ao identificar o Cliene do atendimento.");
+        }
+
+        if (HasAlerta())
+        {//Cancelar atendimento
+            var avaliacaoAtendimento = new AvaliacaoAtendimentoModel();
+            avaliacaoAtendimento.IdAtendimento = idAtendimento;
+            avaliacaoAtendimento.IdCliente = atendimento.IdCliente;
+            avaliacaoAtendimento.Comentario = "Cancelado pelo Cliente.";
+            _serviceAtendimento.EncerrarAtendimento(avaliacaoAtendimento, SituacaoAtendimentoEnum.Cancelado);            
+        }
+        
+        return RedirectToAction("Index", "Home");
+        
     }
     
     [HttpGet]
@@ -91,7 +157,10 @@ public class AtendimentoController : GenericController
         if (!ModelState.IsValid)
             return View("AvaliarAtendimento", model);
 
-        _serviceAtendimento.EncerrarAtendimento(model);
+        var situacaoAtendimento = model.HasDesistencia
+            ? SituacaoAtendimentoEnum.Desistencia
+            : SituacaoAtendimentoEnum.Finalizado;
+        _serviceAtendimento.EncerrarAtendimento(model, situacaoAtendimento);
         return RedirectToAction("Index", "Home");
         
     }

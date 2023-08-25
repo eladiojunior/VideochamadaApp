@@ -16,8 +16,7 @@
         <div class="row pt-2">
             <div class="col">
                 <p>Desenvolvemos uma solução moderna e eficiente de videochamada destinada ao atendimento médico, oferecendo um canal direto e seguro entre pacientes e profissionais de saúde.</p>
-                <div class="d-none d-xl-block">
-                    <p><strong>Funcionalidades e Fluxo do Cliente</strong></p>
+                <div class="d-none d-xl-block" style="font-size: 13px;">
                     <ol>
                         <li><strong>Registro: </strong>Inicialmente, o cliente realiza um registro simplificado e seguro na plataforma.</li>
                         <li><strong>Teste de Dispositivos: </strong>Antes de entrar na fila de atendimento, o cliente tem a oportunidade de testar seus dispositivos (câmera e microfone), garantindo que a videochamada ocorra sem interrupções ou problemas técnicos.</li>
@@ -32,7 +31,7 @@
     {
         <div class="row pt-2">
             <div class="col text-center">
-                <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-success">Novo Registro</a>
+                <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-success">Novo Cliente</a>
                 <a asp-action="Consultar" asp-controller="Cliente" class="btn btn-secondary">Já sou Registrado</a>
             </div>
         </div>
@@ -40,6 +39,7 @@
     else
     {
         @await Html.PartialAsync("_DadosClientePartial", Model)
+        @await Html.PartialAsync("_MensagensPartial")
         <div class="row pt-2">
             <div class="col text-center">
                 <a asp-action="NovoAtendimento" asp-controller="Atendimento" class="btn btn-success">Novo Atendimento</a>

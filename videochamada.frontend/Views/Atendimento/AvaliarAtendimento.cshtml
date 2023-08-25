@@ -30,11 +30,7 @@
                 <input type="hidden" asp-for="IdCliente"/>
                 <input type="hidden" asp-for="IdAtendimento"/>
                 <input type="hidden" asp-for="HasDesistencia"/>
-                <div class="row pt-2">
-                    <div class="col-12">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    </div>
-                </div>
+                <div asp-validation-summary="ModelOnly" class="text-black"></div>
                 <div class="row">
                     <div class="col-12">
                         <input type="hidden" asp-for="Nota"/>
@@ -49,8 +45,9 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="form-group">
-                        <textarea asp-for="Comentario" class="form-control" placeholder="Comentário (Opcional)"></textarea>
+                    <div class="form-floating">
+                        <input asp-for="Comentario" class="form-control" required="required" placeholder="Comentário (Opcional)"/>
+                        <label asp-for="Comentario" class="form-label"></label>
                     </div>
                 </div>
                 <div class="row pt-2">

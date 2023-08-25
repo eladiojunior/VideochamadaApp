@@ -14,7 +14,7 @@
     </div>
     <div class="col-12 col-xl-8">
         <form asp-action="Registrar" asp-controller="Cliente" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-black"></div>
             <div class="row">
                 <div class="col-12 col-sm-8 mb-3">
                     <div class="form-floating">
@@ -42,6 +42,7 @@
                 <div class="col-12 text-center">
                     <button class="btn btn-primary" type="submit">Registrar</button>
                     <a asp-action="Consultar" asp-controller="Cliente" class="btn btn-secondary">Já sou Registrado</a>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-light">Retornar</a>
                 </div>
             </div>
         </form>
