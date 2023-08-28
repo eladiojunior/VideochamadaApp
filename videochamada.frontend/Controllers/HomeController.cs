@@ -32,4 +32,15 @@ public class HomeController : GenericController
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+    
+    [HttpGet("get-ip")]
+    public IActionResult GetClientIp()
+    {
+        var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+        if (string.IsNullOrEmpty(ipAddress))
+        {
+            return BadRequest("Não foi possível obter o endereço IP.");
+        }
+        return Ok(new { IPAddress = ipAddress });
+    }
 }

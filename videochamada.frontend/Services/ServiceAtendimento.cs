@@ -10,15 +10,17 @@ public class ServiceAtendimento : IServiceAtendimento
 {
     private static readonly ConcurrentDictionary<string, AtendimentoModel> _atendimentos = new ConcurrentDictionary<string, AtendimentoModel>();
     private IServiceCliente _serviceCliente;
+    private IListenerServerClient _listenerServerClient;
 
-    public ServiceAtendimento(IServiceCliente serviceCliente)
+    public ServiceAtendimento(IServiceCliente serviceCliente, IListenerServerClient listenerServerClient)
     {
         _serviceCliente = serviceCliente;
+        _listenerServerClient = listenerServerClient;
     }
     
-    public AtendimentoModel CriarAtendimento(string idCliente)
+    public AtendimentoModel CriarAtendimento(NovoAtendimentoModel model)
     {
-        var cliente = _serviceCliente.ObterCliente(idCliente);
+        var cliente = _serviceCliente.ObterCliente(model.IdCliente);
         if (cliente == null)
             return null;
         
@@ -26,9 +28,13 @@ public class ServiceAtendimento : IServiceAtendimento
         atendimento.IdCliente = cliente.Id;
         atendimento.Id = ServiceHelper.GerarId(); //Gerar ID
         atendimento.Situacao = SituacaoAtendimentoEnum.Registrado;
-        atendimento.DataRegistro = DateTime.Now;  
+        atendimento.DataRegistro = DateTime.Now;
+        atendimento.HasTermoUso = model.HasTermoUso;
         atendimento.DataInicial = null;
         atendimento.DataFinal = null;
+        atendimento.Latitude = Convert.ToDouble(model.Latitude.Replace(".",","));
+        atendimento.Longitude = Convert.ToDouble(model.Longitude.Replace(".",","));
+        atendimento.IpMaquinaCliente = _listenerServerClient.IpMaquinaUsuario();
         
         _atendimentos.TryAdd(atendimento.Id, atendimento);
         

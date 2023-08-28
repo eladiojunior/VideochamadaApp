@@ -25,18 +25,39 @@ public class AtendimentoController : GenericController
     {
         
         var idCliente = ObterIdClienteSession();
+        var modelCliente = _serviceCliente.ObterCliente(idCliente);
+        if (modelCliente == null)
+        {
+            ExibirErro("Erro ao identificar o Cliente do atendimento.");
+            return RedirectToAction("Index", "Home");
+        }
+        return View("InicioAtendimento", modelCliente);
+
+    }
+    
+    [HttpPost]
+    public IActionResult NovoAtendimento(NovoAtendimentoModel model)
+    {
+        
+        var idCliente = model.IdCliente;
         var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento != null)
         {
             ExibirErro($"Existe um atendimento em aberto [{modelAtendimento.Situacao.ObterTextoEnum()}] continue o atendimento ou cancele.");
             return RedirectToAction("Index", "Home");
         }
+
+        if (model.HasTermoUso == false)
+        {
+            ExibirErro($"Você não aceitou o Termo de Uso, infelizmente não podemos seguir com o atendimento.");
+            return RedirectToAction("InicioAtendimento", "Atendimento");
+        }
         
-        modelAtendimento = _serviceAtendimento.CriarAtendimento(idCliente);
+        modelAtendimento = _serviceAtendimento.CriarAtendimento(model);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
         
-        return RedirectToAction("InicioAtendimento", "Atendimento");
+        return RedirectToAction("VerificarDispositivo", "Atendimento");
         
     }
 
@@ -191,7 +212,7 @@ public class AtendimentoController : GenericController
             posicaoAtendimento.QtdClientesFila = _serviceAtendimento.QtdClienteFilaAtendimento();
             posicaoAtendimento.QtdProfissionaisOnline = _serviceEquipeSaude.QtdProfissionalSaudeOnline();
         }
-        return JsonResultSucesso(new JsonResultModel(posicaoAtendimento));
+        return JsonResultSucesso(posicaoAtendimento);
     }
     
 }

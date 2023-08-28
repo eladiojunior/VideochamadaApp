@@ -4,7 +4,8 @@
 }
 <div class="row">
     <div class="col-12">
-        <h1>Atendimento - Orientações</h1>
+        <div class="d-none d-sm-block"><h1>Atendimento - Orientações e Termo</h1></div>
+        <div class="d-sm-none d-block"><h2>Orientações e Termo</h2></div>
         <hr/>
     </div>
 </div>
@@ -14,18 +15,91 @@
     </div>
     <div class="col-12 col-xl-8">
         @await Html.PartialAsync("_DadosClientePartial", Model)
-        <div class="row pt-2">
-            <div class="col-12">
-                <div class="alert alert-warning">
-                    Vamos ajudar para que seu atendimento seja excelente, primeiramente iremos solicitar a permissão de acesso de seus dispositivos de câmera e microfone. Um requisito importante para o atentimento por videochamada!
+        @await Html.PartialAsync("_MensagensPartial")
+        <form asp-action="NovoAtendimento" asp-controller="Atendimento" method="post">
+            <input type="hidden" name="IdCliente" value="@Model.Id"/>
+            <input type="hidden" name="Latitude" value="0"/>
+            <input type="hidden" name="Longitude" value="0"/>
+            <div class="row pt-2">
+                <div class="col-12">
+                    <div class="alert alert-warning">
+                        Vamos ajudar para que seu atendimento seja excelente, primeiramente iremos solicitar a permissão de acesso de seus dispositivos de câmera e microfone. Um requisito importante para o atentimento por videochamada!
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                <a asp-action="VerificarDispositivo" asp-controller="Atendimento" class="btn btn-success">Continuar</a>
-                <a asp-action="Index" asp-controller="Home" class="btn btn-light">Retornar</a>
+            <div class="row pt-2">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="true" name="hasTermoUso" id="hasTermoUso">
+                            <label class="form-check-label" for="hasTermoUso">
+                                <strong>Li e concordo</strong> com o <a href="#" class="alert-link" data-bs-toggle="modal" data-bs-target="#modalTermoUso">Termo de Aceite de Uso</a> para Videochamada de Atendimento Online.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-grid gap-2 d-md-block text-center">
+                    <button type="submit" asp-action="NovoAtendimento" asp-controller="Atendimento" class="btn btn-success">Continuar</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-light">Retornar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="modalTermoUso" tabindex="-1" aria-labelledby="modalTermoUsoLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-fullscreen-sm-down modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTermoUsoLabel">Termo de Aceite de Uso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <strong>Termo de Aceite de Uso para Videochamada de Atendimento Online</strong>
+                <p>Ao utilizar esta solução de videochamada de atendimento online ("a Plataforma"), você concorda com os seguintes termos e condições:</p>
+                <ol>
+                    <li>
+                        <strong>Informações Pessoais:</strong> A Plataforma coleta e armazena informações pessoais com o único propósito de fornecer um atendimento online eficiente e eficaz. Suas informações serão mantidas em estrita confidencialidade e segurança e podem ser removidas caso o cliente solicite.
+                    </li>
+                    <li>
+                        <strong>Segurança de Dados:</strong> Utilizamos medidas de segurança robustas para garantir que suas informações sejam mantidas de forma segura e protegida contra acesso não autorizado.                        
+                    </li>
+                    <li>
+                        <strong>Uso de Videochamada:</strong> Ao usar a Plataforma, você entende que a videochamada é uma forma de comunicação direta entre você e um profissional de saúde e que será tratada com o mesmo nível de confidencialidade e profissionalismo que uma atendimento presencial.                        
+                    </li>
+                    <li>
+                        <strong>Permissões de Dispositivo:</strong>
+                        <ul>
+                            <li>
+                                <strong>Câmera e Microfone:</strong> A Plataforma requer acesso à sua câmera e microfone para possibilitar a videochamada. Ao aceitar este termo, você concede permissão para acessar esses dispositivos.
+                            </li>
+                            <li>
+                                <strong>Geolocalização:</strong> A Plataforma pode também requerer acesso à sua localização para fornecer serviços mais precisos. Ao aceitar este termo, você concede permissão para acessar sua localização.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Desconexão:</strong> A Plataforma não é responsável por problemas técnicos que possam ocorrer durante a videochamada, incluindo, mas não limitado a, problemas de conexão de internet ou falha de hardware.
+                    </li>
+                    <li>
+                        <strong>Avaliação:</strong> Após a consulta, você tem a opção de fornecer feedback sobre o atendimento. Este feedback será usado exclusivamente para melhorar a qualidade do serviço.
+                    </li>
+                    <li>
+                        <strong>Legislação Aplicável:</strong> Este termo de aceite é regido pelas leis do país em que a Plataforma está sendo utilizada.                        
+                    </li>
+                    <li>
+                        <strong>Concordância:</strong> Ao utilizar a Plataforma, você concorda integralmente com estes termos e condições. Se você não concordar com qualquer parte deste termo de aceite, você não deve utilizar a Plataforma.
+                    </li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Entendi</button>
             </div>
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <script src="~/js/geolocalizacao.js" asp-append-version="true"></script>
+}

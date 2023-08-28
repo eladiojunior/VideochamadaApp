@@ -17,18 +17,16 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IServiceCliente, ServiceCliente>();
 builder.Services.AddScoped<IServiceAtendimento, ServiceAtendimento>();
 builder.Services.AddScoped<IServiceEquipeSaude, ServiceEquipeSaude>();
+builder.Services.AddScoped<IListenerServerClient, ListenerServerClient>();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddRazorPages().AddMvcOptions(options =>
 {
     options.MaxModelValidationErrors = 50;
     options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(_ => "campo não informado.");
 });
-/*
-builder.Services.AddMvc(opts =>
-{
-    opts.Filters.Add(typeof(ModelStateMessagesFilter));
-});
-*/  
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

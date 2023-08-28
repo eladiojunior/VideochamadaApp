@@ -1,10 +1,10 @@
 ﻿@model ClienteModel
 @{
-    ViewData["Title"] = "Video-chamada";
+    ViewData["Title"] = "Atendimento de Cliente";
 }
 <div class="row">
     <div class="col-12 text-center">
-        <h1>Atendimento de Cliente :: Video-chamadas</h1>
+        <h1>Atendimento de Cliente por Videochamadas</h1>
         <hr/>
     </div>
 </div>    
@@ -15,7 +15,7 @@
     <div class="col-12 col-xl-8">
         <div class="row pt-2">
             <div class="col">
-                <p>Desenvolvemos uma solução moderna e eficiente de videochamada destinada ao atendimento onlie, oferecendo um canal direto e seguro entre clientes e profissionais de saúde.</p>
+                <p>Desenvolvemos uma solução moderna e eficiente de videochamada destinada ao atendimento online, oferecendo um canal direto e seguro entre clientes e profissionais de saúde.</p>
                 <div class="d-none d-xl-block" style="font-size: 13px;">
                     <ol>
                         <li><strong>Registro: </strong>Inicialmente, o cliente realiza um registro simplificado e seguro na plataforma.</li>
@@ -30,7 +30,7 @@
     @if (Model == null)
     {
         <div class="row pt-2">
-            <div class="col text-center">
+            <div class="col-12 d-grid gap-2 d-md-block text-center">
                 <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-success">Novo Cliente</a>
                 <a asp-action="Consultar" asp-controller="Cliente" class="btn btn-secondary">Já sou Registrado</a>
                 <a asp-action="Index" asp-controller="EquipeSaude" class="btn btn-info">Sou Profissional de Saúde</a>
@@ -42,7 +42,7 @@
         @await Html.PartialAsync("_DadosClientePartial", Model)
         @await Html.PartialAsync("_MensagensPartial")
         <div class="row pt-2">
-            <div class="col text-center">
+            <div class="col-12 d-grid gap-2 d-md-block text-center">
                 <a asp-action="NovoAtendimento" asp-controller="Atendimento" class="btn btn-success">Novo Atendimento</a>
             </div>
         </div>

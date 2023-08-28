@@ -4,7 +4,8 @@
 }
 <div class="row">
     <div class="col-12">
-        <h1>Atendimento - Verificar dispositivos...</h1>
+        <div class="d-none d-sm-block"><h1>Atendimento - Verificar dispositivos...</h1></div>
+        <div class="d-sm-none d-block"><h2>Verificar dispositivos...</h2></div>
         <hr/>
     </div>
 </div>
@@ -19,9 +20,6 @@
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Câmera</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid camera" alt="Icon Verificação Camera"/>
-                </div>
-                <div class="area-camera-teste" style="display: none;">
-                    <!-- <video id="localVideo" autoplay playsinline></video> -->
                 </div>
                 <div class="teste-camera">
                     <img src="~/imgs/camera-On.png" class="img-fluid camera icon-on" alt="Icon Câmera On" style="display: none;"/>
@@ -63,13 +61,13 @@
                 <div class="pt-2 erro-dispositivo" style="display: none;">
                     <div class="alert alert-danger">
                         Ocorreu erro ao solicita permissão de acesso aos dispositivos de Câmera, Microfone e Áudio do seu navegado.
-                        <button type="button" class="btn btn-light button-verificacao">Verificar Novamente</button>
+                        <button type="button" class="btn btn-light button-verificacao mt-2">Verificar Novamente</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row pt-2">
-            <div class="col-12 text-center">
+            <div class="col-12 d-grid gap-2 d-md-block text-center">
                 <hr/>
                 <a asp-action="FilaAtendimento" asp-controller="Atendimento" class="btn btn-info">Entrar na Fila de Atendimento</a>
                 <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancelar</a>

@@ -5,7 +5,7 @@ namespace VideoChatApp.FrontEnd.Services.Interfaces;
 
 public interface IServiceAtendimento
 {
-    AtendimentoModel CriarAtendimento(string idCliente);
+    AtendimentoModel CriarAtendimento(NovoAtendimentoModel model);
     AtendimentoModel ObterAtendimentoAberto(string idCliente);
     AtendimentoModel EntrarFilaAtendimento(AtendimentoModel atendimento);
     int PosicaoFilaAtendimento(string idCliente);

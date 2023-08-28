@@ -10,6 +10,12 @@ public class AtendimentoModel
     public DateTime? DataInicial { get; set; }
     public DateTime? DataFinal { get; set; }
     public SituacaoAtendimentoEnum Situacao { get; set; }
+    public bool HasTermoUso { get; set; }
+    
+    //Geolocalização do Cliente no Atendimento
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public string IpMaquinaCliente { get; set; }
 
     public bool HasRetomarAtendimento
     {

@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+<!DOCTYPE html>
 <html lang="pt-Br">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - VideoChamada</title>
+    <title>Videochamada - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -19,6 +20,7 @@
     <script src="~/lib/microsoft/microsoft_signalr@3.1.9.min.js"></script>
     <script src="~/lib/peerjs/peerjs@1.4.7.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>const _contexto = "@Configuration["Videochamada:ContextoAplicacaoJavaScript"]";</script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

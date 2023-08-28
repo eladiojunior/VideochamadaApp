@@ -9,7 +9,6 @@ function ativarVerificacaoDispositivo() {
     $(".icon-on").hide();
     $(".erro-dispositivo").hide();
     $(".area-microfone-teste").hide();
-    $(".area-camera-teste").hide();
     $(".area-mensagem-teste").hide();
     timeVerificacao = setTimeout(verificacaoMediaPermissions, 3000);
 }

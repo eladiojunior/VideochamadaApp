@@ -4,59 +4,58 @@
 }
 <div class="row">
     <div class="col-12">
-        <h1>Atendimento - Avaliação</h1>
+        <div class="d-none d-sm-block"><h1>Atendimento - Avaliação do Cliente</h1></div>
+        <div class="d-sm-none d-block"><h2>Avaliação do Cliente</h2></div>
         <hr/>
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
-        <img src="~/imgs/clienteAtendimento.png" class="img-fluid shadow-sm rounded-1" alt="Imagem de Atendimento"/>
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/avaliacaoDoCliente.png" class="img-fluid" alt="Imagem de Avaliação do Cliente"/>
     </div>
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
         <div class="row pt-2">
             <div class="col-12">
                 @if (Model.HasDesistencia)
                 {
-                    <div class="alert alert-warning">Percebemos que você <strong>desistiu do atendimento</strong>, poderia nós avaliar e comentar porque desistiu do atendimento (opcional)?</div>                    
+                    <div class="alert alert-warning">Observamos que você optou por <strong>cancelar o atendimento</strong>. Poderia nos proporcionar uma avaliação e compartilhar os motivos que levaram ao cancelamento do atendimento?</div>                    
                 }
                 else
                 {
-                    <div class="alert alert-info">Obrigado! Poderia avaliar nosso atendimento?<br/>Aguardaremos um novo atendimento. Até mais!</div>    
+                    <div class="alert alert-info">Obrigado! Seria possível avaliar a qualidade do nosso atendimento?<br/>Estamos à espera de futuros contatos. Até breve!</div>    
                 }
             </div>
         </div>
-        <div class="row ">
-            <form asp-action="AvaliarAtendimento" asp-controller="Atendimento" method="post">
-                <input type="hidden" asp-for="IdCliente"/>
-                <input type="hidden" asp-for="IdAtendimento"/>
-                <input type="hidden" asp-for="HasDesistencia"/>
-                <div asp-validation-summary="ModelOnly" class="text-black"></div>
-                <div class="row">
-                    <div class="col-12">
-                        <input type="hidden" asp-for="Nota"/>
-                        <span asp-validation-for="Nota" class="text-danger"></span>
-                        <div class="rating">
-                            <div class="rating-button" data-nota="1">1</div>
-                            <div class="rating-button" data-nota="2">2</div>
-                            <div class="rating-button" data-nota="3">3</div>
-                            <div class="rating-button" data-nota="4">4</div>
-                            <div class="rating-button" data-nota="5">5</div>
-                        </div>
-                    </div>
-                </div>
+        @await Html.PartialAsync("_MensagensPartial")
+        <form asp-action="AvaliarAtendimento" asp-controller="Atendimento" method="post">
+            <input type="hidden" asp-for="IdCliente"/>
+            <input type="hidden" asp-for="IdAtendimento"/>
+            <input type="hidden" asp-for="HasDesistencia"/>
+            <div class="row">
                 <div class="col-12">
-                    <div class="form-floating">
-                        <input asp-for="Comentario" class="form-control" required="required" placeholder="Comentário (Opcional)"/>
-                        <label asp-for="Comentario" class="form-label"></label>
+                    <input type="hidden" asp-for="Nota"/>
+                    <span asp-validation-for="Nota" class="text-danger"></span>
+                    <div class="rating">
+                        <div class="rating-button" data-nota="1">1</div>
+                        <div class="rating-button" data-nota="2">2</div>
+                        <div class="rating-button" data-nota="3">3</div>
+                        <div class="rating-button" data-nota="4">4</div>
+                        <div class="rating-button" data-nota="5">5</div>
                     </div>
                 </div>
-                <div class="row pt-2">
-                    <div class="col-12 text-center">
-                        <button class="btn btn-primary" type="submit">Enviar</button>
-                    </div>
+            </div>
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea asp-for="Comentario" class="form-control" placeholder="Comentário (Opcional)" style="height: 100px"></textarea>
+                    <label asp-for="Comentario" class="form-label">Comentário (Opcional)</label>
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-12 d-grid gap-2 d-md-block text-center">
+                    <button class="btn btn-primary" type="submit">Enviar Avaliação</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 @section Scripts {
@@ -66,6 +65,7 @@
             $(this).addClass("ativo");
             const nota = $(this).data("nota");
             $("#Nota").val(nota);
+            $("#Comentario").focus();
         });
     </script>
 }

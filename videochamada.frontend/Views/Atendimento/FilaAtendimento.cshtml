@@ -4,7 +4,8 @@
 }
 <div class="row">
     <div class="col-12">
-        <h1>Atendimento - Fila de Atendimento</h1>
+        <div class="d-none d-sm-block"><h1>Atendimento - Fila de Atendimento</h1></div>
+        <div class="d-sm-none d-block"><h2>Fila de Atendimento</h2></div>
         <hr/>
     </div>
 </div>
@@ -18,11 +19,11 @@
             <div class="col-12 d-none d-sm-block">
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <strong>Aguarde!</strong> Logo você será atendimendo por um profiissional de saúde.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
                 </div>
             </div>
         </div>
-        <div class="row pt-2">
+        <div class="row">
             <div class="col-6 col-sm-3">
                 <div class="titulo-posicao-fila text-center">Sua posição na Fila</div>
                 <div class="area-posicao-fila">
@@ -37,17 +38,18 @@
                     <img src="~/imgs/verificacao.gif" class="img-fluid" alt="Icon Proissionais"/>
                 </div>
             </div>
-            <div class="col-12 text-center d-block d-sm-none">
+            <div class="col-12 pt-2 text-center d-block d-sm-none d-grid gap-2">
                 <button type="button" class="btn btn-danger" title="Solicitar saida da fila de atendimento." data-bs-toggle="modal" data-bs-target="#modalSairFila">Sair da Fila</button>
                 <button type="button" class="btn btn-secondary" title="Solicitar prioridade no atendimento." data-bs-toggle="modal" data-bs-target="#modalPrioridadeFila">Solicitar Prioridade</button>
             </div>
             <div class="col-12 col-sm-6">
                 <span class="titulo-posicao-fila d-none d-sm-block">Publicidade</span>
+                <span class="d-sm-none d-block">&NonBreakingSpace;</span>
                 @await Html.PartialAsync("_PropagandaClientePartial")
             </div>
         </div>
         <div class="row pt-2 d-none d-sm-block">
-            <div class="col-6 text-center">
+            <div class="col-6 d-grid gap-2 d-md-block text-center">
                 <button type="button" class="btn btn-danger" title="Solicitar saida da fila de atendimento." data-bs-toggle="modal" data-bs-target="#modalSairFila">Sair da Fila</button>
                 <button type="button" class="btn btn-secondary" title="Solicitar prioridade no atendimento." data-bs-toggle="modal" data-bs-target="#modalPrioridadeFila">Solicitar Prioridade</button>
             </div>
@@ -72,30 +74,25 @@
     </div>
 </div>
 <div class="modal fade" id="modalPrioridadeFila" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalPrioridadeFilaLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalPrioridadeFilaLabel">Solicitar Prioridade na Fila</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div>
-      <div class="modal-body">
-          <h3>Gostaria de solicitar prioridade na fila de atendimento, então preencha os dados a seguir para uma avalidação de prioridade.</h3>
-          ...
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-success">Solicitar prioridade</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPrioridadeFilaLabel">Solicitar Prioridade na Fila</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <h3>Gostaria de solicitar prioridade na fila de atendimento, então preencha os dados a seguir para uma avalidação de prioridade.</h3>
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success">Solicitar prioridade</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+<audio id="audioPosicaoFila" src="~/mp3/audioPosicaoFila.mp3"></audio>
 @section Scripts
 {
-    <script>
-        var carouselPublicidade = document.querySelector('#carouselPublicidade');
-        var carousel = new bootstrap.Carousel(carouselPublicidade, {
-          interval: 10000,
-          wrap: false
-        });
-    </script>
+    <script src="~/js/fila-atendimento.js" asp-append-version="true"></script>
 }
