@@ -14,7 +14,7 @@
     </div>
     <div class="col-12 col-xl-8">
         <form asp-action="Registrar" asp-controller="Cliente" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-black"></div>
+            @await Html.PartialAsync("_MensagensPartial")
             <div class="row">
                 <div class="col-12 col-sm-8 mb-3">
                     <div class="form-floating">

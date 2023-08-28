@@ -9,40 +9,85 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
-        <img src="~/imgs/filaAtendimento.jpg" class="img-fluid shadow-sm rounded-1" alt="Imagem da Fila de Atendimento"/>
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/orientacaoCliente.png" class="img-fluid" alt="Imagem de Fila Atendimento Cliente"/>
     </div>
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
         @await Html.PartialAsync("_DadosClientePartial", Model.Cliente)
         <div class="row pt-2">
-            <div class="col-3">
-                <span class="titulo-posicao-fila">Sua posição na Fila:</span>
+            <div class="col-12 d-none d-sm-block">
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>Aguarde!</strong> Logo você será atendimendo por um profiissional de saúde.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-6 col-sm-3">
+                <div class="titulo-posicao-fila text-center">Sua posição na Fila</div>
                 <div class="area-posicao-fila">
                     <div class="text-posicao-fila">@Model.PosicaoNaFila</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid" alt="Icon Posição Fila"/>
                 </div>
             </div>
-            <div class="col-3">
-                <span class="titulo-posicao-fila">Profissionais Online:</span>
+            <div class="col-6 col-sm-3">
+                <div class="titulo-posicao-fila text-center">Profissionais Online</div>
                 <div class="area-qtd-profissionais">
                     <div class="text-qtd-profissionais">@Model.QtdProfissionaisOnline</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid" alt="Icon Proissionais"/>
                 </div>
             </div>
-            <div class="col-6">
-                <span class="titulo-posicao-fila">Notícias:</span>
+            <div class="col-12 text-center d-block d-sm-none">
+                <button type="button" class="btn btn-danger" title="Solicitar saida da fila de atendimento." data-bs-toggle="modal" data-bs-target="#modalSairFila">Sair da Fila</button>
+                <button type="button" class="btn btn-secondary" title="Solicitar prioridade no atendimento." data-bs-toggle="modal" data-bs-target="#modalPrioridadeFila">Solicitar Prioridade</button>
+            </div>
+            <div class="col-12 col-sm-6">
+                <span class="titulo-posicao-fila d-none d-sm-block">Publicidade</span>
                 @await Html.PartialAsync("_PropagandaClientePartial")
             </div>
         </div>
-        <div class="row pt-2">
-            <div class="col-3 text-center">
-                <a asp-action="SairFilaAtendimento" asp-controller="Atendimento" class="btn btn-danger">Sair da Fila</a>
-            </div>
-            <div class="col-9">
-                <div class="alert alert-info">Aguarde um pouco, logo você será atendido!</div>
+        <div class="row pt-2 d-none d-sm-block">
+            <div class="col-6 text-center">
+                <button type="button" class="btn btn-danger" title="Solicitar saida da fila de atendimento." data-bs-toggle="modal" data-bs-target="#modalSairFila">Sair da Fila</button>
+                <button type="button" class="btn btn-secondary" title="Solicitar prioridade no atendimento." data-bs-toggle="modal" data-bs-target="#modalPrioridadeFila">Solicitar Prioridade</button>
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="modalSairFila" tabindex="-1" aria-labelledby="modalSairFilaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSairFilaLabel">Confirma</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <h3>Deseja realmente <strong>sair da fila</strong> e desistir do atendimento?</h3>
+            </div>
+            <div class="modal-footer">
+                <a asp-action="SairFilaAtendimento" asp-controller="Atendimento" class="btn btn-danger">Quero sair da Fila</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não quero</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalPrioridadeFila" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalPrioridadeFilaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPrioridadeFilaLabel">Solicitar Prioridade na Fila</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+          <h3>Gostaria de solicitar prioridade na fila de atendimento, então preencha os dados a seguir para uma avalidação de prioridade.</h3>
+          ...
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-success">Solicitar prioridade</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>
 @section Scripts
 {

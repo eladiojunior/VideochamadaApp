@@ -15,20 +15,20 @@
     <div class="col-12 col-xl-8">
         @await Html.PartialAsync("_DadosClientePartial", Model)
         <div class="row pt-2 justify-content-center">
-            <div class="col-3">
+            <div class="col-4 col-sm-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Câmera</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid camera" alt="Icon Verificação Camera"/>
                 </div>
                 <div class="area-camera-teste" style="display: none;">
-                    <video id="localVideo" autoplay playsinline></video>
+                    <!-- <video id="localVideo" autoplay playsinline></video> -->
                 </div>
-                <div class="test-camera">
+                <div class="teste-camera">
                     <img src="~/imgs/camera-On.png" class="img-fluid camera icon-on" alt="Icon Câmera On" style="display: none;"/>
                     <img src="~/imgs/camera-Off.png" class="img-fluid camera icon-off" alt="Icon Câmera Off" style="display: none;"/>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4 col-sm-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Microfone</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid microfone" alt="Icon Verificação Microfone"/>
@@ -36,48 +36,35 @@
                 <div class="area-microfone-teste" style="display: none;">
                     <div id="progressMicrofone">fale</div>
                 </div>
-                <div class="test-microfone">
+                <div class="teste-microfone">
                     <img src="~/imgs/microfone-On.png" class="img-fluid microfone icon-on" alt="Icon Microfone On" style="display: none;"/>
                     <img src="~/imgs/microfone-Off.png" class="img-fluid microfone icon-off" alt="Icon Microfone Off" style="display: none;"/>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4 col-sm-3">
                 <div class="icon-verificacao">
                     <div class="text-dispositivo">Áudio</div>
                     <img src="~/imgs/verificacao.gif" class="img-fluid audio" alt="Icon Verificação Audio"/>
                 </div>
-                <div class="test-audio">
+                <div class="teste-audio">
                     <img src="~/imgs/audio-On.png" class="img-fluid audio icon-on" alt="Icon Audio On" style="display: none;"/>
                     <img src="~/imgs/audio-Off.png" class="img-fluid audio icon-off" alt="Icon Audio Off" style="display: none;"/>
-                    <audio id="testAudio" src="~/mp3/audioTeste.mp3"></audio>
+                    <audio id="localAudio" src="~/mp3/audioTeste.mp3"></audio>
                 </div>
             </div>
         </div>
-        <div class="d-none d-sm-block">
-            <div class="row pt-2 buttons-test justify-content-center" style="display: none;">
-                <div class="col-3 text-center">
-                    <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-camera test-camera">Testar Câmera</button>
-                </div>
-                <div class="col-3 text-center">
-                    <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-microfone test-microfone">Testar Microfone</button>
-                </div>
-                <div class="col-3 text-center">
-                    <button type="button" class="btn btn-outline-dark btn-sm btn-block button-test-audio test-audio">Testar Áudio</button>
-                </div>
-            </div>
-        </div>
-        <div class="d-sm-none d-block">
-            <div class="row buttons-test" style="display: none;">
-                <div class="col-12 pt-2">
-                    <span class="badge bg-secondary">Clique no ícone para testar o dispositivo...</span>
-                </div>
+        <div class="row pt-2 area-mensagem-teste" style="display: none;">
+            <div class="col-12 pt-2 text-center">
+                <span class="badge bg-secondary mensagem-teste">Clique no ícone para testar o dispositivo...</span>
             </div>
         </div>
         <div class="row">
-            <div class="col-12 pt-2">
-                <div class="alert alert-danger erro-dispositivo">
-                    Ocorreu erro ao solicita permissão de acesso aos dispositivos de Câmera, Microfone e Áudio do seu navegado.
-                    <button type="button" class="btn btn-light button-verificacao">Verificar Novamente</button>
+            <div class="col-12">
+                <div class="pt-2 erro-dispositivo" style="display: none;">
+                    <div class="alert alert-danger">
+                        Ocorreu erro ao solicita permissão de acesso aos dispositivos de Câmera, Microfone e Áudio do seu navegado.
+                        <button type="button" class="btn btn-light button-verificacao">Verificar Novamente</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,6 +76,24 @@
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="modelTesteVideo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modelTesteVideoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Teste de Câmera</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+        <div class="modal-body">
+            <div class="ratio ratio-16x9">
+                <video id="localVideo" autoplay playsinline></video>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+  </div>
 </div>
 @section Scripts
 {
