@@ -41,9 +41,8 @@
         if (promise !== undefined) {
             promise.then(_ => {
                 console.log("Avisar o cliente que está chegando sua vez na fila.");
-                document.hasFocus();
             }).catch(error => {
-                console.erro("Erro ao avisar cliente da fila: " + error);
+                console.error("Erro ao avisar cliente da fila: " + error);
             });
         }
     }

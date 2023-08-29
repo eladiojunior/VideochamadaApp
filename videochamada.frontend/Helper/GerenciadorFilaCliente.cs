@@ -65,8 +65,9 @@ public class GerenciadorFilaCliente
         var posicaoNaFila = PosicaoNaFila(idCliente);
         if (posicaoNaFila != 0)
         {//Está na fila... remover
-            var item = _fila.Where(w => w.Cliente.Id.Equals(idCliente)).FirstOrDefault();
-            item.Remover();
+            var item = _fila.Where(w => w.Cliente.Id.Equals(idCliente) && w.HasRemovido == false).FirstOrDefault();
+            if (item != null)
+                item.Remover();
         }
     }
 }
