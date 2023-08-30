@@ -16,13 +16,13 @@
         <form asp-action="Acessar" asp-controller="EquipeSaude" method="post">
             @await Html.PartialAsync("_MensagensPartial")
             <div class="row">
-                <div class="col-12 col-sm-8">
+                <div class="col-12 col-sm-8 mb-3">
                     <div class="form-floating">
                         <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
                         <label asp-for="Email" class="form-label">E-mail do profissional</label>
                     </div>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-sm-4 mb-3">
                     <div class="form-floating">
                         <input name="Senha" type="password" class="form-control" required="required" placeholder="Senha de acesso"/>
                         <label for="Senha" class="form-label">Senha de acesso</label>
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="row pt-2">
-                <div class="col-12 text-center">
+                <div class="col-12 d-grid gap-2 d-md-block text-center">
                     <button class="btn btn-primary" type="submit">Acessar</button>
                     <a asp-action="Registrar" asp-controller="EquipeSaude" class="btn btn-secondary">Quero me Registrar</a>
                 </div>
