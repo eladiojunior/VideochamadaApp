@@ -147,7 +147,9 @@ body {
 .mensagem-erros.validation-summary-valid {
   display: none;
 }
-
+.nivel-senha {
+  font-size: 12px;
+}
 @media (min-width: 576px) {
   .text-dispositivo {
     font-size: 20px;

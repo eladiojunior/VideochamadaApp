@@ -31,7 +31,7 @@ public class ClienteController : GenericController
         try
         {
             var clienteModel = _serviceCliente.RegistrarCliente(model);
-            GravarIdClienteSession(clienteModel.Id);
+            GravarIdCliente(clienteModel.Id);
             ExibirAlerta("Cliente registrado com sucesso.");
             return RedirectToAction("NovoAtendimento", "Atendimento");
         }
@@ -63,7 +63,7 @@ public class ClienteController : GenericController
             ModelState.AddModelError("Email", "Nenhum cliente encontrato com o e-mail informado.");
             return View("Consultar");
         }
-        GravarIdClienteSession(clienteModel.Id);
+        GravarIdCliente(clienteModel.Id);
         return RedirectToAction("NovoAtendimento", "Atendimento");
     }
 

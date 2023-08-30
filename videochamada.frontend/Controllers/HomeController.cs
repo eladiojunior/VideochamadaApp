@@ -20,7 +20,7 @@ public class HomeController : GenericController
 
     public IActionResult Index()
     {
-        var idCliente = ObterIdClienteSession();
+        var idCliente = ObterIdCliente();
         var cliente = _serviceCliente.ObterCliente(idCliente);
         if (cliente != null)
             cliente.Atendimentos = _serviceAtendimento.ListarAtendimentosCliente(idCliente);

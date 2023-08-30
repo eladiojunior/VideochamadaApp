@@ -9,7 +9,7 @@
 </div>
 <div class="row">
     <div class="col-xl-4 d-none d-xl-block">
-        <img src="~/imgs/imgConsultarCliente.png" class="img-fluid" alt="Imagem de Consulta Cliente"/>
+        <img src="~/imgs/consultarCliente.png" class="img-fluid" alt="Imagem de Consulta Cliente"/>
     </div>
     <div class="col-12 col-xl-8">
         <form asp-action="Consultar" asp-controller="Cliente" method="post">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="row pt-2">
-                <div class="col-12 text-center">
+                <div class="col-12 d-grid gap-2 d-md-block text-center">
                     <button class="btn btn-primary" type="submit">Consultar</button>
                     <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-secondary">Quero me Registrar</a>
                 </div>
@@ -31,4 +31,3 @@
         </form>
     </div>
 </div>
-

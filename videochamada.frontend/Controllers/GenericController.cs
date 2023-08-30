@@ -4,9 +4,11 @@ namespace VideoChatApp.FrontEnd.Controllers;
 
 public class GenericController : Controller
 {
-    private const string KeyIdClienteSession = "KEY_ID_CLIENTE_SESSION";
-    internal const string KeyMensagemErros = "KEY_MENSAGEM_ERRO";
     private List<string> _erros;
+    private const string KeyIdClienteSession = "KEY_ID_CLIENTE_SESSION";
+    private const string KeyIdProfissionalSaudeSession = "KEY_ID_PROFISSIONAL_SAUDE_SESSION";
+    
+    internal const string KeyMensagemErros = "KEY_MENSAGEM_ERRO";
     internal const string KeyMensagemAlerta = "KEY_MENSAGEM_ALERTA";
     
     /// <summary>
@@ -30,13 +32,13 @@ public class GenericController : Controller
         return Json(new { HasErro = false, Model = model, Mensagem = mensagemAlerta });
     }
 
-    internal string? ObterIdClienteSession()
+    internal string? ObterIdCliente()
     {
         var idCliente = HttpContext.Session.GetString(KeyIdClienteSession);
         return string.IsNullOrEmpty(idCliente) ? null : idCliente;
     }
     
-    internal void GravarIdClienteSession(string idCliente)
+    internal void GravarIdCliente(string idCliente)
     {
         HttpContext.Session.SetString(KeyIdClienteSession, idCliente);
     }
@@ -48,14 +50,38 @@ public class GenericController : Controller
         _erros.Add(mensagem);
         TempData[KeyMensagemErros] = _erros;
     }
+    
     internal bool HasErros()
     {
         return (_erros!=null && _erros.Count!=0);
     }
+    
     internal void ExibirAlerta(string mensagem)
     {
         if (!string.IsNullOrEmpty(mensagem))
             TempData[KeyMensagemAlerta] = mensagem;
+    }
+
+    internal string? ObterIdProfissionalSaude()
+    {
+        var idProfissionalSaude = HttpContext.Session.GetString(KeyIdProfissionalSaudeSession);
+        return string.IsNullOrEmpty(idProfissionalSaude) ? null : idProfissionalSaude;
+    }
+    
+    internal void GravarIdProfissionalSaude(string idProfissionalSaude)
+    {
+        HttpContext.Session.SetString(KeyIdProfissionalSaudeSession, idProfissionalSaude);
+    }
+
+    internal bool HasProfissionalSaudeLogado()
+    {
+        var idProfissional = ObterIdProfissionalSaude();
+        return !string.IsNullOrEmpty(idProfissional);
+    }
+
+    internal void LogoffProfissionalSaude()
+    {
+        HttpContext.Session.Remove(KeyIdProfissionalSaudeSession);
     }
 
 }

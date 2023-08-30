@@ -1,0 +1,24 @@
+﻿@model AreaAtendimentoModel
+@{
+    ViewBag.Title = "Área Atendimento Profissional";
+}
+<div class="row">
+    <div class="col-12">
+        <h1>Área Atendimento Profissional</h1>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/equipeSaudeAcesso.png" class="img-fluid" alt="Imagem de Equipe de Saúde"/>
+    </div>
+    <div class="col-12 col-xl-8">
+        <nav class="navbar navbar-light bg-light">
+            <form class="container-fluid justify-content-end">
+                <span class="navbar-text">@Model.ProfissionalSaude.Nome</span>
+                <a asp-action="Sair" asp-controller="EquipeSaude" class="btn btn-outline-danger me-2">Sair</a>
+            </form>
+        </nav>
+        @await Html.PartialAsync("_MensagensPartial")
+    </div>
+</div>

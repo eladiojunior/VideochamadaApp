@@ -24,7 +24,7 @@ public class AtendimentoController : GenericController
     public IActionResult NovoAtendimento()
     {
         
-        var idCliente = ObterIdClienteSession();
+        var idCliente = ObterIdCliente();
         var modelCliente = _serviceCliente.ObterCliente(idCliente);
         if (modelCliente == null)
         {
@@ -64,7 +64,7 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult InicioAtendimento()
     {
-        var idCliente = ObterIdClienteSession();
+        var idCliente = ObterIdCliente();
         var modelCliente = _serviceCliente.ObterCliente(idCliente);
         if (modelCliente == null)
         {
@@ -132,7 +132,7 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult VerificarDispositivo()
     {
-        var idCliente = ObterIdClienteSession();
+        var idCliente = ObterIdCliente();
         var modelCliente = _serviceCliente.ObterCliente(idCliente);
         if (modelCliente == null)
             return RedirectToAction("Index", "Home");
@@ -148,7 +148,7 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult FilaAtendimento()
     {
-        var idCliente = ObterIdClienteSession();
+        var idCliente = ObterIdCliente();
         var modelCliente = _serviceCliente.ObterCliente(idCliente);
         if (modelCliente == null)
             return RedirectToAction("Index", "Home");
@@ -171,7 +171,7 @@ public class AtendimentoController : GenericController
     public IActionResult SairFilaAtendimento()
     {
         
-        var idCliente = ObterIdClienteSession();
+        var idCliente = ObterIdCliente();
         var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
@@ -204,7 +204,7 @@ public class AtendimentoController : GenericController
     public IActionResult PosicaoFilaAtendimento()
     {
         var posicaoAtendimento = new PosicaoAtendimentoModel();
-        var idCliente = ObterIdClienteSession();
+        var idCliente = ObterIdCliente();
         if (!string.IsNullOrEmpty(idCliente))
         {
             posicaoAtendimento.IdCliente = idCliente;

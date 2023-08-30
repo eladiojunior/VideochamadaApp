@@ -1,0 +1,95 @@
+﻿@model ProfissionalSaudeRegistroModel
+@{
+    ViewData["Title"] = "Registrar Profissional de Saúde";
+}
+<div class="row">
+    <div class="col-12">
+        <h1>Registrar Profissional de Saúde</h1>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/equipeSaudeAcesso.png" class="img-fluid" alt="Imagem de Profissionais de Saúde"/>
+    </div>
+    <div class="col-12 col-xl-8">
+        <form asp-action="Registrar" asp-controller="EquipeSaude" method="post">
+            @await Html.PartialAsync("_MensagensPartial")
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="form-floating">
+                        <input asp-for="Nome" class="form-control" required="required" placeholder="Nome do profissional"/>
+                        <label asp-for="Nome" class="form-label"></label>
+                    </div>
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-8 mb-3">
+                    <div class="form-floating">
+                        <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
+                        <label asp-for="Email" class="form-label"></label>
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-sm-4 mb-3">
+                    <div class="form-floating">
+                        <input asp-for="Telefone" class="form-control" data-mask="phone" required="required" placeholder="(00) 00000-0000"/>
+                        <label asp-for="Telefone" class="form-label"></label>
+                    </div>
+                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="form-floating">
+                        <select asp-for="Especialidade" class="form-select" aria-label="Selecione a especialidade">
+                            <option selected>Selecione um especialidade/área</option>
+                            <option value="Clínica médica">Clínica médica</option>
+                            <option value="Cardiologia">Cardiologia</option>
+                            <option value="Psiquiatria">Psiquiatria</option>
+                            <option value="Oftalmologia">Oftalmologia</option>
+                            <option value="Pediatria">Pediatria</option>
+                            <option value="Ginecologista">Ginecologista</option>
+                            <option value="Médico família">Médico família</option>
+                            <option value="Nutrição">Nutrição</option>
+                            <option value="Enfermagem">Enfermagem</option>
+                        </select>
+                        <label asp-for="Especialidade"></label>
+                    </div>
+                    <span asp-validation-for="Especialidade" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-floating">
+                        <input asp-for="SenhaAcesso" type="password" class="form-control" required="required" aria-describedby="senhaHelp" placeholder="Senha de acesso"/>
+                        <label asp-for="SenhaAcesso" class="form-label"></label>
+                    </div>
+                    <span asp-validation-for="SenhaAcesso" class="text-danger"></span>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating">
+                        <input asp-for="ConfirmacaoSenhaAcesso" class="form-control" type="password" required="required" placeholder="Confirme a senha"/>
+                        <label asp-for="ConfirmacaoSenhaAcesso" class="form-label"></label>
+                    </div>
+                    <span asp-validation-for="ConfirmacaoSenhaAcesso" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 mt-2">
+                <div class="rounded p-1 px-2 bg-secondary text-white nivel-senha">...</div>
+                <div id="senhaHelp" class="form-text d-none d-sm-block">Senha com no mínimo 8 caracteres com números, letras e caracteres especiais.</div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-12 d-grid gap-2 d-md-block text-center">
+                    <button class="btn btn-primary" type="submit">Registrar</button>
+                    <a asp-action="Index" asp-controller="EquipeSaude" class="btn btn-secondary">Já sou Registrado</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/verificar-nivel-senha.js" asp-append-version="true"></script>
+}

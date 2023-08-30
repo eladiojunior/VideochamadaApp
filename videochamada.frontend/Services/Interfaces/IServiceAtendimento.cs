@@ -16,4 +16,5 @@ public interface IServiceAtendimento
     void VerificarDispositivoParaAtendimento(string idAtendimento);
     
     AtendimentoModel IniciarAtendimentoProfissionalSaude(AtendimentoModel atendimento, ProfissionalSaudeModel profissional);
+    List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional);
 }

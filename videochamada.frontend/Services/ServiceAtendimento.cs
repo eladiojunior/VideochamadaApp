@@ -125,6 +125,11 @@ public class ServiceAtendimento : IServiceAtendimento
         throw new NotImplementedException();
     }
 
+    public List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional)
+    {
+        return _atendimentos.Values.Where(w => w.ProfissionalSaude != null && w.ProfissionalSaude.Id.Equals(idProfissional)).ToList();
+    }
+
     public int QtdClienteFilaAtendimento()
     {
         return GerenciadorFilaCliente.Get().QuantidadeClientesFila();
