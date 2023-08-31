@@ -1,18 +1,164 @@
-﻿@model TModel
-
-@{
-    Layout = null;
+﻿@{
+    ViewData["Title"] = "Dashboard de Atendimentos";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <div class="d-none d-sm-block">
+            <a class="navbar-brand" href="#">Dashboard da Plataforma de Videochamada</a>
+        </div>
+        <div class="d-block d-sm-none">
+            <a class="navbar-brand" href="#">Dashboard</a>
+        </div>
+        <a class="navbar-toggler" href="#"><img src="~/imgs/avatarUsuario.png" alt="Foto" class="rounded-circle" width="30"/></a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="~/imgs/avatarUsuario.png" alt="Foto" class="rounded-circle" width="30"/> Nome do Usuario</a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex">
+            <button class="btn btn-outline-dark" type="button" title="Sair do Dashboard">Sair</button>
+        </div>
+    </div>
+</nav>
+<div class="row mt-5">
+    <div class="col-xl-4 d-none d-xl-block">
+        <img src="~/imgs/painelGestao.png" class="img-fluid" alt="Imagem do Painel de Gestão"/>
+        <div class="alert alert-info">
+            As informações dos paineis são atualizadas automaticamente a cada 5 segundos. Ultima atualização foi <span class="badge bg-light text-dark ultima-atualizacao">30/08/2023 22:01:55</span> 
+        </div>
+    </div>
+    <div class="col-12 col-xl-8">
+        <div class="row">
+            <div class="col-12">
+                <h5>Clientes</h5><hr class="d-none d-sm-block"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-secondary">
+                    <div class="card-header">Registrados</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-warning">
+                    <div class="card-header">Fila de Atendimento</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-primary">
+                    <div class="card-header">Em Atendimento</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <h5>Profissionais de Saúde</h5><hr class="d-none d-sm-block"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <div class="card bg-info">
+                    <div class="card-header">Logados na Plataforma</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-success">
+                    <div class="card-header">Online para Atendimento</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-primary">
+                    <div class="card-header">Em Atendimento</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="d-none d-sm-block">
+                    <h5>Atendimentos de 30/08/2023 (quarta-feira)</h5><hr/>
+                </div>
+                <div class="d-block d-sm-none">
+                    <h5>Atendimentos de 30/08/2023</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-secondary">
+                    <div class="card-header">Registrados</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-danger">
+                    <div class="card-header">Desistências</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card text-white bg-success">
+                    <div class="card-header">Finalizados</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <div class="card bg-light">
+                    <div class="card-header">Tempo Médio Atendimento</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">00:00:00</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card bg-light">
+                    <div class="card-header">Tempo Médio em Fila</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">00:00:00</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="card bg-light">
+                    <div class="card-header">Avaliação Atendimento</div>
+                    <div class="card-body text-center">
+                        <h3 class="card-title">00</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-block d-xl-none">
+            <div class="alert alert-info">
+                As informações dos paineis são atualizadas automaticamente a cada 5 segundos. Ultima atualização foi <span class="badge bg-light text-dark ultima-atualizacao">30/08/2023 22:01:55</span> 
+            </div>            
+        </div>
+    </div>
 </div>
-</body>
-</html>
