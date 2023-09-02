@@ -33,7 +33,7 @@
         $.ajax({
             cache: false,
             type: "POST",
-            url: _contexto + "Atendimento/AtualizarSituacaoAtendimentoProfissional",
+            url: _contexto + "EquipeSaude/AtualizarSituacaoAtendimentoProfissional",
             data: { hasSituacaoAtendimento: hasOnline },
             dataType: "json",
             success: function (result) {
@@ -84,7 +84,7 @@
         $.ajax({
             cache: false,
             type: "GET",
-            url: _contexto + "Atendimento/SituacaoFilaAtendimento",
+            url: _contexto + "EquipeSaude/SituacaoFilaAtendimento",
             dataType: "json",
             success: function (result) {
                 if (!result.hasErro) {
