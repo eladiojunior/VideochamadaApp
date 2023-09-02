@@ -2,23 +2,101 @@
 @{
     ViewBag.Title = "Área Atendimento Profissional";
 }
-<div class="row">
-    <div class="col-12">
-        <h1>Área Atendimento Profissional</h1>
-        <hr/>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <div class="d-none d-sm-block">
+            <a class="navbar-brand" href="#">Área Atendimento Profissional</a>
+        </div>
+        <div class="d-block d-sm-none">
+            <a class="navbar-brand" href="#">Atendimentos</a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAtendimento" aria-controls="navbarAtendimento" aria-expanded="false" aria-label="Navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarAtendimento">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="~/imgs/avatarUsuario.png" alt="Foto" class="rounded-circle" width="30"/> @Model.ProfissionalSaude.Nome</a>
+                </li>
+                <li class="nav-item">
+                    <div class="btn-group mt-1 me-1" role="group" aria-label="Ativa/Desativa Atendimento">
+                        <input type="checkbox" class="btn-check" id="btnOnline" autocomplete="off">
+                        <label class="btn  btn-outline-secondary btnOnline" for="btnOnline">Não estou atendendo</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex">
+            <a asp-action="Sair" asp-controller="EquipeSaude" class="btn btn-outline-danger" title="Sair do Área de Atendimento">Sair</a>
+        </div>
+    </div>
+</nav>
+<div class="mt-5">
+    <div class="row">
+        <div class="col-xl-4 d-none d-xl-block">
+            <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Atendimento de Cliente"/>
+        </div>
+        <div class="col-12 col-xl-8">
+            @await Html.PartialAsync("_MensagensPartial")
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <div class="card text-white bg-success">
+                        <div class="card-header">Profissionais Online</div>
+                        <div class="card-body text-center">
+                            <h3 class="card-title qtd-profissionais-online">@Model.QtdProfissionaisOnline</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="card text-white bg-warning">
+                        <div class="card-header">Fila de Atendimento</div>
+                        <div class="card-body text-center">
+                            <h3 class="card-title qtd-clientes-filaatendimento">@Model.QtdClientesNaFila</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="card text-white bg-primary">
+                        <div class="card-header">Em Atendimento</div>
+                        <div class="card-body text-center">
+                            <h3 class="card-title qtd-clientes-ematendimento">@Model.QtdClientesEmAtendimento</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <h4>Seus Atendimentos</h4>
+                    <ul class="nav nav-tabs" id="tabsAtendimentos">
+                        <li class="nav-item">
+                            <button type="button" class="nav-link active" id="tab-realizados" data-bs-toggle="tab" data-bs-target="#realizados" role="tab" aria-controls="realizados" aria-selected="true">Realizados</button >
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" id="tab-emAndamento" data-bs-toggle="tab" data-bs-target="#emAndamento" role="tab" aria-controls="em-andamento" aria-selected="true">Em Andamento</button >
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="realizados" role="tabpanel" aria-labelledby="tab-realizados">
+                            <div class="atendimentos-realizados">@await Html.PartialAsync("_AtendimentosRealizadosPartial", Model.Atendimentos)</div>
+                        </div>
+                        <div class="tab-pane fade" id="emAndamento" role="tabpanel" aria-labelledby="tab-emAndamento">
+                            <div class="atendimentos-emAndamento">
+                                <div class="d-flex m-2 align-items-center">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
+                                        <span class="visually-hidden">Carregando...</span>
+                                    </div>
+                                    Carregando os atendimentos em andamento...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-xl-4 d-none d-xl-block">
-        <img src="~/imgs/equipeSaudeAcesso.png" class="img-fluid" alt="Imagem de Equipe de Saúde"/>
-    </div>
-    <div class="col-12 col-xl-8">
-        <nav class="navbar navbar-light bg-light">
-            <form class="container-fluid justify-content-end">
-                <span class="navbar-text">@Model.ProfissionalSaude.Nome</span>
-                <a asp-action="Sair" asp-controller="EquipeSaude" class="btn btn-outline-danger me-2">Sair</a>
-            </form>
-        </nav>
-        @await Html.PartialAsync("_MensagensPartial")
-    </div>
-</div>
+@section Scripts
+{
+    <script src="~/js/profissional-atendimento.js" asp-append-version="true"></script>
+}

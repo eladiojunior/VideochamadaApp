@@ -10,4 +10,5 @@ public interface IServiceEquipeSaude
     List<ProfissionalSaudeModel> ListarProfissionalSaudeOnline();
     int QtdProfissionalSaudeOnline();
     ProfissionalSaudeModel AutenticarProfissionalSaude(string email, string senha);
+    void AtualizarSituacaoProfissionalAendimento(string idProfissional, bool hasSituacaoAtendimento);
 }

@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace VideoChatApp.FrontEnd.Controllers;
 
@@ -10,7 +14,7 @@ public class GenericController : Controller
     
     internal const string KeyMensagemErros = "KEY_MENSAGEM_ERRO";
     internal const string KeyMensagemAlerta = "KEY_MENSAGEM_ALERTA";
-    
+
     /// <summary>
     ///     Cria um retorno Json de Sucesso (Result = true) com mensagem para o usuário (opcional).
     /// </summary>
@@ -32,6 +36,41 @@ public class GenericController : Controller
         return Json(new { HasErro = false, Model = model, Mensagem = mensagemAlerta });
     }
 
+    /// <summary>
+    ///     Cria um retorno Json de Erro (Result = false) sem Model e mensagem com o erro para o usuário.
+    /// </summary>
+    /// <param name="mensagemAlerta">Mensagem de erro que deve ser apresentada ao usuário.</param>
+    /// <returns></returns>
+    internal JsonResult JsonResultErro(string mensagemErro)
+    {
+        return Json(new { HasErro = true, Mensagem = mensagemErro });
+    }
+    
+    /// <summary>
+    ///     Renderizar a View em String para respostas Json;
+    /// </summary>
+    /// <param name="viewName">Nome da View a ser renderizada.</param>
+    /// <param name="model">Informações da Model para carga.</param>
+    internal object RenderRazorViewToString(string viewName, object model)
+    {
+        var actionContext = ControllerContext as ActionContext;
+        var serviceProvider = ControllerContext.HttpContext.RequestServices;
+        var razorViewEngine = serviceProvider.GetService(typeof(IRazorViewEngine)) as IRazorViewEngine;
+        var tempDataProvider = serviceProvider.GetService(typeof(ITempDataProvider)) as ITempDataProvider;
+
+        using var sw = new StringWriter();
+        var viewResult = razorViewEngine.FindView(actionContext, viewName, false);
+        if (viewResult?.View == null)
+            throw new ArgumentException($"{viewName} does not match any available view");
+        var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { Model = model };
+        var viewContext = new ViewContext(actionContext, viewResult.View,  viewDictionary,
+            new TempDataDictionary(actionContext.HttpContext, tempDataProvider),
+            sw, new HtmlHelperOptions()
+        );
+        viewResult.View.RenderAsync(viewContext);
+        return sw.ToString();
+    }
+    
     internal string? ObterIdCliente()
     {
         var idCliente = HttpContext.Session.GetString(KeyIdClienteSession);

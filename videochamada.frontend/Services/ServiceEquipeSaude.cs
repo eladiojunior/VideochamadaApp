@@ -66,6 +66,12 @@ public class ServiceEquipeSaude : IServiceEquipeSaude
         
     }
 
+    public void AtualizarSituacaoProfissionalAendimento(string idProfissional, bool hasSituacaoAtendimento)
+    {
+        var profissional = ObterProfissionalSaude(idProfissional);
+        profissional.Online = hasSituacaoAtendimento;
+    }
+
     private ProfissionalSaudeModel ObterProfissionalSaudePorEmail(string email)
     {
         if (string.IsNullOrEmpty(email))

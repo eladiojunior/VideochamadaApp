@@ -125,14 +125,23 @@ public class ServiceAtendimento : IServiceAtendimento
         throw new NotImplementedException();
     }
 
-    public List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional)
+    public List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional, bool hasRealizados)
     {
-        return _atendimentos.Values.Where(w => w.ProfissionalSaude != null && w.ProfissionalSaude.Id.Equals(idProfissional)).ToList();
+        var lista = hasRealizados ? 
+                _atendimentos.Values.Where(w => w.ProfissionalSaude != null && w.ProfissionalSaude.Id.Equals(idProfissional) && w.Situacao == SituacaoAtendimentoEnum.Finalizado).ToList() :
+                _atendimentos.Values.Where(w => w.ProfissionalSaude != null && w.ProfissionalSaude.Id.Equals(idProfissional) && w.Situacao == SituacaoAtendimentoEnum.EmAtendimento).ToList();
+        return lista;
     }
+
 
     public int QtdClienteFilaAtendimento()
     {
         return GerenciadorFilaCliente.Get().QuantidadeClientesFila();
+    }
+
+    public int QtdClienteEmAtendimento()
+    {
+        return _atendimentos.Values.Count(w => w.ProfissionalSaude != null && w.Situacao == SituacaoAtendimentoEnum.EmAtendimento);
     }
 
     public List<AtendimentoModel> ListarAtendimentosCliente(string idCliente)

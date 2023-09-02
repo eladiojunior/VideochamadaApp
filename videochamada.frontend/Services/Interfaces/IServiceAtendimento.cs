@@ -11,10 +11,11 @@ public interface IServiceAtendimento
     int PosicaoFilaAtendimento(string idCliente);
     void EncerrarAtendimento(AvaliacaoAtendimentoModel atendimento, SituacaoAtendimentoEnum situacaoAtendimento);
     int QtdClienteFilaAtendimento();
+    int QtdClienteEmAtendimento();
     List<AtendimentoModel> ListarAtendimentosCliente(string idCliente);
     AtendimentoModel ObterAtendimento(string idAtendimento);
     void VerificarDispositivoParaAtendimento(string idAtendimento);
     
     AtendimentoModel IniciarAtendimentoProfissionalSaude(AtendimentoModel atendimento, ProfissionalSaudeModel profissional);
-    List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional);
+    List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional, bool hasRealizados);
 }

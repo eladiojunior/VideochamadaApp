@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using videochamada.frontend.Models;
 using VideoChatApp.FrontEnd.Services.Exceptions;
 using VideoChatApp.FrontEnd.Services.Interfaces;
@@ -43,9 +44,10 @@ public class EquipeSaudeController : GenericController
 
         var model = new AreaAtendimentoModel();
         model.ProfissionalSaude = profissionalSaude;
-        model.QtdClientesNaFila = _serviceAtendimento.QtdClienteFilaAtendimento();
         model.QtdProfissionaisOnline = _serviceEquipeSaude.QtdProfissionalSaudeOnline();
-        model.Atendimentos = _serviceAtendimento.ListarAtendimentosProfissional(idProfissional);
+        model.QtdClientesNaFila = _serviceAtendimento.QtdClienteFilaAtendimento();
+        model.QtdClientesEmAtendimento = _serviceAtendimento.QtdClienteEmAtendimento();
+        model.Atendimentos = _serviceAtendimento.ListarAtendimentosProfissional(idProfissional, true);
         
         return View(model);
     }
@@ -118,5 +120,61 @@ public class EquipeSaudeController : GenericController
         if (HasProfissionalSaudeLogado())
             LogoffProfissionalSaude();
         return RedirectToAction("Index", "EquipeSaude");
+    }
+    
+    [HttpGet]
+    public IActionResult SituacaoFilaAtendimento()
+    {
+        var filaAtendimento = new ProfissionalSaudeFilaAtendimentoModel();
+        var idProfissional = ObterIdProfissionalSaude();
+        var profissionalSaude = _serviceEquipeSaude.ObterProfissionalSaude(idProfissional);
+        if (profissionalSaude == null)
+            return JsonResultErro("Profissional de Saúde não encontrado.");            
+        
+        filaAtendimento.IdProfissional = profissionalSaude.Id;
+        filaAtendimento.QtdClientesEmAtendimento = _serviceAtendimento.QtdClienteEmAtendimento();
+        filaAtendimento.QtdClientesFila = _serviceAtendimento.QtdClienteFilaAtendimento();
+        filaAtendimento.QtdProfissionaisOnline = _serviceEquipeSaude.QtdProfissionalSaudeOnline();
+        
+        return JsonResultSucesso(filaAtendimento);
+        
+    }
+    
+    [HttpPost]
+    public IActionResult AtualizarSituacaoAtendimentoProfissional(bool hasSituacaoAtendimento)
+    {
+        var idProfissional = ObterIdProfissionalSaude();
+        var profissionalSaude = _serviceEquipeSaude.ObterProfissionalSaude(idProfissional);
+        if (profissionalSaude == null)
+            return JsonResultErro("Profissional de Saúde não encontrado.");
+        try
+        {
+            _serviceEquipeSaude.AtualizarSituacaoProfissionalAendimento(idProfissional, hasSituacaoAtendimento);
+            
+            var filaAtendimento = new ProfissionalSaudeFilaAtendimentoModel();
+            filaAtendimento.IdProfissional = profissionalSaude.Id;
+            filaAtendimento.QtdClientesEmAtendimento = _serviceAtendimento.QtdClienteEmAtendimento();
+            filaAtendimento.QtdClientesFila = _serviceAtendimento.QtdClienteFilaAtendimento();
+            filaAtendimento.QtdProfissionaisOnline = _serviceEquipeSaude.QtdProfissionalSaudeOnline();
+            return JsonResultSucesso(filaAtendimento);            
+        }
+        catch (Exception erro)
+        {
+            return JsonResultErro(erro.Message);
+        }
+    }
+    
+    [HttpGet]
+    public IActionResult CarregarAtendimentosProfissional(bool hasAtendimentosRealizados)
+    {
+        var idProfissional = ObterIdProfissionalSaude();
+        var profissionalSaude = _serviceEquipeSaude.ObterProfissionalSaude(idProfissional);
+        if (profissionalSaude == null)
+            return JsonResultErro("Profissional de Saúde não encontrado.");
+        
+        var listaAtendimentos = _serviceAtendimento.ListarAtendimentosProfissional(idProfissional, hasAtendimentosRealizados);
+        return JsonResultSucesso(hasAtendimentosRealizados ? 
+            RenderRazorViewToString("_AtendimentosRealizadosPartial", listaAtendimentos) : 
+            RenderRazorViewToString("_AtendimentosEmAndamentoPartial", listaAtendimentos));
     }
 }

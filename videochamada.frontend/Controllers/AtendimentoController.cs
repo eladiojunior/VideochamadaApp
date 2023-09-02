@@ -203,7 +203,7 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult PosicaoFilaAtendimento()
     {
-        var posicaoAtendimento = new PosicaoAtendimentoModel();
+        var posicaoAtendimento = new ClientePosicaoAtendimentoModel();
         var idCliente = ObterIdCliente();
         if (!string.IsNullOrEmpty(idCliente))
         {
