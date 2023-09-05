@@ -1,5 +1,13 @@
 ﻿@model List<AtendimentoModel>
-@foreach (var item in Model)
-{
-    @item.DataRegistro.ToString("g")
-}
+<div class="row mt-2">
+    <div class="col-12">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Nenhum atendimento <strong>em andamento</strong> encontrado.</div>
+    }
+    @foreach (var item in Model)
+    {
+        @item.DataRegistro.ToString("g")
+    }
+    </div>    
+</div>

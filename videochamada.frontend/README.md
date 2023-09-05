@@ -19,6 +19,9 @@ Desenvolvemos uma solução moderna e eficiente de videochamada destinada ao ate
 2. **Acesso:** Possibilida o acesso a área da equipe de saúde para realizar os atendimentos dos clientes que estão na fila e gestão dos profissionais de saúde.
 3. **Atendimento:** Na área do profissional de saúde ele é acionado para atender um cliente que está na fila de atendimento por videochamada.
 
+#### Painel de Gestão
+Área com os paineis de acompanhamento dos atendimento, clientes e profissionais de saúde na plataforma.
+
 ### Tecnologia Utilizada
 
 - **WebRTC:** Para transmissão de áudio e vídeo em tempo real, proporcionando conexões diretas e seguras.

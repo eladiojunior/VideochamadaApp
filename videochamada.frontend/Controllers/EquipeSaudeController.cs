@@ -173,8 +173,9 @@ public class EquipeSaudeController : GenericController
             return JsonResultErro("Profissional de Saúde não encontrado.");
         
         var listaAtendimentos = _serviceAtendimento.ListarAtendimentosProfissional(idProfissional, hasAtendimentosRealizados);
-        return JsonResultSucesso(hasAtendimentosRealizados ? 
-            RenderRazorViewToString("_AtendimentosRealizadosPartial", listaAtendimentos) : 
-            RenderRazorViewToString("_AtendimentosEmAndamentoPartial", listaAtendimentos));
+        var model = hasAtendimentosRealizados
+            ? RenderRazorViewToString("_AtendimentosRealizadosPartial", listaAtendimentos)
+            : RenderRazorViewToString("_AtendimentosEmAndamentoPartial", listaAtendimentos);
+        return JsonResultSucesso(model);
     }
 }

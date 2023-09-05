@@ -29,7 +29,7 @@
             AreaAtendimentoProfissional.VerificarFilaAtendimento();
         }, 5000);
     },
-    AtualizarSituacaoAtendimentoProfissional: function (hasSituacaoAtendimento, callback_result) {
+    AtualizarSituacaoAtendimentoProfissional: function (hasOnline, callback_result) {
         $.ajax({
             cache: false,
             type: "POST",
@@ -39,11 +39,9 @@
             success: function (result) {
                 if (!result.hasErro) {
                     AreaAtendimentoProfissional.AtualizarDastboardAtendimentos(
-                        result.model.qtdProfissionaisOnline,
-                        result.model.qtdClienteFilaAtendimento,
-                        result.model.qtdClienteEmAtendimento);                    
+                        result.model.qtdProfissionaisOnline, result.model.qtdClientesFila, result.model.qtdClientesEmAtendimento);
                 }
-                callback_result(result.hasErro, result.Mensagem);
+                callback_result(result.hasErro, result.mensagem);
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 callback_result(true, errorThrown);
             }
@@ -63,17 +61,17 @@
         $.ajax({
             cache: false,
             type: "GET",
-            url: _contexto + "Atendimento/CarregarAtendimentosProfissional",
+            url: _contexto + "EquipeSaude/CarregarAtendimentosProfissional",
             dataType: "json",
             data: {
                 hasAtendimentosRealizados: hasRealizados
             },
             success: function (result) {
-                if (!result.HasErro) {
+                if (!result.hasErro) {
                     if (hasRealizados)
-                        $("div.atendimentos-realizados").html(result.Model);
+                        $(".atendimentos-realizados").html(result.model);
                     else
-                        $("div.atendimentos-emAndamento").html(result.Model);
+                        $(".atendimentos-emAndamento").html(result.model);
                 }
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("CarregarAtendimentosProfissional: " + errorThrown);
@@ -89,9 +87,7 @@
             success: function (result) {
                 if (!result.hasErro) {
                     AreaAtendimentoProfissional.AtualizarDastboardAtendimentos(
-                        result.model.qtdProfissionaisOnline,
-                        result.model.qtdClienteFilaAtendimento,
-                        result.model.qtdClienteEmAtendimento);
+                        result.model.qtdProfissionaisOnline, result.model.qtdClientesFila, result.model.qtdClientesEmAtendimento);
                 }
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("VerificarFilaAtendimento: " + errorThrown);
