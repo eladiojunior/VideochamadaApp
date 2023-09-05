@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><img src="~/imgs/avatarUsuario.png" alt="Foto" class="rounded-circle" width="30"/> @Model.UsuarioGestor.Nome</a>
+                    <a class="nav-link" href="#"><img src="~/imgs/avatarUsuario.png" alt="Foto" class="rounded-circle me-2" width="30"/>@Model.UsuarioGestor.Nome</a>
                 </li>
             </ul>
         </div>
@@ -36,6 +36,9 @@
             <div class="col-12">
                 <h5>Clientes</h5><hr class="d-none d-sm-block"/>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-12">@await Html.PartialAsync("_MensagensPartial")</div>
         </div>
         <div class="row">
             <div class="col-md-4 mb-2">

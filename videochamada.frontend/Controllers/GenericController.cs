@@ -123,7 +123,7 @@ public class GenericController : Controller
 
     internal string? ObterIdUsuarioGestor()
     {
-        var idUsuarioGestor = HttpContext.Session.GetString(KeyIdProfissionalSaudeSession);
+        var idUsuarioGestor = HttpContext.Session.GetString(KeyIdUsuarioGestorSession);
         return string.IsNullOrEmpty(idUsuarioGestor) ? null : idUsuarioGestor;
     }
     internal void GravarIdProfissionalSaude(string idProfissionalSaude)

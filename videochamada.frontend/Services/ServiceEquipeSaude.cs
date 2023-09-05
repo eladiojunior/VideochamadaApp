@@ -7,13 +7,13 @@ namespace VideoChatApp.FrontEnd.Services;
 
 public class ServiceEquipeSaude : IServiceEquipeSaude
 {
-    private IListenerServerClient _listenerServerClient;
+    private readonly IListenerServerClient _listenerServerClient;
     private static readonly ConcurrentDictionary<string, ProfissionalSaudeModel> _profissionais = new ConcurrentDictionary<string, ProfissionalSaudeModel>();
     private static readonly ConcurrentDictionary<string, UsuarioLogadoModel> _profissionaisLogados = new ConcurrentDictionary<string, UsuarioLogadoModel>();
 
     public ServiceEquipeSaude(IListenerServerClient listenerServerClient)
     {
-        _listenerServerClient = _listenerServerClient;
+        _listenerServerClient = listenerServerClient;
     }
     
     public ProfissionalSaudeModel RegistrarProfissionalSaude(ProfissionalSaudeRegistroModel profissionalSaude)
@@ -49,8 +49,12 @@ public class ServiceEquipeSaude : IServiceEquipeSaude
         profissionalSaudeNovo.Especialidade = profissionalSaude.Especialidade;
         profissionalSaudeNovo.SenhaAcesso = profissionalSaude.SenhaAcesso;
         profissionalSaudeNovo.Online = false;
+        profissionalSaudeNovo.EmAtendimento = false;
             
         _profissionais.TryAdd(profissionalSaudeNovo.Id, profissionalSaudeNovo);
+        
+        //Registrar login usuario...
+        RegistrarUsuarioLogado(profissionalSaudeNovo.Id);
         
         return profissionalSaudeNovo;
     }

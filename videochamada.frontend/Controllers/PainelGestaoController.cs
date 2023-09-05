@@ -53,9 +53,9 @@ public class PainelGestaoController : GenericController
         model.QtdAtendimentosDesistencias = _serviceAtendimento.QtdAtendimentos(SituacaoAtendimentoEnum.Desistencia);
         model.QtdAtendimentosFinalizados = _serviceAtendimento.QtdAtendimentos(SituacaoAtendimentoEnum.Finalizado);
         var tempoMedioAtendimento = _serviceAtendimento.TempoMedioAtendimentos(model.DataHoraAtualizacaoPainel);
-        model.TempoMedioAtendimentos = tempoMedioAtendimento.ToString("HH'h' mm'm'"); 
+        model.TempoMedioAtendimentos = tempoMedioAtendimento.ToString(@"hh\:mm"); 
         var tempoMedioNaFilaAtendimento = _serviceAtendimento.TempoMedioNaFilaAtendimento(model.DataHoraAtualizacaoPainel);
-        model.TempoMedioNaFilaAtendimento = tempoMedioNaFilaAtendimento.ToString("HH'h' mm'm'");
+        model.TempoMedioNaFilaAtendimento = tempoMedioNaFilaAtendimento.ToString(@"hh\:mm");
         var notaMediaAtendimento = _serviceAtendimento.NotaMediaAtendimentos(model.DataHoraAtualizacaoPainel);
         model.AvaliacaoMediaAtendimentos = notaMediaAtendimento.ToString("00");
         //Painel
@@ -82,6 +82,9 @@ public class PainelGestaoController : GenericController
             ExibirAlerta($"Bem-vindo, {gestorModel.Nome}");
 
             var modelPainel = CarregarPainelGestao(gestorModel.Id);
+            if (modelPainel == null)
+                return View("Acesso", model);
+            
             return View("AreaPainelGestao", modelPainel);
         }
         catch (ServiceException erro)
@@ -95,7 +98,11 @@ public class PainelGestaoController : GenericController
     public IActionResult Sair()
     {
         if (HasUsuarioGestorLogado())
+        {
+            var idUsuarioGestor = ObterIdUsuarioGestor();
+            _servicePainelGestao.LogoffUsuarioGestor(idUsuarioGestor);
             LogoffUsuarioGestorSession();
+        }
         return RedirectToAction("Index", "PainelGestao");
     }
 

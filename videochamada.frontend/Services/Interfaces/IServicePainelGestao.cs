@@ -7,4 +7,5 @@ public interface IServicePainelGestao
     UsuarioGestorModel AutenticarUsuarioGestor(string email, string senha);
     UsuarioGestorModel ObterUsuarioGestor(string id);
     UsuarioGestorModel ObterUsuarioGestorPorEmail(string email);
+    void LogoffUsuarioGestor(string idUsuarioGestor);
 }

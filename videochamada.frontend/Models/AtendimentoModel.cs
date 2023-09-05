@@ -15,7 +15,7 @@ public class AtendimentoModel
     //Geolocalização do Cliente no Atendimento
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public string IpMaquinaCliente { get; set; }
+    public string IpMaquinaUsuario { get; set; }
 
     public bool HasRetomarAtendimento
     {
@@ -36,4 +36,14 @@ public class AtendimentoModel
     public string ComentarioNota { get; set; }
     
     public ProfissionalSaudeModel ProfissionalSaude { get; set; }
+    
+    //Histórico de Situacao do Atendimento
+    public List<HistoricoSituacaoAtendimentoModel> HistoricoSituacaoAtendimento { get; set; }
+
+    internal void AddHistorico(HistoricoSituacaoAtendimentoModel historicoSituacaoAtendimento)
+    {
+        if (HistoricoSituacaoAtendimento == null)
+            HistoricoSituacaoAtendimento = new List<HistoricoSituacaoAtendimentoModel>();
+        HistoricoSituacaoAtendimento.Add(historicoSituacaoAtendimento);
+    }
 }

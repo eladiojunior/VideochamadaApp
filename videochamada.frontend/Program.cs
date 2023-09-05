@@ -17,6 +17,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IServiceCliente, ServiceCliente>();
 builder.Services.AddScoped<IServiceAtendimento, ServiceAtendimento>();
 builder.Services.AddScoped<IServiceEquipeSaude, ServiceEquipeSaude>();
+builder.Services.AddScoped<IServicePainelGestao, ServicePainelGestao>();
 builder.Services.AddScoped<IListenerServerClient, ListenerServerClient>();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

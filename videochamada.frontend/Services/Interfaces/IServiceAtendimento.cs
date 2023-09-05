@@ -15,8 +15,7 @@ public interface IServiceAtendimento
     List<AtendimentoModel> ListarAtendimentosCliente(string idCliente);
     AtendimentoModel ObterAtendimento(string idAtendimento);
     void VerificarDispositivoParaAtendimento(string idAtendimento);
-    
-    AtendimentoModel IniciarAtendimentoProfissionalSaude(AtendimentoModel atendimento, ProfissionalSaudeModel profissional);
+    AtendimentoModel IniciarAtendimentoProfissionalSaude(string idAtendimento, string idProfissional);
     List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional, bool hasRealizados);
     int QtdAtendimentos(SituacaoAtendimentoEnum filtroSituacao);
     TimeSpan TempoMedioAtendimentos(DateTime filtroDatahora);
