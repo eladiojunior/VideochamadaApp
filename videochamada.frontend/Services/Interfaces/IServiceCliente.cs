@@ -8,4 +8,5 @@ public interface IServiceCliente
     ClienteModel ObterCliente(string id);
     List<ClienteModel> ListarCliente();
     ClienteModel ObterClientePorEmail(string email);
+    int QtdClientesRegistrados();
 }

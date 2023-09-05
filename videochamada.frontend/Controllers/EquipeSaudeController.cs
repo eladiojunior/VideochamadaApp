@@ -22,7 +22,7 @@ public class EquipeSaudeController : GenericController
     {
         if (HasProfissionalSaudeLogado())
             return RedirectToAction("AreaAtendimento", "EquipeSaude");
-        return View();
+        return View("Acesso");
     }
 
     [HttpGet]
@@ -57,7 +57,7 @@ public class EquipeSaudeController : GenericController
     {
         
         if (!ModelState.IsValid)
-            return View("Index", model);
+            return View("Acesso", model);
         
         try
         {
@@ -65,7 +65,7 @@ public class EquipeSaudeController : GenericController
             if (profissionalModel == null)
             {
                 ModelState.AddModelError(string.Empty, "Não foi possível autenticar o profissional de saúde.");
-                return View("Index", model);
+                return View("Acesso", model);
             }
 
             GravarIdProfissionalSaude(profissionalModel.Id);
@@ -75,7 +75,7 @@ public class EquipeSaudeController : GenericController
         catch (ServiceException erro)
         {
             ModelState.AddModelError(string.Empty, erro.Message);
-            return View("Index", model);
+            return View("Acesso", model);
         }
         
     }
@@ -118,7 +118,11 @@ public class EquipeSaudeController : GenericController
     public IActionResult Sair()
     {
         if (HasProfissionalSaudeLogado())
-            LogoffProfissionalSaude();
+        {
+            var idProfissional = ObterIdProfissionalSaude();
+            _serviceEquipeSaude.LogoffProfissionalSaude(idProfissional);
+            LogoffProfissionalSaudeSession();
+        }
         return RedirectToAction("Index", "EquipeSaude");
     }
     

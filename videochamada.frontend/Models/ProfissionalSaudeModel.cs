@@ -8,7 +8,7 @@ public class ProfissionalSaudeModel
     public string Telefone { get; set; }
     public string Especialidade { get; set; }
     public string SenhaAcesso { get; set; }
-    
     public bool Online { get; set; }
+    public bool EmAtendimento { get; set; }
     
 }

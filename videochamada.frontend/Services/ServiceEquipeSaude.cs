@@ -7,7 +7,14 @@ namespace VideoChatApp.FrontEnd.Services;
 
 public class ServiceEquipeSaude : IServiceEquipeSaude
 {
+    private IListenerServerClient _listenerServerClient;
     private static readonly ConcurrentDictionary<string, ProfissionalSaudeModel> _profissionais = new ConcurrentDictionary<string, ProfissionalSaudeModel>();
+    private static readonly ConcurrentDictionary<string, UsuarioLogadoModel> _profissionaisLogados = new ConcurrentDictionary<string, UsuarioLogadoModel>();
+
+    public ServiceEquipeSaude(IListenerServerClient listenerServerClient)
+    {
+        _listenerServerClient = _listenerServerClient;
+    }
     
     public ProfissionalSaudeModel RegistrarProfissionalSaude(ProfissionalSaudeRegistroModel profissionalSaude)
     {
@@ -61,15 +68,50 @@ public class ServiceEquipeSaude : IServiceEquipeSaude
             throw new ServiceException(mensagemSemAcesso);
         if (!profissional.SenhaAcesso.Equals(senha))
             throw new ServiceException(mensagemSemAcesso);
+
+        profissional.EmAtendimento = false;
+        profissional.Online = false;
+        
+        //Registrar login usuario...
+        RegistrarUsuarioLogado(profissional.Id);
         
         return profissional;
         
+    }
+
+    public void LogoffProfissionalSaude(string idProfissional)
+    {
+        var profissional = ObterProfissionalSaude(idProfissional);
+        if (profissional == null)
+            return;
+        //Remover usuário dos logados...
+        _profissionaisLogados.Remove(idProfissional, out var usuario);
+    }
+
+    private void RegistrarUsuarioLogado(string idProfissional)
+    {
+        var usuario = new UsuarioLogadoModel();
+        usuario.IdUsuario = idProfissional;
+        usuario.DataHoraLogin = DateTime.Now;
+        usuario.DataHoraUltimaVerificacao = DateTime.Now;
+        usuario.IpMaquinaUsuario = _listenerServerClient.IpMaquinaUsuario();
+        _profissionaisLogados.TryAdd(idProfissional, usuario);
     }
 
     public void AtualizarSituacaoProfissionalAendimento(string idProfissional, bool hasSituacaoAtendimento)
     {
         var profissional = ObterProfissionalSaude(idProfissional);
         profissional.Online = hasSituacaoAtendimento;
+    }
+
+    public int QtdProfissionalSaudeLogados()
+    {
+        return _profissionaisLogados.Count();
+    }
+
+    public int QtdProfissionalSaudeEmAtendimento()
+    {
+        return _profissionais.Values.Count(c => c.EmAtendimento == true);
     }
 
     private ProfissionalSaudeModel ObterProfissionalSaudePorEmail(string email)

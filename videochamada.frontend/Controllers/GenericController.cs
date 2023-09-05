@@ -11,6 +11,7 @@ public class GenericController : Controller
     private List<string> _erros;
     private const string KeyIdClienteSession = "KEY_ID_CLIENTE_SESSION";
     private const string KeyIdProfissionalSaudeSession = "KEY_ID_PROFISSIONAL_SAUDE_SESSION";
+    private const string KeyIdUsuarioGestorSession = "KEY_ID_USUARIO_GESTOR_SESSION";
     
     internal const string KeyMensagemErros = "KEY_MENSAGEM_ERRO";
     internal const string KeyMensagemAlerta = "KEY_MENSAGEM_ALERTA";
@@ -106,19 +107,35 @@ public class GenericController : Controller
         var idProfissionalSaude = HttpContext.Session.GetString(KeyIdProfissionalSaudeSession);
         return string.IsNullOrEmpty(idProfissionalSaude) ? null : idProfissionalSaude;
     }
-    
+    internal void GravarIdUsuarioGestor(string idUsuarioGestor)
+    {
+        HttpContext.Session.SetString(KeyIdUsuarioGestorSession, idUsuarioGestor);
+    }
+    internal bool HasUsuarioGestorLogado()
+    {
+        var idUsuarioGestor = ObterIdUsuarioGestor();
+        return !string.IsNullOrEmpty(idUsuarioGestor);
+    }
+    internal void LogoffUsuarioGestorSession()
+    {
+        HttpContext.Session.Remove(KeyIdUsuarioGestorSession);
+    }
+
+    internal string? ObterIdUsuarioGestor()
+    {
+        var idUsuarioGestor = HttpContext.Session.GetString(KeyIdProfissionalSaudeSession);
+        return string.IsNullOrEmpty(idUsuarioGestor) ? null : idUsuarioGestor;
+    }
     internal void GravarIdProfissionalSaude(string idProfissionalSaude)
     {
         HttpContext.Session.SetString(KeyIdProfissionalSaudeSession, idProfissionalSaude);
     }
-
     internal bool HasProfissionalSaudeLogado()
     {
         var idProfissional = ObterIdProfissionalSaude();
         return !string.IsNullOrEmpty(idProfissional);
     }
-
-    internal void LogoffProfissionalSaude()
+    internal void LogoffProfissionalSaudeSession()
     {
         HttpContext.Session.Remove(KeyIdProfissionalSaudeSession);
     }

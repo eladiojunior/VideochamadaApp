@@ -10,16 +10,16 @@
 </div>
 <div class="row">
     <div class="col-xl-4 d-none d-xl-block">
-        <img src="~/imgs/equipeSaudeAcesso.png" class="img-fluid" alt="Imagem de Acesso Equipe de Saúde"/>
+        <img src="~/imgs/acessoPainelGestao.png" class="img-fluid" alt="Imagem de Acesso Painel Gestão"/>
     </div>
     <div class="col-12 col-xl-8">
-        <form asp-action="Acessar" asp-controller="EquipeSaude" method="post">
+        <form asp-action="Acessar" asp-controller="PainelGestao" method="post">
             @await Html.PartialAsync("_MensagensPartial")
             <div class="row">
                 <div class="col-12 col-sm-8 mb-3">
                     <div class="form-floating">
-                        <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
-                        <label asp-for="Email" class="form-label">E-mail do profissional</label>
+                        <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail"/>
+                        <label asp-for="Email" class="form-label">E-mail do gestor</label>
                     </div>
                 </div>
                 <div class="col-12 col-sm-4 mb-3">
@@ -32,7 +32,7 @@
             <div class="row pt-2">
                 <div class="col-12 d-grid gap-2 d-md-block text-center">
                     <button class="btn btn-primary" type="submit">Acessar</button>
-                    <a asp-action="Registrar" asp-controller="EquipeSaude" class="btn btn-secondary">Quero me Registrar</a>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Retornar</a>
                 </div>
             </div>
         </form>

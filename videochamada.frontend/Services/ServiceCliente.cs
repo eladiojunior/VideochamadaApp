@@ -52,5 +52,9 @@ public class ServiceCliente : IServiceCliente
         var clienteModel = _clientes.Values.FirstOrDefault(w => w.Email.Equals(email));
         return clienteModel;
     }
-    
+
+    public int QtdClientesRegistrados()
+    {
+        return _clientes.Values.Count();
+    }
 }

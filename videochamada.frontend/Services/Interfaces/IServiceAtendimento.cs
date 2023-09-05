@@ -18,4 +18,8 @@ public interface IServiceAtendimento
     
     AtendimentoModel IniciarAtendimentoProfissionalSaude(AtendimentoModel atendimento, ProfissionalSaudeModel profissional);
     List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional, bool hasRealizados);
+    int QtdAtendimentos(SituacaoAtendimentoEnum filtroSituacao);
+    TimeSpan TempoMedioAtendimentos(DateTime filtroDatahora);
+    TimeSpan TempoMedioNaFilaAtendimento(DateTime filtroDatahora);
+    int NotaMediaAtendimentos(DateTime? filtroDatahora);
 }

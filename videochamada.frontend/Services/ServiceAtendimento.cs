@@ -133,7 +133,6 @@ public class ServiceAtendimento : IServiceAtendimento
         return lista;
     }
 
-
     public int QtdClienteFilaAtendimento()
     {
         return GerenciadorFilaCliente.Get().QuantidadeClientesFila();
@@ -163,4 +162,25 @@ public class ServiceAtendimento : IServiceAtendimento
             return;
         AtualizarSituacaoAtendimento(idAtendimento, SituacaoAtendimentoEnum.VerificacaoDispositivo);
     }
+    
+    public int QtdAtendimentos(SituacaoAtendimentoEnum filtroSituacao)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TimeSpan TempoMedioAtendimentos(DateTime filtroDatahora)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TimeSpan TempoMedioNaFilaAtendimento(DateTime filtroDatahora)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int NotaMediaAtendimentos(DateTime? filtroDatahora)
+    {
+        throw new NotImplementedException();
+    }
+    
 }
