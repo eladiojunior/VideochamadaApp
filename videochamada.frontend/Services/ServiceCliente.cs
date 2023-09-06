@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using videochamada.frontend.Models;
+using VideoChatApp.FrontEnd.Services.Enums;
 using VideoChatApp.FrontEnd.Services.Exceptions;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 namespace VideoChatApp.FrontEnd.Services;
@@ -15,8 +16,18 @@ public class ServiceCliente : IServiceCliente
             throw new ServiceException("Informações do Cliente não informado.");
         if (string.IsNullOrEmpty(cliente.Nome))
             throw new ServiceException("Nome do Cliente não informado, obrigatório.");
+        if (string.IsNullOrEmpty(cliente.DataNascimento))
+            throw new ServiceException("Data de nascimento do Cliente não informado, obrigatório.");
+        if (!ServiceHelper.VerificarDataValida(cliente.DataNascimento))
+            throw new ServiceException("Data de nascimento do Cliente inválida, formato: DD/MM/YYYY.");
+        if (string.IsNullOrEmpty(cliente.Sexo))
+            throw new ServiceException("Sexo do Cliente não informado, obrigatório.");
+        if (!ServiceHelper.VerificarSexoValido(cliente.Sexo))
+            throw new ServiceException("Sexo do Cliente inválido, informe (Masculino ou Feminino).");
         if (string.IsNullOrEmpty(cliente.Email))
             throw new ServiceException("E-mail do Cliente não informado, obrigatório.");
+        if (string.IsNullOrEmpty(cliente.Telefone))
+            throw new ServiceException("Telefone do Cliente não informado, obrigatório.");
 
         var clienteExiste = ObterClientePorEmail(cliente.Email);
         if (clienteExiste != null)
@@ -25,6 +36,10 @@ public class ServiceCliente : IServiceCliente
         var clienteNovo = new ClienteModel();
         clienteNovo.Id = ServiceHelper.GerarId();
         clienteNovo.Nome = cliente.Nome;
+        var dtNascimento = ServiceHelper.ConverterStringToDateTime(cliente.DataNascimento);
+        if (dtNascimento.HasValue)
+            clienteNovo.DataNascimento = dtNascimento.Value;
+        clienteNovo.Sexo = ServiceHelper.ObterSexoEnum(cliente.Sexo);
         clienteNovo.Email = cliente.Email.ToLower();
         clienteNovo.Telefone = cliente.Telefone;
         

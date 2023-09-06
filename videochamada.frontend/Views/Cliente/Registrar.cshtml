@@ -16,12 +16,39 @@
         <form asp-action="Registrar" asp-controller="Cliente" method="post">
             @await Html.PartialAsync("_MensagensPartial")
             <div class="row">
-                <div class="col-12 col-sm-8 mb-3">
+                <div class="col-12 col-sm-6 mb-3">
                     <div class="form-floating">
                         <input asp-for="Nome" class="form-control" required="required" placeholder="Nome do usuário"/>
                         <label asp-for="Nome" class="form-label"></label>
                     </div>
                     <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="col-6 col-sm-3 mb-3">
+                    <div class="form-floating">
+                        <input asp-for="DataNascimento" class="form-control" data-mask="date" required="required" placeholder="00/00/0000"/>
+                        <label asp-for="DataNascimento" class="form-label"></label>
+                    </div>
+                    <span asp-validation-for="DataNascimento" class="text-danger"></span>
+                </div>
+                <div class="col-6 col-sm-3 mb-3">
+                    <div class="form-check">
+                      <input asp-for="Sexo" class="form-check-input" type="radio" value="M" checked="checked">
+                      <label asp-for="Sexo" class="form-check-label">Masculino</label>
+                    </div>
+                    <div class="form-check">
+                      <input asp-for="Sexo" class="form-check-input" type="radio" value="F">
+                      <label asp-for="Sexo" class="form-check-label">Feminino</label>
+                    </div>
+                    <span asp-validation-for="Sexo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-8 mb-3">
+                    <div class="form-floating">
+                        <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
+                        <label asp-for="Email" class="form-label"></label>
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="col-12 col-sm-4 mb-3">
                     <div class="form-floating">
@@ -29,13 +56,6 @@
                         <label asp-for="Telefone" class="form-label"></label>
                     </div>
                     <span asp-validation-for="Telefone" class="text-danger"></span>
-                </div>
-                <div class="col-12  mb-3">
-                    <div class="form-floating">
-                        <input asp-for="Email" type="email" class="form-control" required="required" placeholder="E-mail de contato"/>
-                        <label asp-for="Email" class="form-label"></label>
-                    </div>
-                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="row pt-2">

@@ -215,4 +215,12 @@ public class AtendimentoController : GenericController
         return JsonResultSucesso(posicaoAtendimento);
     }
     
+    [HttpPost]
+    public IActionResult SolicitarPrioridade(SolicitacaoPrioridadeAtendimentoModel model)
+    {
+
+        return JsonResultSucesso("Solicitação de prioridade está em avalidação.");
+
+    }
+    
 }

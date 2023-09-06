@@ -22,7 +22,7 @@
                 <li class="nav-item">
                     <div class="btn-group mt-1 me-1" role="group" aria-label="Ativa/Desativa Atendimento">
                         <input type="checkbox" class="btn-check" id="btnOnline" autocomplete="off">
-                        <label class="btn  btn-outline-secondary btnOnline" for="btnOnline">Não estou atendendo</label>
+                        <label class="btn btn-outline-secondary btnOnline" for="btnOnline">Não estou atendendo</label>
                     </div>
                 </li>
             </ul>
@@ -92,6 +92,23 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalSairArea" tabindex="-1" aria-labelledby="modalSairAreaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSairAreaLabel">Confirma</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <h4>Deseja realmente <strong>sair da fila</strong> e desistir do atendimento?</h4>
+            </div>
+            <div class="modal-footer">
+                <a asp-action="SairFilaAtendimento" asp-controller="Atendimento" class="btn btn-danger">Quero sair da Fila</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não quero</button>
             </div>
         </div>
     </div>
