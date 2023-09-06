@@ -52,9 +52,9 @@
         tabs.click(function () {
             const keyTab = $(this).data("bs-target");
             if (keyTab === '#emAndamento')
-                AreaAtendimentoProfissional.CarregarAtendimentosProfissional(true);
-            else if (keyTab === '#realizados')
                 AreaAtendimentoProfissional.CarregarAtendimentosProfissional(false);
+            else if (keyTab === '#realizados')
+                AreaAtendimentoProfissional.CarregarAtendimentosProfissional(true);
         });  
     },
     CarregarAtendimentosProfissional: function (hasRealizados) {
