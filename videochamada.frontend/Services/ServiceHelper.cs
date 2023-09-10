@@ -45,7 +45,7 @@ public class ServiceHelper
     {
         if (string.IsNullOrEmpty(sexoString))
             return false;
-        var infoValidas = new[] { "masculino", "feminino" };
+        var infoValidas = new[] { "1", "m", "masculino", "2", "f", "feminino" };
         return infoValidas.Contains(sexoString.ToLower());
     }
 

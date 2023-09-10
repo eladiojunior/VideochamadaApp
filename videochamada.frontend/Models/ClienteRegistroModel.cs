@@ -12,11 +12,11 @@ public class ClienteRegistroModel
     public string Nome { get; set; }
     
     [Required(ErrorMessage = "Data de Nascimento do cliente obrigatório.")]
-    [DisplayName("Data Nascimento do Cliente")]
+    [DisplayName("Data Nascimento")]
     public string DataNascimento { get; set; }
 
     [Required(ErrorMessage = "Sexo (biológico) do cliente obrigatório.")]
-    [DisplayName("Sexo (biológico) do Cliente")]
+    [DisplayName("Sexo (biológico)")]
     public string Sexo { get; set; }
 
     [Required(ErrorMessage = "E-mail do cliente obrigatório.")]
