@@ -1,0 +1,107 @@
+﻿<div class="modal fade" id="modalPrioridadeFila" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalPrioridadeFilaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPrioridadeFilaLabel">Solicitar Prioridade na Fila</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <p>Gostaria de solicitar prioridade na fila de atendimento?</p>
+                <p><strong>Preencha os dados a seguir para uma avalidação de prioridade.</strong></p>
+                <form name="formSolicitarPrioridade" method="post">
+                    <div class="shadow-sm p-3 mb-2 rounded">
+                        <p>Você tem algum problema de saúde pré-existente?<br/>
+                            <span class="text-muted">(diabetes, hipertensão, asma, etc.)</span>
+                        </p>
+                        <input type="hidden" name="pergunta1.idPergunta" value="1"/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta1Sim" name="pergunta1.Resposta" value="Sim">
+                            <label class="form-check-label" for="pergunta1Sim">Sim</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta1Nao" name="pergunta1.Resposta" value="Nao">
+                            <label class="form-check-label" for="pergunta1Nao">Não</label>
+                        </div>
+                    </div>
+                    <div class="shadow-sm p-3 mb-2 rounded">
+                        <p>Você está tomando algum medicamento atualmente?</p>
+                        <input type="hidden" name="pergunta2.idPergunta" value="2"/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta2Sim" name="pergunta2.Resposta" value="Sim">
+                            <label class="form-check-label" for="pergunta2Sim">Sim</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta2Nao" name="pergunta2.Resposta" value="Nao">
+                            <label class="form-check-label" for="pergunta2Nao">Não</label>
+                        </div>
+                    </div>
+                    <div class="shadow-sm p-3 mb-2 rounded">
+                        <p>Você tem alergias conhecidas a medicamentos ou alimentos?</p>
+                        <input type="hidden" name="pergunta3.idPergunta" value="3"/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta3Sim" name="pergunta3.Resposta" value="Sim">
+                            <label class="form-check-label" for="pergunta3Sim">Sim</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta3Nao" name="pergunta3.Resposta" value="Nao">
+                            <label class="form-check-label" for="pergunta3Nao">Não</label>
+                        </div>
+                    </div>
+                    <div class="shadow-sm p-3 mb-2 rounded">
+                        <p>Os sintomas estão piorando com o tempo?</p>
+                        <input type="hidden" name="pergunta4.idPergunta" value="4"/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta4Sim" name="pergunta4.Resposta" value="Sim">
+                            <label class="form-check-label" for="pergunta4Sim">Sim</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta4Nao" name="pergunta4.Resposta" value="Nao">
+                            <label class="form-check-label" for="pergunta4Nao">Não</label>
+                        </div>
+                    </div>
+                    <div class="shadow-sm p-3 mb-2 rounded">
+                        <p>Você esteve em contato com alguém diagnosticado com uma condição médica séria nos últimos 14 dias?</p>
+                        <input type="hidden" name="pergunta5.idPergunta" value="5"/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta5Sim" name="pergunta5.Resposta" value="Sim">
+                            <label class="form-check-label" for="pergunta5Sim">Sim</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta5Nao" name="pergunta5.Resposta" value="Nao">
+                            <label class="form-check-label" for="pergunta5Nao">Não</label>
+                        </div>
+                    </div>
+                    <div class="shadow-sm p-3 mb-2 rounded">
+                        <p>Você viajou recentemente para áreas com alta incidência de doenças contagiosas?</p>
+                        <input type="hidden" name="pergunta6.idPergunta" value="6"/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta6Sim" name="pergunta6.Resposta" value="Sim">
+                            <label class="form-check-label" for="pergunta6Sim">Sim</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta6Nao" name="pergunta6.Resposta" value="Nao">
+                            <label class="form-check-label" for="pergunta6Nao">Não</label>
+                        </div>
+                    </div>
+                    <div class="shadow-sm p-3 mb-2 rounded">
+                        <p>Você sofreu algum tipo de trauma físico recentemente?</p>
+                        <input type="hidden" name="pergunta7.idPergunta" value="7"/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta7Sim" name="pergunta7.Resposta" value="Sim">
+                            <label class="form-check-label" for="pergunta7Sim">Sim</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="pergunta7Nao" name="pergunta7.Resposta" value="Nao">
+                            <label class="form-check-label" for="pergunta7Nao">Não</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success">Solicitar prioridade</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

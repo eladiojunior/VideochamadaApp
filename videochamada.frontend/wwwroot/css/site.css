@@ -150,6 +150,11 @@ body {
 .nivel-senha {
   font-size: 12px;
 }
+
+.offcanvas-bottom {
+  height: 50vh;
+}
+
 @media (min-width: 576px) {
   .text-dispositivo {
     font-size: 20px;

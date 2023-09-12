@@ -223,4 +223,29 @@ public class AtendimentoController : GenericController
 
     }
     
+    [HttpGet]
+    public IActionResult EmAtendimento()
+    {
+        
+        var idCliente = ObterIdCliente();
+        var cliente = _serviceCliente.ObterCliente(idCliente);
+        
+        var model = new ClenteEmAtendimentoModel();
+        model.IdAtendimento = "";
+        model.IdCliente = idCliente;
+        model.Cliente = cliente;
+        model.IdProfissionalSaude = "";        
+        model.ProfissionalSaude = new ProfissionalSaudeModel();
+        model.ProfissionalSaude.Nome = "Eladio Lima Magalhães Júnior";
+        model.ProfissionalSaude.Especialidade = "Cardiologia";
+        model.ChatAtendimento = new ChatAtendimentoModel();
+        return View("EmAtendimento", model);
+    }
+
+    
+    [HttpGet]
+    public IActionResult SairDoAtendimento()
+    {
+        throw new NotImplementedException();
+    }
 }

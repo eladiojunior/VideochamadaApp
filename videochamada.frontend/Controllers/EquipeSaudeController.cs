@@ -182,4 +182,10 @@ public class EquipeSaudeController : GenericController
             : RenderRazorViewToString("_AtendimentosEmAndamentoPartial", listaAtendimentos);
         return JsonResultSucesso(model);
     }
+
+    [HttpGet]
+    public IActionResult FinalizarAtendimento()
+    {
+        throw new NotImplementedException();
+    }
 }

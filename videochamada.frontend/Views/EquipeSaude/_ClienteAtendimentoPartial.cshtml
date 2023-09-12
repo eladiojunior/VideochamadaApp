@@ -1,0 +1,19 @@
+﻿@using VideoChatApp.FrontEnd.Services.Enums
+@model ClienteModel
+@if (Model == null)
+{
+    <div class="alert alert-danger">Não identificamos informações do Cliente.</div>    
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Nome</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Sexo: @Model.Sexo.ObterTextoEnum() - Idade: @Model.Idade</h6>
+            <p class="card-text">
+                <strong>E-mail: </strong> @Model.Email<br/>
+                <strong>Telefone: </strong> @Model.Telefone<br/>
+            </p>
+        </div>
+    </div>
+}
