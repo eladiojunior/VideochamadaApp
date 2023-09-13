@@ -277,7 +277,6 @@ body {
   z-index: 2;
 }
 .control-button {
-  background: #4285f4;
   border: none;
   border-radius: 50%;
   width: 50px;
@@ -286,6 +285,12 @@ body {
   padding-top: 5px;
   margin: 0 5px;
   cursor: pointer;
+}
+.control-button.on {
+  background: #4285f4;  
+}
+.control-button.off {
+  background: #99999e;
 }
 .area-profissional-saude {
   padding: 5px 10px 5px 10px;
@@ -301,7 +306,14 @@ body {
   color: #4b4b4b;
   font-weight: bold;
 }
-
+.mensagem-usuario {
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+}
+/* ---------- Área Videochamada ----------- */
 
 
 @media (max-width: 768px) {
