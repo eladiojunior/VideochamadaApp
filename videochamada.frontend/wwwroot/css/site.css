@@ -222,6 +222,11 @@ body {
   cursor: pointer;
   font-size: 14px;
 }
+.chat-titulo {
+  font-size: 15px;
+  color: #4b4b4b;
+  font-weight: bold;
+}
 /* ----------- Área do Chat --------------- */
 
 .atendimento-separador {
@@ -291,6 +296,14 @@ body {
 .info-profissional-saude .material-symbols-outlined {
   font-size: 18px;
 }
+.info-profissional-saude-titulo {
+  font-size: 15px;
+  color: #4b4b4b;
+  font-weight: bold;
+}
+
+
+
 @media (max-width: 768px) {
   /* ---------- Área Videochamada ----------- */
   .area-videochamada {

@@ -1,6 +1,8 @@
 ﻿@model ChatAtendimentoModel
 <div class="card mt-2">
-    <div class="card-header d-none d-xl-block"><strong>Chat do Atendimento</strong></div>
+    <div class="card-header d-none d-xl-block">
+        <span class="chat-titulo">Chat do Atendimento</span>
+    </div>
     <div id="chat-box" class="chat-container">
         <div class="message">
             <img class="img-chat-sender" src="~/imgs/chat-sender.png" alt="Enviado">
@@ -37,6 +39,12 @@
             <div class="message-content message-content-sender">
                 Oi
             </div>
+        </div>
+        <div class="message">
+            <div class="message-content message-content-receiver">
+                Nova mensagem do profissional.
+            </div>
+            <img class="img-chat img-chat-receiver" src="~/imgs/chat-receiver.png" alt="Receiver">
         </div>
     </div>
     <div class="input-container">
