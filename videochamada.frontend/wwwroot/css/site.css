@@ -154,7 +154,163 @@ body {
 .offcanvas-bottom {
   height: 50vh;
 }
+/* ----------- Área do Chat --------------- */
+.chat-container {
+  background-color: white;
+  border-radius: 5px;
+  font-size: 12px;
+  height: 300px;
+  overflow: auto;
+  padding: 5px 10px 5px 10px;
+}
+.message {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.message .img-chat {
+  width: 30px;
+  height: 30px;
+}
+.message img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.message .img-chat-sender {
+  margin-right: 5px;
+}
+.message .img-chat-receiver {
+  margin-left: 5px;
+}
+.message-content {
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 85%;
+}
+.message-content-sender {
+  background-color: #34b7f1;
+  color: white;
+}
+.message-content-receiver {
+  background-color: #e5e5e5;
+  color: black;
+}
+.input-container {
+  margin-top: 5px;
+  padding: 5px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+.input-container input {
+  flex: 1;
+  border: none;
+  padding: 5px;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+}
+.input-container button {
+  background-color: #34b7f1;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+/* ----------- Área do Chat --------------- */
 
+.atendimento-separador {
+  height: 1px;
+  background-color: #bebfc0;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+/* ---------- Área Videochamada ----------- */
+.area-videochamada {
+  width: 100%;
+  height: 510px;
+  margin: auto;
+  position: relative;
+}
+.area-video-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.area-video-profissional {
+  width: 100%;
+  height: 100%;
+  background-color: #8ca3c7;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+}
+.area-video-cliente {
+  width: 100%;
+  max-width: 150px;
+  height: 150px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.video-controls {
+  position: absolute;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+.control-button {
+  background: #4285f4;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  padding-top: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.area-profissional-saude {
+  padding: 5px 10px 5px 10px;
+}
+.info-profissional-saude {
+  font-size: 15px;
+}
+.info-profissional-saude .material-symbols-outlined {
+  font-size: 18px;
+}
+@media (max-width: 768px) {
+  /* ---------- Área Videochamada ----------- */
+  .area-videochamada {
+    height: 430px;
+  }
+  .area-video-cliente {
+    max-width: 100px;
+    height: 120px;
+    bottom: 10px;
+    right: 10px;
+  }
+  .video-controls {
+    bottom: 10px;
+  }
+  .control-button {
+    width: 40px;
+    height: 40px;
+    margin: 0 3px;
+  }
+}
 @media (min-width: 576px) {
   .text-dispositivo {
     font-size: 20px;
@@ -166,16 +322,4 @@ body {
     height: 60px;
     font-size: 24px;
   }
-}
-@media (min-width: 768px) {
-
-}
-@media (min-width: 992px) {
-
-}
-@media (min-width: 1200px) {
-
-}
-@media (min-width: 1400px) {
-
 }

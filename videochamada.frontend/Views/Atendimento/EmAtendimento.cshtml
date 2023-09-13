@@ -3,25 +3,47 @@
     ViewBag.Title = "Atendimento [Em andamento]";
 }
 <div class="row">
-    <div class="col-12">
-        <div class="d-none d-sm-block"><h1>Atendimento - Em andamento</h1></div>
-        <div class="d-sm-none d-block"><h2>Em Atendimento</h2></div>
-        <hr/>
+    <div class="col-7">
+        <div class="d-none d-sm-block"><h1>Atendimento</h1></div>
+        <div class="d-sm-none d-block"><h2>Atendimento</h2></div>
+    </div>
+    <div class="col-5 text-end pt-xl-2">
+        <button type="button" class="btn btn-sm btn-danger" title="Solicitar saida do atendimento." data-bs-toggle="modal" data-bs-target="#modalSairAtendimento">Sair <span class="d-none d-xl-inline-block">do Atendimento</span></button>
+        <button type="button" class="d-inline-block d-md-none btn btn-sm btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasChat" aria-controls="offcanvasBottom">Chat <span class="d-none d-xl-inline-block">Atendimento</span></button>
     </div>
 </div>
 <div class="row">
-    <div class="col-xl-4 d-none d-xl-block">
+    <div class="col-12">
+        <div class="atendimento-separador"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-2 d-none d-xl-block">
         <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Em Atendimento"/>
     </div>
-    <div class="col-12 col-xl-8">
+    <div class="col-12 col-xl-10">
         <div class="row pt-2">
             <div class="col-12 col-xl-8">
                 <div class="area-videochamada">
-                    <div class="area-video-profissional">
-                        <video id="video-profissional" style="display: none;"></video>
-                    </div>
-                    <div class="area-video-cliente">
-                        <video id="video-cliente"></video>
+                    <div class="area-video-container">
+                        <div class="area-video-profissional">
+                            <div class="text-center mt-5">
+                                <span class="d-block">Aguarde, estamos te conectando com o profissional de saúde!</span>
+                                <div class="mt-5 spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <video id="video-profissional"></video>    
+                        </div>
+                        <video class="area-video-cliente" id="video-cliente"></video>
+                        <div class="video-controls">
+                            <button type="button" class="control-button" id="mute-button">
+                                <span class="material-symbols-outlined">mic</span>
+                            </button>
+                            <button type="button" class="control-button" id="camera-button">
+                                <span class="material-symbols-outlined">videocam</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -30,12 +52,6 @@
                 <div class="d-none d-xl-block">
                     @await Html.PartialAsync("_ChatAtendimentoPartial", Model.ChatAtendimento)
                 </div>
-            </div>
-        </div>
-        <div class="row pt-2">
-            <div class="col-12 d-grid gap-2 d-md-block text-center">
-                <button type="button" class="btn btn-danger" title="Solicitar saida do atendimento." data-bs-toggle="modal" data-bs-target="#modalSairAtendimento">Sair do Atendimento</button>
-                <button type="button" class="d-block d-md-none btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasChat" aria-controls="offcanvasBottom">Chat Atendimento</button>
             </div>
         </div>
     </div>

@@ -6,14 +6,20 @@
 else
 {
     <div class="card">
-        <div class="card-body">
+        <div class="area-profissional-saude">
             <strong>Profissional de Saúde</strong>
-            <h5 class="card-title">@Model.Nome</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Especialidade: <strong>@Model.Especialidade</strong></h6>
-            <p class="card-text">
-                <strong>E-mail: </strong> @Model.Email<br/>
-                <strong>Telefone: </strong> @Model.Telefone
-            </p>
+            <span class="d-block">@Model.Nome</span>
+            <div class="info-profissional-saude mt-2">
+                <span class="d-block text-muted" title="Especialidade do profissional">
+                    <span class="material-symbols-outlined">stethoscope</span> @Model.Especialidade
+                </span>
+                <span class="d-block text-muted" title="E-mail do profissional">
+                    <span class="material-symbols-outlined">alternate_email</span> @Model.Email
+                </span>
+                <span class="d-block text-muted" title="Telefone do profissional">
+                    <span class="material-symbols-outlined">phone_iphone</span> @Model.Telefone
+                </span>
+            </div>
         </div>
     </div>
 }

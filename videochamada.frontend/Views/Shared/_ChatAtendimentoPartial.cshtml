@@ -1,8 +1,46 @@
 ﻿@model ChatAtendimentoModel
-<div class="card">
-    <div class="card-header d-none d-xl-block"><strong>Chat do Atendimento</strong> <span class="badge rounded-pill bg-primary">@Model.QtdMensagens</span>
+<div class="card mt-2">
+    <div class="card-header d-none d-xl-block"><strong>Chat do Atendimento</strong></div>
+    <div id="chat-box" class="chat-container">
+        <div class="message">
+            <img class="img-chat-sender" src="~/imgs/chat-sender.png" alt="Enviado">
+            <div class="message-content message-content-sender">
+                Olá! Como você está?
+            </div>
+        </div>
+        <div class="message">
+            <div class="message-content message-content-receiver">
+                Olá! Estou bem, obrigado por perguntar. E você?
+            </div>
+            <img class="img-chat img-chat-receiver" src="~/imgs/chat-receiver.png" alt="Receiver">
+        </div>
+        <div class="message">
+            <img class="img-chat img-chat-sender" src="~/imgs/chat-sender.png" alt="Sender">
+            <div class="message-content message-content-sender">
+                Estou ótimo, obrigado! Quer se encontrar para um café?
+            </div>
+        </div>
+        <div class="message">
+            <div class="img-chat img-chat-sender"></div>
+            <div class="message-content message-content-sender">
+                Testando envio de mensagem curta!
+            </div>
+        </div>
+        <div class="message">
+            <div class="img-chat img-chat-sender"></div>
+            <div class="message-content message-content-sender">
+                Testando envio de mensagem longa! Muito longa como um livro, como um livro como um livro como um livro como um livro como um livro como um livro como um livro como um livro como um livro.
+            </div>
+        </div>
+        <div class="message">
+            <div class="img-chat img-chat-sender"></div>
+            <div class="message-content message-content-sender">
+                Oi
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        ... Chat
+    <div class="input-container">
+        <input name="enviar-mensagem" type="text" placeholder="Digite sua mensagem">
+        <button type="button" id="button-enviar" title="Envia mensagem digitada ao lado.">Enviar</button>
     </div>
 </div>
