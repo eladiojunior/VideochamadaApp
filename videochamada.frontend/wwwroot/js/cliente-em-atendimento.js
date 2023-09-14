@@ -1,12 +1,4 @@
 ﻿EmAtendimento = {
-    Init: function () {
-        var offcanvasChat = document.getElementById('offcanvasChat')
-        offcanvasChat.addEventListener('shown.bs.offcanvas', function () {
-            const fieldMensagem = $(".input-mensagem-chat");
-            fieldMensagem.val("");
-            fieldMensagem.focus();
-        })
-    },
     InitChatAtendimento: function () {
         
         //Posicionar no final da lista do chat...
@@ -20,6 +12,17 @@
         $(".input-mensagem-chat").keydown(function (event) {
             if (event.keyCode === 13) //ENTER
                 EmAtendimento.EnviarMensagemChat();
+        });
+        $(".button-posicao-chat").click(function () {
+            //Posicionar no final da lista do chat...
+            const divAreaChat = $(".chat-container");
+            divAreaChat.scrollTop(divAreaChat.offset().top);
+            const fieldMensagem = $(".input-mensagem-chat");
+            fieldMensagem.focus();
+        });
+        $(".button-posicao-video").click(function () {
+            //Posicionar no início da tela...
+            window.scroll({top: 0, behavior: "smooth" });
         });
     },
     InitComunicacaoVideochamada: function () {
@@ -71,7 +74,6 @@
     }
 }
 $(function () {
-    EmAtendimento.Init();
     EmAtendimento.InitChatAtendimento();
     EmAtendimento.InitControleVideo();
     EmAtendimento.InitComunicacaoVideochamada();

@@ -238,6 +238,8 @@ public class AtendimentoController : GenericController
         model.ProfissionalSaude = new ProfissionalSaudeModel();
         model.ProfissionalSaude.Nome = "Eladio Lima Magalhães Júnior";
         model.ProfissionalSaude.Especialidade = "Cardiologia";
+        model.ProfissionalSaude.Email = "eladiojunior@gmail.com";
+        model.ProfissionalSaude.Telefone = "(61) 99806-6983";
         model.ChatAtendimento = new ChatAtendimentoModel();
         return View("EmAtendimento", model);
     }

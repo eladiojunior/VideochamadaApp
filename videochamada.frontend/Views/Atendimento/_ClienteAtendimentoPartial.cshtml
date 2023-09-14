@@ -1,0 +1,52 @@
+﻿@model ClienteModel
+@if (Model == null)
+{
+    <div class="alert alert-danger">Não identificamos informações do Cliente.</div>
+}
+else
+{
+    <div class="card mt-2">
+        <div class="area-cliente">
+            <span class="info-cliente-titulo">Cliente</span>
+            <span class="d-block">@Model.Nome</span>
+            <div class="info-cliente mt-2 mb-2">
+                <div class="d-flex align-items-center text-muted" title="Arquivos do Atendimento">
+                    <span class="material-symbols-outlined">archive</span>
+                    <span class="px-1">&nbsp;Arquivos</span>
+                </div>
+                <div class="atendimento-separador"></div>
+                <ul class="list-group list-group-flush lista-arquivos">
+                    <li class="list-group-item d-flex justify-content-between align-items-start px-0">
+                        <div class="me-auto">
+                            <div class="fw-bold">
+                                <a href="#" title="Download do arquivo.">Receita de Medicamento.pdf</a>
+                            </div>
+                            <span class="text-muted">20/08/2023 18:35</span>
+                        </div>
+                        <span class="rounded-pill">
+                            <a href="#" title="Remover arquivo do atendimento.">
+                                <span class="material-symbols-outlined">delete</span>
+                            </a>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start px-0">
+                        <div class="me-auto">
+                            <div class="fw-bold">
+                                <a href="#" title="Download do arquivo.">Exame de sangue.png</a>
+                            </div>
+                            <span class="text-muted">10/07/2023 18:35</span>
+                        </div>
+                        <span class="rounded-pill">
+                            <a href="#" title="Remover arquivo do atendimento.">
+                                <span class="material-symbols-outlined">delete</span>
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="vstack gap-2 mx-auto">
+              <button type="button" class="btn btn-sm btn-secondary">Enviar Arquivo</button>
+            </div>
+        </div>
+    </div>
+}

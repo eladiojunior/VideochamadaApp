@@ -214,7 +214,7 @@ body {
   font-size: 14px;
 }
 .input-container button {
-  background-color: #34b7f1;
+  background-color: #4285f4;
   border: none;
   padding: 10px;
   border-radius: 5px;
@@ -254,7 +254,7 @@ body {
 .area-video-profissional {
   width: 100%;
   height: 100%;
-  background-color: #8ca3c7;
+  background-color: #88898a;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
 }
@@ -269,6 +269,13 @@ body {
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.video-cliente {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding-top: 37%;
 }
 .video-controls {
   position: absolute;
@@ -285,6 +292,7 @@ body {
   padding-top: 5px;
   margin: 0 5px;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .control-button.on {
   background: #4285f4;  
@@ -292,6 +300,27 @@ body {
 .control-button.off {
   background: #99999e;
 }
+.area-cliente {
+  padding: 5px 10px 5px 10px;
+  height: 387px;
+}
+.info-cliente {
+  font-size: 15px;
+  height: 250px;
+  overflow-y: auto;
+}
+.info-cliente .material-symbols-outlined {
+  font-size: 18px;
+}
+.info-cliente-titulo {
+  font-size: 15px;
+  color: #4b4b4b;
+  font-weight: bold;
+}
+.info-cliente .lista-arquivos {
+  font-size: 10px;
+}
+
 .area-profissional-saude {
   padding: 5px 10px 5px 10px;
 }
