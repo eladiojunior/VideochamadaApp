@@ -287,5 +287,69 @@ public class ServiceAtendimento : IServiceAtendimento
         return totalNotas / qtdAtendimentos;
         
     }
-    
+
+    public ArquivoClienteAtendimentoModel ObterArquivoAtendimento(string idAtendimento, string idArquivo)
+    {
+        if (string.IsNullOrEmpty(idAtendimento) || string.IsNullOrEmpty(idArquivo))
+            return null;
+        var atendimento = ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return null;
+        if (atendimento.ArquivosAtendimento == null || atendimento.ArquivosAtendimento.Any())
+            return null;
+        var arquivo = atendimento.ArquivosAtendimento.FirstOrDefault(w => w.Id.Equals(idArquivo));
+        return arquivo;
+    }
+
+    public void RemoverArquivoAtendimento(string idAtendimento, string idArquivo)
+    {
+        var arquivo = ObterArquivoAtendimento(idAtendimento, idArquivo);
+        if (arquivo == null) return;
+        var atendimento = ObterAtendimento(idAtendimento);
+        atendimento.ArquivosAtendimento.Remove(arquivo);
+    }
+
+    public List<ArquivoClienteAtendimentoModel> ListarArquivosAtendimento(string idAtendimento)
+    {
+        if (string.IsNullOrEmpty(idAtendimento))
+            return null;
+        var atendimento = ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return null;
+        return atendimento.ArquivosAtendimento;
+    }
+
+    public ArquivoClienteAtendimentoModel RegistrarArquivoAtendimentoModel(string idAtendimento, ArquivoClienteAtendimentoModel arquivo)
+    {
+        if (string.IsNullOrEmpty(idAtendimento))
+            return null;
+        var atendimento = ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return null;
+        //Atualizar informação do Arquivo...
+        arquivo.Id = ServiceHelper.GerarId();
+        arquivo.NomeFisico = GerarNomeArquivoFisico(arquivo);
+        arquivo.DataHoraEnvio = DateTime.Now;
+        atendimento.AddArquivo(arquivo);
+        return arquivo;
+    }
+
+    private string GerarNomeArquivoFisico(ArquivoClienteAtendimentoModel arquivo)
+    {
+        var posInit = arquivo.NomeOriginal.IndexOf(".");
+        var posTamanho = arquivo.NomeOriginal.Length - posInit;
+        var extencao = arquivo.NomeOriginal.Substring(posInit, posTamanho);
+        return $"{arquivo.Id}{extencao}";
+    }
+
+    public ChatAtendimentoModel ObterChatAtendimento(string idAtendimento)
+    {
+        if (string.IsNullOrEmpty(idAtendimento))
+            return null;
+        var atendimento = ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return null;
+        return atendimento.ChatAtendimento;
+    }
+
 }

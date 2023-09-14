@@ -12,7 +12,7 @@ public class GenericController : Controller
     private const string KeyIdClienteSession = "KEY_ID_CLIENTE_SESSION";
     private const string KeyIdProfissionalSaudeSession = "KEY_ID_PROFISSIONAL_SAUDE_SESSION";
     private const string KeyIdUsuarioGestorSession = "KEY_ID_USUARIO_GESTOR_SESSION";
-    
+
     internal const string KeyMensagemErros = "KEY_MENSAGEM_ERRO";
     internal const string KeyMensagemAlerta = "KEY_MENSAGEM_ALERTA";
 
@@ -38,15 +38,57 @@ public class GenericController : Controller
     }
 
     /// <summary>
-    ///     Cria um retorno Json de Erro (Result = false) sem Model e mensagem com o erro para o usuário.
+    /// Cria um retorno Json de Erro (Result = false) com mensagem de erro.
     /// </summary>
-    /// <param name="mensagemAlerta">Mensagem de erro que deve ser apresentada ao usuário.</param>
+    /// <param name="mensagemErro"></param>
     /// <returns></returns>
     internal JsonResult JsonResultErro(string mensagemErro)
     {
-        return Json(new { HasErro = true, Mensagem = mensagemErro });
+        return Json(new { HasErro = true, Erros = new List<string> { mensagemErro } });
     }
-    
+
+    /// <summary>
+    ///     Cria um retorno Json de Erro (Result = false) com mensagem de erro.
+    /// </summary>
+    /// <param name="mensagensErro">Lista de mensagens de erro que deve ser apresentada ao usuário.</param>
+    /// <returns></returns>
+    internal JsonResult JsonResultErro(IEnumerable<string> mensagensErro)
+    {
+        return Json(new { HasErro = true, Erros = mensagensErro });
+    }
+
+    internal JsonResult JsonResultErro(object model, string mensagem = "")
+    {
+        return Json(new { HasErro = true, Model = model, Mensagem = mensagem });
+    }
+
+    internal JsonResult JsonResultErro(Exception ex)
+    {
+        return Json(new { HasErro = true, Erros = new[] { ex.Message } });
+    }
+
+    /// <summary>
+    ///     Cria um retorno Json de Erro (Result = false) com mensagem de erro, com base nos erros do modelState
+    /// </summary>
+    /// <param name="modelState">Lista de mensagens de erro que deve ser apresentada ao usuário.</param>
+    /// <returns></returns>
+    internal JsonResult JsonResultErro(ModelStateDictionary modelState)
+    {
+        var chaves = from modelstate in modelState.AsQueryable().Where(f => f.Value.Errors.Count > 0)
+            select modelstate.Key;
+        var mensagens =
+            from modelstate in modelState.AsQueryable().Where(f => f.Value.Errors.Count > 0)
+            select modelstate.Value.Errors.FirstOrDefault(a => !string.IsNullOrEmpty(a.ErrorMessage));
+        return
+            Json(
+                new
+                {
+                    HasErro = true,
+                    Chaves = chaves,
+                    Erros = mensagens.Where(a => a != null).Select(a => a.ErrorMessage).ToList()
+                });
+    }
+
     /// <summary>
     ///     Renderizar a View em String para respostas Json;
     /// </summary>
@@ -63,21 +105,22 @@ public class GenericController : Controller
         var viewResult = razorViewEngine.FindView(actionContext, viewName, false);
         if (viewResult?.View == null)
             throw new ArgumentException($"{viewName} does not match any available view");
-        var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { Model = model };
-        var viewContext = new ViewContext(actionContext, viewResult.View,  viewDictionary,
+        var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
+            { Model = model };
+        var viewContext = new ViewContext(actionContext, viewResult.View, viewDictionary,
             new TempDataDictionary(actionContext.HttpContext, tempDataProvider),
             sw, new HtmlHelperOptions()
         );
         viewResult.View.RenderAsync(viewContext);
         return sw.ToString();
     }
-    
+
     internal string? ObterIdCliente()
     {
         var idCliente = HttpContext.Session.GetString(KeyIdClienteSession);
         return string.IsNullOrEmpty(idCliente) ? null : idCliente;
     }
-    
+
     internal void GravarIdCliente(string idCliente)
     {
         HttpContext.Session.SetString(KeyIdClienteSession, idCliente);
@@ -85,17 +128,17 @@ public class GenericController : Controller
 
     internal void ExibirErro(string mensagem)
     {
-        if (_erros == null) 
+        if (_erros == null)
             _erros = new List<string>();
         _erros.Add(mensagem);
         TempData[KeyMensagemErros] = _erros;
     }
-    
+
     internal bool HasErros()
     {
-        return (_erros!=null && _erros.Count!=0);
+        return (_erros != null && _erros.Count != 0);
     }
-    
+
     internal void ExibirAlerta(string mensagem)
     {
         if (!string.IsNullOrEmpty(mensagem))
@@ -107,15 +150,18 @@ public class GenericController : Controller
         var idProfissionalSaude = HttpContext.Session.GetString(KeyIdProfissionalSaudeSession);
         return string.IsNullOrEmpty(idProfissionalSaude) ? null : idProfissionalSaude;
     }
+
     internal void GravarIdUsuarioGestor(string idUsuarioGestor)
     {
         HttpContext.Session.SetString(KeyIdUsuarioGestorSession, idUsuarioGestor);
     }
+
     internal bool HasUsuarioGestorLogado()
     {
         var idUsuarioGestor = ObterIdUsuarioGestor();
         return !string.IsNullOrEmpty(idUsuarioGestor);
     }
+
     internal void LogoffUsuarioGestorSession()
     {
         HttpContext.Session.Remove(KeyIdUsuarioGestorSession);
@@ -126,18 +172,20 @@ public class GenericController : Controller
         var idUsuarioGestor = HttpContext.Session.GetString(KeyIdUsuarioGestorSession);
         return string.IsNullOrEmpty(idUsuarioGestor) ? null : idUsuarioGestor;
     }
+
     internal void GravarIdProfissionalSaude(string idProfissionalSaude)
     {
         HttpContext.Session.SetString(KeyIdProfissionalSaudeSession, idProfissionalSaude);
     }
+
     internal bool HasProfissionalSaudeLogado()
     {
         var idProfissional = ObterIdProfissionalSaude();
         return !string.IsNullOrEmpty(idProfissional);
     }
+
     internal void LogoffProfissionalSaudeSession()
     {
         HttpContext.Session.Remove(KeyIdProfissionalSaudeSession);
     }
-
 }

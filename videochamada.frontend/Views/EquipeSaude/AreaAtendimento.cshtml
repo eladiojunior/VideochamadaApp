@@ -21,8 +21,8 @@
                 </li>
                 <li class="nav-item">
                     <div class="btn-group mt-1 me-1" role="group" aria-label="Ativa/Desativa Atendimento">
-                        <input type="checkbox" class="btn-check" id="btnOnline" autocomplete="off">
-                        <label class="btn btn-outline-secondary btnOnline" for="btnOnline" title="Clique para mudar seus status.">Não estou atendendo</label>
+                        <input type="checkbox" class="btn-check" id="btnOnline" autocomplete="off" @(Model.ProfissionalSaude.Online? "checked":"")>
+                        <label class="btn @(Model.ProfissionalSaude.Online? "btn-outline-success":"btn-outline-secondary") btnOnline" for="btnOnline" title="Clique para mudar seus status.">@(Model.ProfissionalSaude.Online? "Atendendo (Online)":"Não estou atendendo")</label>
                     </div>
                 </li>
             </ul>

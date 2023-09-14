@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using videochamada.frontend.Models;
 using VideoChatApp.FrontEnd.Services.Enums;
+using VideoChatApp.FrontEnd.Services.Exceptions;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 
 namespace VideoChatApp.FrontEnd.Controllers;
@@ -229,18 +230,26 @@ public class AtendimentoController : GenericController
         
         var idCliente = ObterIdCliente();
         var cliente = _serviceCliente.ObterCliente(idCliente);
+        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
+        if (atendimentoAberto == null)
+            return RedirectToAction("Index", "Home");
         
         var model = new ClenteEmAtendimentoModel();
-        model.IdAtendimento = "";
+        model.IdAtendimento = atendimentoAberto.Id;
         model.IdCliente = idCliente;
         model.Cliente = cliente;
-        model.IdProfissionalSaude = "";        
-        model.ProfissionalSaude = new ProfissionalSaudeModel();
-        model.ProfissionalSaude.Nome = "Eladio Lima Magalhães Júnior";
-        model.ProfissionalSaude.Especialidade = "Cardiologia";
-        model.ProfissionalSaude.Email = "eladiojunior@gmail.com";
-        model.ProfissionalSaude.Telefone = "(61) 99806-6983";
-        model.ChatAtendimento = new ChatAtendimentoModel();
+        model.Cliente.Arquivos = _serviceAtendimento.ListarArquivosAtendimento(atendimentoAberto.Id);
+
+        //Recuperar profissional do atendimento...
+        var profissionalAtendimento = atendimentoAberto.ProfissionalSaude;
+        if (profissionalAtendimento == null)
+            return RedirectToAction("FilaAtendimento", "Atendimento");
+        model.IdProfissionalSaude = profissionalAtendimento.Id;        
+        model.ProfissionalSaude = profissionalAtendimento;
+
+        //Recuperar o histórico de chat do atendimento...
+        model.ChatAtendimento = _serviceAtendimento.ObterChatAtendimento(atendimentoAberto.Id);
+        
         return View("EmAtendimento", model);
     }
 
@@ -249,5 +258,93 @@ public class AtendimentoController : GenericController
     public IActionResult SairDoAtendimento()
     {
         throw new NotImplementedException();
+    }
+    
+    [HttpGet]
+    public FileResult DownloadArquivoAtendimento(string idArquivo)
+    {
+        
+        var idCliente = ObterIdCliente();
+        if (string.IsNullOrEmpty(idCliente))
+            return null;
+        var cliente = _serviceCliente.ObterCliente(idCliente);
+        if (cliente == null)
+            return null;
+        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
+        if (atendimentoAberto == null)
+            return null;
+        
+        var arquivoAtendimento = _serviceAtendimento.ObterArquivoAtendimento(atendimentoAberto.Id, idArquivo);
+        if (arquivoAtendimento == null)
+            return null;
+
+        return File(arquivoAtendimento.BytesArquivo, arquivoAtendimento.TipoExtensao,
+            arquivoAtendimento.NomeOriginal);
+
+    }
+
+    [HttpGet]
+    public IActionResult RemoverArquivoAtendimento(string idArquivo)
+    {
+        
+        var idCliente = ObterIdCliente();
+        if (string.IsNullOrEmpty(idCliente))
+            return null;
+        var cliente = _serviceCliente.ObterCliente(idCliente);
+        if (cliente == null)
+            return null;
+        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
+        if (atendimentoAberto == null)
+            return null;
+        
+        _serviceAtendimento.RemoverArquivoAtendimento(atendimentoAberto.Id, idArquivo);
+
+        return null;
+        
+    }
+
+    [HttpPost]
+    public IActionResult EnviarArquivosAtendimento(ArquivoClienteAtendimentoEnviarModel model)
+    {
+
+        if (ModelState.IsValid)
+            return JsonResultErro(ModelState);
+
+        var cliente = _serviceCliente.ObterCliente(model.IdCliente);
+        if (cliente == null)
+            return JsonResultErro("Cliente não identificado.");
+
+        var atendimentoAberto = _serviceAtendimento.ObterAtendimento(model.IdAtendimento);
+        if (atendimentoAberto == null)
+            return JsonResultErro("Não identificamos um atendimento para registro do arquivo.");
+
+        try
+        {
+            var arquivoModel = ObterArquivoModel(model.Arquivo);
+            var arquivoRegistrado = _serviceAtendimento.RegistrarArquivoAtendimentoModel(model.IdAtendimento, arquivoModel);
+            return JsonResultSucesso(arquivoRegistrado,"Arquivo registrado com sucesso.");
+        }
+        catch (ServiceException erro)
+        {
+            return JsonResultErro(erro.Message);
+        }
+
+    }
+
+    /// <summary>
+    /// Recupera as informações do arquivo (FornFile) enviado da View para extração 
+    /// </summary>
+    /// <param name="arquivo">Arquivo enviado da View.</param>
+    /// <returns></returns>
+    private ArquivoClienteAtendimentoModel ObterArquivoModel(IFormFile arquivo)
+    {
+        var arquivoResult = new ArquivoClienteAtendimentoModel();
+        arquivoResult.NomeOriginal = arquivo.Name;
+        arquivoResult.TipoExtensao = arquivo.ContentType;
+        using var memoryStream = new MemoryStream();
+        arquivo.CopyToAsync(memoryStream);
+        arquivoResult.TamanhoBytes = memoryStream.Length;
+        arquivoResult.BytesArquivo = memoryStream.ToArray();
+        return arquivoResult;
     }
 }

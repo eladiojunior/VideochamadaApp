@@ -13,4 +13,5 @@ public class ClienteModel
     public string Email { get; set; }
     public string Telefone { get; set; }
     public List<AtendimentoModel> Atendimentos { get; set; }
+    public List<ArquivoClienteAtendimentoModel> Arquivos { get; set; }
 }

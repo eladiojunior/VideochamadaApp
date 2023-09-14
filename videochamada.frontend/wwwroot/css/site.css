@@ -302,11 +302,11 @@ body {
 }
 .area-cliente {
   padding: 5px 10px 5px 10px;
-  height: 387px;
+  height: 360px;
 }
 .info-cliente {
   font-size: 15px;
-  height: 250px;
+  height: 225px;
   overflow-y: auto;
 }
 .info-cliente .material-symbols-outlined {
@@ -338,6 +338,7 @@ body {
 .mensagem-usuario {
   background-color: white;
   padding: 5px;
+  padding-left: 10px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-size: 15px;

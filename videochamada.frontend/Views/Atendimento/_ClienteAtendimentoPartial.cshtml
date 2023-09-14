@@ -15,37 +15,35 @@ else
                     <span class="px-1">&nbsp;Arquivos</span>
                 </div>
                 <div class="atendimento-separador"></div>
-                <ul class="list-group list-group-flush lista-arquivos">
-                    <li class="list-group-item d-flex justify-content-between align-items-start px-0">
-                        <div class="me-auto">
-                            <div class="fw-bold">
-                                <a href="#" title="Download do arquivo.">Receita de Medicamento.pdf</a>
-                            </div>
-                            <span class="text-muted">20/08/2023 18:35</span>
-                        </div>
-                        <span class="rounded-pill">
-                            <a href="#" title="Remover arquivo do atendimento.">
-                                <span class="material-symbols-outlined">delete</span>
-                            </a>
-                        </span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-start px-0">
-                        <div class="me-auto">
-                            <div class="fw-bold">
-                                <a href="#" title="Download do arquivo.">Exame de sangue.png</a>
-                            </div>
-                            <span class="text-muted">10/07/2023 18:35</span>
-                        </div>
-                        <span class="rounded-pill">
-                            <a href="#" title="Remover arquivo do atendimento.">
-                                <span class="material-symbols-outlined">delete</span>
-                            </a>
-                        </span>
-                    </li>
-                </ul>
+                @await Html.PartialAsync("_ClienteArquivosAtendimentoPartial", Model.Arquivos)
             </div>
             <div class="vstack gap-2 mx-auto">
-              <button type="button" class="btn btn-sm btn-secondary">Enviar Arquivo</button>
+                <button type="button" class="btn btn-sm btn-secondary button-init-enviar-arquivo">Enviar Arquivo</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalEnviarArquivoAtendimento" tabindex="-1" aria-labelledby="modalEnviarArquivoAtendimentoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="formArquivo" enctype="multipart/form-data" method="post">
+                    <input type="hidden" name="IdCliente" value="@Model.Id" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEnviarArquivoAtendimentoLabel">Enviar arquivos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>Selecione um ou mais arquivos que deseja enviar e clique em "Enviar".</div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Arquivo:</label>
+                            <input class="form-control" type="file" accept=".jpg, .jpeg, .gif, .png, .pdf" id="formFile" name="Arquivo">
+                        </div>
+                        <div class="alert alert-info">Você pode enviar arquivos de Imagem (jpg/jpeg, gif e png) e Documento (pdf) com tamanho máximo de 2MB (MegaByte) por arquivo.</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary button-enviar-arquivo">Enviar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

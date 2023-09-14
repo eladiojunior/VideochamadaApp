@@ -1,0 +1,31 @@
+﻿@model List<ArquivoClienteAtendimentoModel>
+@if (Model == null || Model.Any())
+{
+    <div class="text-muted">
+        Você não tem nenhum arquivo!
+        <span class="material-symbols-outlined mt-2">folder</span>
+    </div>
+}
+else
+{
+    <ul class="list-group list-group-flush lista-arquivos">
+        @foreach (var arquivo in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-start px-0">
+                <div class="me-auto">
+                    <div class="fw-bold">
+                        <a asp-action="DownloadArquivoAtendimento" asp-controller="Atendimento" 
+                           asp-route="@arquivo.Id" title="Clique para download do arquivo.">@arquivo.NomeOriginal</a>
+                    </div>
+                    <span class="text-muted">@arquivo.DataHoraEnvio.ToString("g")</span>
+                </div>
+                <span class="rounded-pill">
+                    <a asp-action="RemoverArquivoAtendimento" asp-controller="Atendimento" 
+                       asp-route="@arquivo.Id" title="Clique para remover o arquivo do atendimento.">
+                        <span class="material-symbols-outlined">delete</span>
+                    </a>
+                </span>
+            </li>
+        }
+    </ul>
+}
