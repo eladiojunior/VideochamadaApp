@@ -1,4 +1,5 @@
-﻿AreaAtendimentoProfissional = {
+﻿let timeVerificarCliente;
+AreaAtendimentoProfissional = {
     InitControleAtendimento: function () {
         $("#btnOnline").click(function () {
             const labalCheck = $(".btnOnline");
@@ -14,11 +15,13 @@
                 if (isChecked) {
                     labalCheck.addClass("btn-outline-success");
                     labalCheck.text("Atendendo (Online)");
+                    AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
                     console.log("Profissional de Saúde está atendendo (Online).");
                 } else {
                     labalCheck.addClass("btn-outline-secondary");
                     labalCheck.text("Não estou atendendo");
                     console.log("Profissional de Saúde NÃO está atendendo (Offline).");
+                    clearTimeout(timeVerificarCliente);
                 }
             });
         });
@@ -28,6 +31,38 @@
         window.setInterval(function () {
             AreaAtendimentoProfissional.VerificarFilaAtendimento();
         }, 5000);
+    },
+    InitVerificacaoProximoClienteAtendimento: function () {
+        //Time para verificação do próximo cliente da fila de atendimento.
+        timeVerificarCliente = window.setInterval(function () {
+            AreaAtendimentoProfissional.VerificacaoProximoClienteAtendimento();
+        }, 5000);
+    },
+    VerificacaoProximoClienteAtendimento: function () {
+        let idProfissional = $("#idProfissional").val();
+        if (!idProfissional) return;
+        console.log("Para a verificação da fila até o retorno.");
+        clearTimeout(timeVerificarCliente);
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: _contexto + "Atendimento/RecuperarProximoClienteFilaAtendimento",
+            data: { idProfissional: idProfissional },
+            dataType: "json",
+            success: function (result) {
+                if (result.hasErro) {
+                    console.log(result.erros);
+                    AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
+                    return;
+                }
+                console.log(result.model);
+            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.error("VerificacaoProximoClienteAtendimento: " + errorThrown);
+            }
+        });
+        
+        console.log("Verificar próximo cliente...");
+        
     },
     AtualizarSituacaoAtendimentoProfissional: function (hasOnline, callback_result) {
         $.ajax({
@@ -41,7 +76,7 @@
                     AreaAtendimentoProfissional.AtualizarDastboardAtendimentos(
                         result.model.qtdProfissionaisOnline, result.model.qtdClientesFila, result.model.qtdClientesEmAtendimento);
                 }
-                callback_result(result.hasErro, result.mensagem);
+                callback_result(result.hasErro, result.erros);
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 callback_result(true, errorThrown);
             }

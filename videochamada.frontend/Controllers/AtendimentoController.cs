@@ -156,6 +156,8 @@ public class AtendimentoController : GenericController
         var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
         if (modelAtendimento == null)
             return RedirectToAction("Index", "Home");
+        if (modelAtendimento.Situacao == SituacaoAtendimentoEnum.EmAtendimento)
+            return RedirectToAction("EmAtendimento", "Atendimento");
         
         _serviceAtendimento.EntrarFilaAtendimento(modelAtendimento);
 
@@ -253,6 +255,29 @@ public class AtendimentoController : GenericController
         return View("EmAtendimento", model);
     }
 
+    [HttpGet]
+    public IActionResult RecuperarProximoClienteFilaAtendimento(string idProfissional)
+    {
+        
+        if (string.IsNullOrEmpty(idProfissional))
+            return JsonResultErro("Id do Profissional de Saúde não informado.");
+        var profissional = _serviceEquipeSaude.ObterProfissionalSaude(idProfissional);
+        if (profissional == null)
+            return JsonResultErro($"Profissional de Saúde não encontrado com o ID [{idProfissional}].");
+        if (!profissional.Online)
+            return JsonResultErro("Profissional de Saúde não está disponível (online) para atendimento.");
+
+        var clienteAtendimento = _serviceAtendimento.ObterProximoClienteAtendimento();
+        if (clienteAtendimento == null)
+            return JsonResultErro("Nenhum Cliente na fila de atendimento.");
+
+        var atendimento = _serviceAtendimento.IniciarAtendimentoProfissionalSaude(clienteAtendimento.Id, idProfissional);
+        if (atendimento == null)
+            return JsonResultErro($"Atendimento não aberto para o próximo Cliente [{clienteAtendimento.Nome}].");
+
+        return JsonResultSucesso(atendimento, "Próximo cliente recuperado e atendimento em andamento.");
+
+    }
     
     [HttpGet]
     public IActionResult SairDoAtendimento()

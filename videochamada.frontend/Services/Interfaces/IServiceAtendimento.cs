@@ -15,7 +15,7 @@ public interface IServiceAtendimento
     List<AtendimentoModel> ListarAtendimentosCliente(string idCliente);
     AtendimentoModel ObterAtendimento(string idAtendimento);
     void VerificarDispositivoParaAtendimento(string idAtendimento);
-    AtendimentoModel IniciarAtendimentoProfissionalSaude(string idAtendimento, string idProfissional);
+    AtendimentoModel IniciarAtendimentoProfissionalSaude(string idCliente, string idProfissional);
     List<AtendimentoModel> ListarAtendimentosProfissional(string idProfissional, bool hasRealizados);
     int QtdAtendimentos(SituacaoAtendimentoEnum filtroSituacao);
     TimeSpan TempoMedioAtendimentos(DateTime filtroDatahora);
@@ -26,4 +26,5 @@ public interface IServiceAtendimento
     List<ArquivoClienteAtendimentoModel> ListarArquivosAtendimento(string idAtendimento);
     ChatAtendimentoModel ObterChatAtendimento(string idAtendimento);
     ArquivoClienteAtendimentoModel RegistrarArquivoAtendimentoModel(string idAtendimento, ArquivoClienteAtendimentoModel arquivo);
+    ClienteModel ObterProximoClienteAtendimento();
 }

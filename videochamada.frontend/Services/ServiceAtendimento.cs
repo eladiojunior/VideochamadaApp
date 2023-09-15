@@ -133,12 +133,12 @@ public class ServiceAtendimento : IServiceAtendimento
 
     }
 
-    public AtendimentoModel IniciarAtendimentoProfissionalSaude(string idAtendimento, string idProfissional)
+    public AtendimentoModel IniciarAtendimentoProfissionalSaude(string idCliente, string idProfissional)
     {
         
-        var atendimento = ObterAtendimento(idAtendimento);
+        var atendimento = ObterAtendimentoAberto(idCliente);
         if (atendimento == null)
-            throw new ServiceException($"Nenhum atendimento encontrado com o ID {idAtendimento}");
+            throw new ServiceException($"Nenhum atendimento encontrado com para o Cliente ID {idCliente}");
         
         if (situacoesEncerradas.Contains(atendimento.Situacao))
             throw new ServiceException($"Atendimento encerrado [{atendimento.Situacao.ObterTextoEnum()}] não será possível iniciar.");
@@ -151,7 +151,9 @@ public class ServiceAtendimento : IServiceAtendimento
         profissional.EmAtendimento = true;
         profissional.Online = true;
         atendimento.ProfissionalSaude = profissional;
-        AtualizarSituacaoAtendimento(idAtendimento, SituacaoAtendimentoEnum.EmAtendimento);
+        atendimento.DataInicial = DateTime.Now;
+        
+        AtualizarSituacaoAtendimento(atendimento.Id, SituacaoAtendimentoEnum.EmAtendimento);
 
         return atendimento;
         
@@ -332,6 +334,12 @@ public class ServiceAtendimento : IServiceAtendimento
         arquivo.DataHoraEnvio = DateTime.Now;
         atendimento.AddArquivo(arquivo);
         return arquivo;
+    }
+
+    public ClienteModel ObterProximoClienteAtendimento()
+    {
+        return GerenciadorFilaCliente.Get().AtenderProximoCliente();
+        
     }
 
     private string GerarNomeArquivoFisico(ArquivoClienteAtendimentoModel arquivo)

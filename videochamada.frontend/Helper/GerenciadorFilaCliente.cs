@@ -26,7 +26,7 @@ public class GerenciadorFilaCliente
         return PosicaoNaFila(cliente.Id);
     }
 
-    public ClienteModel AtenderCliente()
+    public ClienteModel AtenderProximoCliente()
     {
         if (_fila.Count == 0) return null;
         while (_fila.TryDequeue(out var itemFila))

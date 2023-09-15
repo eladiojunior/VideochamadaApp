@@ -38,6 +38,7 @@
             <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Atendimento de Cliente"/>
         </div>
         <div class="col-12 col-xl-8">
+            <input type="hidden" id="idProfissional" value="@Model.ProfissionalSaude.Id"/>
             @await Html.PartialAsync("_MensagensPartial")
             <div class="row">
                 <div class="col-md-4 mb-2">
@@ -118,4 +119,8 @@
 @section Scripts
 {
     <script src="~/js/profissional-atendimento.js" asp-append-version="true"></script>
+    @if (Model != null && Model.ProfissionalSaude != null && Model.ProfissionalSaude.Online)
+    {
+        <script>AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();</script>
+    }
 }

@@ -1,4 +1,5 @@
-﻿FilaAtendimento = {
+﻿const avisarApartirPosicao = 3; //A partir da posição 3, avisar o cliente com o um alerta! 
+FilaAtendimento = {
     InitAtualizacaoPublicidade: function () {
         //Atualizar as publicidades da página
         var carouselPublicidade = document.querySelector('#carouselPublicidade');
@@ -26,16 +27,30 @@
                     var posicaoNovaFila = parseInt(result.model.posicaoNaFila);
                     $(".text-posicao-fila").text(posicaoNovaFila);
                     $(".text-qtd-profissionais").text(result.model.qtdProfissionaisOnline);
-                    if (posicaoAtualFila!=0 && posicaoAtualFila!=posicaoNovaFila)
+                    if (posicaoAtualFila!=0 && posicaoAtualFila!=posicaoNovaFila) {
                         FilaAtendimento.AvisarAtendimentoProximo(posicaoNovaFila);
+                        if (posicaoNovaFila === 0) //Atender
+                            FilaAtendimento.RedirecionarParaAtendimento();
+                    }
                 }
-            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }, 
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("VerificarFilaAtendimento: " + errorThrown);
             }
         });
     },
+    RedirecionarParaAtendimento: function () {
+        //Redirecionar cliente para o atendimento...
+        var modalRedirect = document.getElementById('modalRedirect')
+        modalRedirect.addEventListener('show.bs.modal', function (event) {
+            window.setTimeout(function () {
+                window.location.href = _contexto + "Atendimento/EmAtendimento";
+            }, 5000);
+        });
+        modalRedirect.show();
+    },
     AvisarAtendimentoProximo: function (posicaoFila) {
-        if (posicaoFila === 0 && posicaoFila > 3)
+        if (posicaoFila > avisarApartirPosicao)
             return;
         const promise = document.getElementById('audioPosicaoFila').play();
         if (promise !== undefined) {
