@@ -41,7 +41,8 @@ FilaAtendimento = {
     },
     RedirecionarParaAtendimento: function () {
         //Redirecionar cliente para o atendimento...
-        var modalRedirect = document.getElementById('modalRedirect')
+        var myModalEl = document.getElementById('modalRedirect')
+        var modalRedirect = bootstrap.Modal.getInstance(myModalEl)
         modalRedirect.addEventListener('show.bs.modal', function (event) {
             window.setTimeout(function () {
                 window.location.href = _contexto + "Atendimento/EmAtendimento";
