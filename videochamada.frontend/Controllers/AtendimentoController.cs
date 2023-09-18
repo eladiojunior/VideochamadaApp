@@ -282,7 +282,27 @@ public class AtendimentoController : GenericController
     [HttpGet]
     public IActionResult SairDoAtendimento()
     {
-        throw new NotImplementedException();
+        
+        var idCliente = ObterIdCliente();
+        var cliente = _serviceCliente.ObterCliente(idCliente);
+        if (cliente == null)
+            return RedirectToAction("Index", "Home");
+        
+        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
+        if (atendimentoAberto == null)
+            return RedirectToAction("Index", "Home");
+
+        //Verificar se o atendimento está em andamento...
+        if (atendimentoAberto.Situacao != SituacaoAtendimentoEnum.EmAtendimento)
+            return RedirectToAction("Index", "Home");
+            
+        var modelAvaliacao = new AvaliacaoAtendimentoModel();
+        modelAvaliacao.IdCliente = atendimentoAberto.IdCliente;
+        modelAvaliacao.IdAtendimento = atendimentoAberto.Id;
+        modelAvaliacao.HasDesistencia = true;
+        
+        return View("AvaliarAtendimento", modelAvaliacao);
+        
     }
     
     [HttpGet]

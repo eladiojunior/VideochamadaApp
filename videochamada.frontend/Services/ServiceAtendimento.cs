@@ -114,12 +114,15 @@ public class ServiceAtendimento : IServiceAtendimento
         var atendimentoModel = _atendimentos.GetValueOrDefault(atendimento.IdAtendimento);
         if (atendimentoModel == null)
             return;
-        
+
+        //Registrar histórico...
+        AtualizarSituacaoAtendimento(atendimento.IdAtendimento, situacaoAtendimento);
+
         atendimentoModel.DataFinal = DateTime.Now;
         atendimentoModel.Situacao = situacaoAtendimento;
         atendimentoModel.Nota = atendimento.Nota;
         atendimentoModel.ComentarioNota = atendimento.Comentario;
-
+        
         VerificarRemoverClienteFilaAtendimento(atendimento.IdCliente);
         
     }
@@ -240,7 +243,7 @@ public class ServiceAtendimento : IServiceAtendimento
                 {//Calcular tempo...
                     var dataHoraFinal = historico.DataRegistro;
                     var tempoEspera = CalcularTempoEspera(dataHoraInicial.Value, dataHoraFinal);
-                    tempoTotalAtendimento.Add(tempoEspera);
+                    tempoTotalAtendimento = tempoTotalAtendimento.Add(tempoEspera);
                     dataHoraInicial = null;
                 } else if (!dataHoraInicial.HasValue && historico.Situacao == situacaoCalculo)
                     dataHoraInicial = historico.DataRegistro;

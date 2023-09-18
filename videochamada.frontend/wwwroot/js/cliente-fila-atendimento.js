@@ -40,15 +40,13 @@ FilaAtendimento = {
         });
     },
     RedirecionarParaAtendimento: function () {
-        //Redirecionar cliente para o atendimento...
-        var myModalEl = document.getElementById('modalRedirect')
-        var modalRedirect = bootstrap.Modal.getInstance(myModalEl)
-        modalRedirect.addEventListener('show.bs.modal', function (event) {
-            window.setTimeout(function () {
-                window.location.href = _contexto + "Atendimento/EmAtendimento";
-            }, 5000);
-        });
+        //Abrir modal com aguarde!.
+        const modalRedirect = new bootstrap.Modal(document.getElementById('modalRedirect'), {});
         modalRedirect.show();
+        //Redirecionar cliente para o atendimento...
+        window.setTimeout(function () {
+            window.location.href = _contexto + "Atendimento/EmAtendimento";
+        }, 5000);
     },
     AvisarAtendimentoProximo: function (posicaoFila) {
         if (posicaoFila > avisarApartirPosicao)
