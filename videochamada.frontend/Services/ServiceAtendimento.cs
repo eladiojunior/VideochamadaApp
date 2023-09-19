@@ -300,7 +300,7 @@ public class ServiceAtendimento : IServiceAtendimento
         var atendimento = ObterAtendimento(idAtendimento);
         if (atendimento == null)
             return null;
-        if (atendimento.ArquivosAtendimento == null || atendimento.ArquivosAtendimento.Any())
+        if (atendimento.ArquivosAtendimento == null || !atendimento.ArquivosAtendimento.Any())
             return null;
         var arquivo = atendimento.ArquivosAtendimento.FirstOrDefault(w => w.Id.Equals(idArquivo));
         return arquivo;

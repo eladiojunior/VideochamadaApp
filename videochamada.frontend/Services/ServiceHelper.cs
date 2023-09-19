@@ -13,9 +13,9 @@ public class ServiceHelper
     public static int CalcularIdade(DateTime dataNascimento)
     {
         var dataCorrente = DateTime.Now.Date;
-        return dataNascimento.Year - dataCorrente.Year - 1 +
-               (dataNascimento.Month > dataCorrente.Month ||
-               (dataNascimento.Month == dataCorrente.Month && dataNascimento.Day >= dataCorrente.Day) ? 1 : 0);
+        return ((dataCorrente.Year - dataNascimento.Year - 1) +
+               (dataCorrente.Month > dataNascimento.Month ||
+               (dataCorrente.Month == dataNascimento.Month && dataCorrente.Day >= dataNascimento.Day) ? 1 : 0));
     }
 
     public static bool VerificarDataValida(string dataString, string formatoValidar = "dd/MM/yyyy")

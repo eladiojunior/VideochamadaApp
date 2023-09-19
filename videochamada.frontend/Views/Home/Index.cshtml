@@ -38,27 +38,27 @@
                 </ol>
             </div>
         </div>
-    @if (Model == null)
-    {
-        <div class="row pt-2">
-            <div class="col-12 d-grid gap-2 d-md-block text-center">
-                <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-success" title="Registro de um novo cliente para utilização da plataforma.">Novo Cliente</a>
-                <a asp-action="Consultar" asp-controller="Cliente" class="btn btn-secondary" title="Cliente já registrado, realizar acesso.">Já sou Registrado</a>
-                <a asp-action="Index" asp-controller="EquipeSaude" class="btn btn-info" title="Acesso ao perfil de Profissional de Saúde.">Sou Profissional de Saúde</a>
-                <a asp-action="Index" asp-controller="PainelGestao" class="btn btn-light" title="Acesso ao painel de gestão da plataforma de videochamada.">Painel Gerencial</a>
+        @if (Model == null)
+        {
+            <div class="row pt-2">
+                <div class="col-12 d-grid gap-2 d-md-block text-center">
+                    <a asp-action="Registrar" asp-controller="Cliente" class="btn btn-success" title="Registro de um novo cliente para utilização da plataforma.">Novo Cliente</a>
+                    <a asp-action="Consultar" asp-controller="Cliente" class="btn btn-secondary" title="Cliente já registrado, realizar acesso.">Já sou Registrado</a>
+                    <a asp-action="Index" asp-controller="EquipeSaude" class="btn btn-info" title="Acesso ao perfil de Profissional de Saúde.">Sou Profissional de Saúde</a>
+                    <a asp-action="Index" asp-controller="PainelGestao" class="btn btn-light" title="Acesso ao painel de gestão da plataforma de videochamada.">Painel Gerencial</a>
+                </div>
             </div>
-        </div>
-    } 
-    else
-    {
-        @await Html.PartialAsync("_DadosClientePartial", Model)
-        @await Html.PartialAsync("_MensagensPartial")
-        <div class="row pt-2">
-            <div class="col-12 d-grid gap-2 d-md-block text-center">
-                <a asp-action="NovoAtendimento" asp-controller="Atendimento" class="btn btn-success">Novo Atendimento</a>
+        } 
+        else
+        {
+            @await Html.PartialAsync("_DadosClientePartial", Model)
+            @await Html.PartialAsync("_MensagensPartial")
+            <div class="row pt-2">
+                <div class="col-12 d-grid gap-2 d-md-block text-center">
+                    <a asp-action="NovoAtendimento" asp-controller="Atendimento" class="btn btn-success">Novo Atendimento</a>
+                </div>
             </div>
-        </div>
-        @await Html.PartialAsync("_DadosAtendimentosPartial", Model.Atendimentos)
-    }
+            @await Html.PartialAsync("_DadosAtendimentosPartial", Model.Atendimentos)
+        }
     </div>
 </div>
