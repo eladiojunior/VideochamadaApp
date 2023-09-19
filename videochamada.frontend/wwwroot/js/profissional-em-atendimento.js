@@ -13,7 +13,7 @@ EmAtendimento = {
         
     },
     InitDispositivoCameraMicrofone: function () {
-        videoLocal = document.getElementById('video-cliente');
+        videoLocal = document.getElementById('video-local');
         //Variavel para pegar permissão de camera e microfone, definição de acordo com navegador.
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -110,13 +110,13 @@ EmAtendimento = {
             // Configura o objeto RTCPeerConnection
             let configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
             let peerConnection = new RTCPeerConnection(configuration);
-            videoRemoto = document.getElementById("video-profissional");
+            videoRemoto = document.getElementById("video-remoto");
             
             // Lidar com o ICE Candidate Events
             peerConnection.onicecandidate = function (event) {
                 if (event.candidate) {
                     connection.invoke("SendIceCandidate", 
-                        JSON.stringify({ 'iceCandidate': event.candidate, 'connectionId': idProfissional }));
+                        JSON.stringify({ 'iceCandidate': event.candidate, 'connectionId': idCliente }));
                 }
             };
 
@@ -135,7 +135,7 @@ EmAtendimento = {
                 await peerConnection.setLocalDescription(answer);
                 
                 connection.invoke("SendAnswer", 
-                    JSON.stringify({ 'answer': answer, 'connectionId': idProfissional }));
+                    JSON.stringify({ 'answer': answer, 'connectionId': idCliente }));
             });
 
             connection.on("ReceiveAnswer", async (answer) => {
@@ -152,7 +152,7 @@ EmAtendimento = {
             async function makeOffer() {
                 const offer = await peerConnection.createOffer();
                 await peerConnection.setLocalDescription(offer);
-                connection.invoke("SendOffer", JSON.stringify({ 'offer': offer, 'connectionId': idProfissional}));
+                connection.invoke("SendOffer", JSON.stringify({ 'offer': offer, 'connectionId': idCliente}));
             }
 
             // Adicione os streams locais (deve ser feito depois de obter acesso à câmera/microfone)

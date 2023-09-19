@@ -6,14 +6,23 @@
 }
 else
 {
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">@Model.Nome</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Sexo: @Model.Sexo.ObterTextoEnum() - Idade: @Model.Idade</h6>
-            <p class="card-text">
-                <strong>E-mail: </strong> @Model.Email<br/>
-                <strong>Telefone: </strong> @Model.Telefone<br/>
-            </p>
+    <div class="card mt-2 mt-xl-0">
+        <div class="area-dados-cliente">
+            <span class="d-block">@Model.Nome</span>
+            <div class="info-dados-cliente mt-2 mb-2">
+                <span class="info-dados-cliente-titulo">Cliente</span>
+                <div class="d-flex align-items-center text-muted" title="Sexo e idade do cliente">
+                    <span class="px-1">&nbsp;Sexo: @Model.Sexo.ObterTextoEnum() - Idade: @Model.Idade</span>
+                </div>
+                <div class="d-flex align-items-center text-muted" title="E-mail do cliente">
+                    <span class="material-symbols-outlined">alternate_email</span>
+                    <span class="px-1">&nbsp;@Model.Email</span>
+                </div>
+                <div class="d-flex align-items-center text-muted" title="Telefone do cliente">
+                    <span class="material-symbols-outlined">phone_iphone</span>
+                    <span class="px-1">&nbsp;@Model.Telefone</span>
+                </div>
+            </div>
         </div>
     </div>
 }

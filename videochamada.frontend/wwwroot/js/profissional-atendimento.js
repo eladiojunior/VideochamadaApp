@@ -41,8 +41,10 @@ AreaAtendimentoProfissional = {
     VerificacaoProximoClienteAtendimento: function () {
         let idProfissional = $("#idProfissional").val();
         if (!idProfissional) return;
+        
         console.log("Para a verificação da fila até o retorno.");
         clearTimeout(timeVerificarCliente);
+        
         $.ajax({
             cache: false,
             type: "GET",
@@ -55,7 +57,9 @@ AreaAtendimentoProfissional = {
                     AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
                     return;
                 }
-                console.log(result.model);
+                AreaAtendimentoProfissional.AvisarAtendimentoDeCliente();
+                alert("IdAtendimento: " + result.model.id);
+                AreaAtendimentoProfissional.RedirecionarParaAtendimento(result.model.id);
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("VerificacaoProximoClienteAtendimento: " + errorThrown);
             }
@@ -63,6 +67,26 @@ AreaAtendimentoProfissional = {
         
         console.log("Verificar próximo cliente...");
         
+    },
+    RedirecionarParaAtendimento: function (idAtendimento) {
+        //Abrir modal com aguarde!
+        const modalRedirect = new bootstrap.Modal(document.getElementById('modalRedirect'), {});
+        modalRedirect.show();
+        //Redirecionar proficional para o atendimento do cliente...
+        window.setTimeout(function () {
+            window.open(_contexto + "EquipeSaude/EmAtendimento?idAtendimento="+idAtendimento, "_blank");
+            modalRedirect.hide();
+        }, 5000);
+    },
+    AvisarAtendimentoDeCliente: function () {
+        const promise = document.getElementById('audioAtendimento').play();
+        if (promise !== undefined) {
+            promise.then(_ => {
+                console.log("Avisar ao profissional que que chegou cliente para atender.");
+            }).catch(error => {
+                console.error("Erro ao avisar profissional do atendimento: " + error);
+            });
+        }
     },
     AtualizarSituacaoAtendimentoProfissional: function (hasOnline, callback_result) {
         $.ajax({

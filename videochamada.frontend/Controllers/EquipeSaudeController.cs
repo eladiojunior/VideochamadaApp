@@ -10,11 +10,13 @@ public class EquipeSaudeController : GenericController
 {
     private readonly IServiceEquipeSaude _serviceEquipeSaude;
     private readonly IServiceAtendimento _serviceAtendimento;
+    private readonly IServiceCliente _serviceCliente;
     
-    public EquipeSaudeController(IServiceEquipeSaude serviceEquipeSaude, IServiceAtendimento serviceAtendimento)
+    public EquipeSaudeController(IServiceEquipeSaude serviceEquipeSaude, IServiceAtendimento serviceAtendimento, IServiceCliente serviceCliente)
     {
         _serviceEquipeSaude = serviceEquipeSaude;
         _serviceAtendimento = serviceAtendimento;
+        _serviceCliente = serviceCliente;
     }
     
     [HttpGet]
@@ -188,4 +190,38 @@ public class EquipeSaudeController : GenericController
     {
         throw new NotImplementedException();
     }
+    
+    [HttpGet]
+    public IActionResult EmAtendimento(string idAtendimento)
+    {
+        
+        if (string.IsNullOrEmpty(idAtendimento))
+            return RedirectToAction("Index", "EquipeSaude");
+        
+        var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return RedirectToAction("Index", "EquipeSaude");
+        
+        var model = new ProfissionalSaudeEmAtendimentoModel();
+        model.IdAtendimento = atendimento.Id;
+        model.IdCliente = atendimento.IdCliente;
+        var cliente = _serviceCliente.ObterCliente(atendimento.IdCliente);
+        model.Cliente = cliente;
+        model.Cliente.Arquivos = _serviceAtendimento.ListarArquivosAtendimento(atendimento.Id);
+
+        //Recuperar profissional do atendimento...
+        var profissionalAtendimento = atendimento.ProfissionalSaude;
+        if (profissionalAtendimento == null)
+            return RedirectToAction("Index", "EquipeSaude");
+        
+        model.IdProfissionalSaude = profissionalAtendimento.Id;        
+        model.ProfissionalSaude = profissionalAtendimento;
+
+        //Recuperar o histórico de chat do atendimento...
+        model.ChatAtendimento = _serviceAtendimento.ObterChatAtendimento(atendimento.Id);
+        
+        return View("ProfissionalEmAtendimento", model);
+        
+    }
+
 }

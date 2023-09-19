@@ -251,14 +251,14 @@ body {
   justify-content: center;
   align-items: center;
 }
-.area-video-profissional {
+.area-video-remoto {
   width: 100%;
   height: 100%;
   background-color: #88898a;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
 }
-.area-video-cliente {
+.area-video-local {
   width: 100%;
   max-width: 150px;
   height: 150px;
@@ -348,6 +348,22 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-size: 15px;
 }
+
+.area-dados-cliente {
+  padding: 5px 10px 5px 10px;
+}
+.info-dados-cliente {
+  font-size: 15px;
+}
+.info-dados-cliente .material-symbols-outlined {
+  font-size: 18px;
+}
+.info-dados-cliente-titulo {
+  font-size: 15px;
+  color: #4b4b4b;
+  font-weight: bold;
+}
+
 /* ---------- Área Videochamada ----------- */
 
 
@@ -356,7 +372,7 @@ body {
   .area-videochamada {
     height: 430px;
   }
-  .area-video-cliente {
+  .area-video-local {
     max-width: 100px;
     height: 120px;
     bottom: 10px;

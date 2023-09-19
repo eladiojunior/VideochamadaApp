@@ -114,8 +114,8 @@
         </div>
     </div>
 </div>
-<div class="modal-receber-cliente" style="display: none;">Dados do cliente...</div>
 <audio id="audioAtendimento" src="~/mp3/audioPosicaoFila.mp3"></audio>
+@await Html.PartialAsync("_ModalRedirectPartial")
 @section Scripts
 {
     <script src="~/js/profissional-atendimento.js" asp-append-version="true"></script>

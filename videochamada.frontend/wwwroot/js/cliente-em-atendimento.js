@@ -34,7 +34,7 @@ EmAtendimento = {
         });
     },
     InitDispositivoCameraMicrofone: function () {
-        videoLocal = document.getElementById('video-cliente');
+        videoLocal = document.getElementById('video-local');
         //Variavel para pegar permissão de camera e microfone, definição de acordo com navegador.
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -47,8 +47,8 @@ EmAtendimento = {
             });
     },
     SucessoPermissaoDispositivo: function () {
-        $(".video-cliente-aguardando").hide();
-        $(".video-cliente-aguardando").removeClass("d-flex");
+        $(".video-local-aguardando").hide();
+        $(".video-local-aguardando").removeClass("d-flex");
         try {
             if (streamMediaLocal == null) {
                 EmAtendimento.MensagemCliente("Câmera sem permissão, inexistente ou utilizado por outro aplicativo.");
@@ -63,8 +63,8 @@ EmAtendimento = {
     },
     ErroPermissaoDispositivo: function (error) {
         console.log(error);
-        $(".video-cliente-aguardando").html("<span class='material-symbols-outlined fs-2 text-danger'>video_camera_front_off</span><span class='d-block text-muted' style='font-size:10px;'>Erro ao acessar o dispositivo!</span>");
-        $(".video-cliente-aguardando").addClass("d-flex");
+        $(".video-local-aguardando").html("<span class='material-symbols-outlined fs-2 text-danger'>video_camera_front_off</span><span class='d-block text-muted' style='font-size:10px;'>Erro ao acessar o dispositivo!</span>");
+        $(".video-local-aguardando").addClass("d-flex");
         camera_video=false; //Desativar...
         EmAtendimento.ControlarButtonCamera($("#camera-button"), camera_video);
     },
@@ -76,9 +76,9 @@ EmAtendimento = {
         //Desativar camera...
         videoLocal.srcObject = null;
         streamMediaLocal = null;
-        $(".video-cliente-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
-        $(".video-cliente-aguardando").addClass("d-flex");
-        $(".video-cliente-aguardando").show();
+        $(".video-local-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
+        $(".video-local-aguardando").addClass("d-flex");
+        $(".video-local-aguardando").show();
     },
     EnviarMensagemChat: function () {
         const fieldMensagem = $(".input-mensagem-chat");
@@ -139,16 +139,16 @@ EmAtendimento = {
                 console.log("Conexão com o servidor de sinalização estabelecida.");
                 if (EmAtendimento.EstabelecerComunicacao()) 
                 {//Connexao remota estabelecida...
-                    $(".video-profissional-aguardando").hide();
-                    $(".video-profissional-aguardando").removeClass("d-flex");
+                    $(".video-remoto-aguardando").hide();
+                    $(".video-remoto-aguardando").removeClass("d-flex");
                 } 
                 else 
                 {
                     //Desativar camera...
                     videoRemoto.srcObject = null;
-                    $(".video-profissional-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
-                    $(".video-profissional-aguardando").addClass("d-flex");
-                    $(".video-profissional-aguardando").show();
+                    $(".video-remoto-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
+                    $(".video-remoto-aguardando").addClass("d-flex");
+                    $(".video-remoto-aguardando").show();
                 }
             })
             .catch((err) => {
@@ -173,7 +173,7 @@ EmAtendimento = {
             // Configura o objeto RTCPeerConnection
             let configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
             let peerConnection = new RTCPeerConnection(configuration);
-            videoRemoto = document.getElementById("video-profissional");
+            videoRemoto = document.getElementById("video-remoto");
             
             // Lidar com o ICE Candidate Events
             peerConnection.onicecandidate = function (event) {
