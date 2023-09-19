@@ -93,7 +93,7 @@ peerConnection.setLocalDescription(offer);
 
 // Enviar a oferta para o outro par através do servidor de sinalização
 connection.invoke("SendSignal",
-    JSON.stringify({ 'offer': offer }), targetPeerId);
+    JSON.stringify({ 'signal': offer }), targetPeerId);
 
 connection.on("ReceiveSignal", async (message, senderId) => {
     const signal = JSON.parse(message);

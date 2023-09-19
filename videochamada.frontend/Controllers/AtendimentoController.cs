@@ -96,6 +96,8 @@ public class AtendimentoController : GenericController
                 return RedirectToAction("VerificarDispositivo", "Atendimento");
             case SituacaoAtendimentoEnum.FilaAtendimento:
                 return RedirectToAction("FilaAtendimento", "Atendimento");
+            case SituacaoAtendimentoEnum.EmAtendimento:
+                return RedirectToAction("EmAtendimento", "Atendimento");
             default:
                 return RedirectToAction("Index", "Home");
         }
@@ -252,7 +254,7 @@ public class AtendimentoController : GenericController
         //Recuperar o histórico de chat do atendimento...
         model.ChatAtendimento = _serviceAtendimento.ObterChatAtendimento(atendimentoAberto.Id);
         
-        return View("EmAtendimento", model);
+        return View("ClienteEmAtendimento", model);
     }
 
     [HttpGet]

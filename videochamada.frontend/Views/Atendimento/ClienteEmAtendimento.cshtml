@@ -28,21 +28,21 @@
                 <div class="area-videochamada">
                     <div class="area-video-container">
                         <div class="area-video-profissional">
-                            <div class="text-center mt-5 video-profissional-aguardando">
-                                <span class="d-block">Aguarde, estamos te conectando com o profissional de saúde!</span>
-                                <div class="mt-5 spinner-border" role="status">
+                            <div class="d-flex flex-column justify-content-center align-items-center video-remoto video-profissional-aguardando">
+                                <span>Aguarde, estamos te conectando com o profissional de saúde!</span>
+                                <div class="mt-3 spinner-border" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-                            <video id="video-profissional"></video>    
+                            <video class="video-remoto" id="video-profissional" autoplay playsinline></video>    
                         </div>
                         <div class="area-video-cliente">
-                            <div class="video-cliente video-cliente-aguardando">
+                            <div class="d-flex flex-column justify-content-center align-items-center video-local video-cliente-aguardando">
                                 <div class="spinner-border" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-                            <video class="video-cliente" id="video-cliente"></video>
+                            <video class="video-local" id="video-cliente" autoplay playsinline></video>
                         </div>
                         <div class="video-controls">
                             <button type="button" class="control-button on" id="mute-button" title="Controle do mute do microfone.">

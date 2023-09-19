@@ -1,7 +1,7 @@
 ﻿
 let streamMediaLocal;
-let videoLocal; //Area do cliente
-let videoRemoto; //Area do Profissional
+let videoLocal; //Area do Profissional
+let videoRemoto; //Area do Cliente
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/videochamadaHub")
@@ -10,28 +10,7 @@ const connection = new signalR.HubConnectionBuilder()
 EmAtendimento = {
     
     InitChatAtendimento: function () {
-        //Posicionar no final da lista do chat...
-        const divAreaChat = $(".chat-container");
-        divAreaChat.scrollTop(divAreaChat.offset().top);
-        //Ação do buttton de enviar...
-        $(".button-enviar-mensagem-chat").click(function () {
-            EmAtendimento.EnviarMensagemChat();
-        });
-        $(".input-mensagem-chat").keydown(function (event) {
-            if (event.keyCode === 13) //ENTER
-                EmAtendimento.EnviarMensagemChat();
-        });
-        $(".button-posicao-chat").click(function () {
-            //Posicionar no final da lista do chat...
-            const divAreaChat = $(".chat-container");
-            divAreaChat.scrollTop(divAreaChat.offset().top);
-            const fieldMensagem = $(".input-mensagem-chat");
-            fieldMensagem.focus();
-        });
-        $(".button-posicao-video").click(function () {
-            //Posicionar no início da tela...
-            window.scroll({top: 0, behavior: "smooth" });
-        });
+        
     },
     InitDispositivoCameraMicrofone: function () {
         videoLocal = document.getElementById('video-cliente');
@@ -47,8 +26,8 @@ EmAtendimento = {
             });
     },
     SucessoPermissaoDispositivo: function () {
-        $(".video-cliente-aguardando").hide();
-        $(".video-cliente-aguardando").removeClass("d-flex");
+        $(".video-local-aguardando").hide();
+        $(".video-local-aguardando").removeClass("d-flex");
         try {
             if (streamMediaLocal == null) {
                 EmAtendimento.MensagemCliente("Câmera sem permissão, inexistente ou utilizado por outro aplicativo.");
@@ -63,8 +42,8 @@ EmAtendimento = {
     },
     ErroPermissaoDispositivo: function (error) {
         console.log(error);
-        $(".video-cliente-aguardando").html("<span class='material-symbols-outlined fs-2 text-danger'>video_camera_front_off</span><span class='d-block text-muted' style='font-size:10px;'>Erro ao acessar o dispositivo!</span>");
-        $(".video-cliente-aguardando").addClass("d-flex");
+        $(".video-local-aguardando").html("<span class='material-symbols-outlined fs-2 text-danger'>video_camera_front_off</span><span class='d-block text-muted' style='font-size:10px;'>Erro ao acessar o dispositivo!</span>");
+        $(".video-local-aguardando").addClass("d-flex");
         camera_video=false; //Desativar...
         EmAtendimento.ControlarButtonCamera($("#camera-button"), camera_video);
     },
@@ -76,23 +55,12 @@ EmAtendimento = {
         //Desativar camera...
         videoLocal.srcObject = null;
         streamMediaLocal = null;
-        $(".video-cliente-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
-        $(".video-cliente-aguardando").addClass("d-flex");
-        $(".video-cliente-aguardando").show();
+        $(".video-local-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
+        $(".video-local-aguardando").addClass("d-flex");
+        $(".video-local-aguardando").show();
     },
     EnviarMensagemChat: function () {
-        const fieldMensagem = $(".input-mensagem-chat");
-        const mensagem = fieldMensagem.val();
-        console.log("Enviar mensagem... [" + mensagem + "]");
-        if (mensagem === null || mensagem === "") {
-            fieldMensagem.focus();
-            return;
-        }
-        const divAreaChat = $(".chat-container");
-        divAreaChat.append("<div class='message'><img class='img-chat-sender' src='/imgs/chat-sender.png' alt='Enviado' title='Você'><div class='message-content message-content-sender'>"+mensagem+"</div></div>");
-        divAreaChat.scrollTop(divAreaChat.offset().top);
-        fieldMensagem.val("");
-        fieldMensagem.focus();
+        console.log("Enviar mensagem...");
     },
     InitControleVideo: function () {
         let mute_video = true;
@@ -130,37 +98,6 @@ EmAtendimento = {
         }, 3000);
     },
     
-    InitComunicacaoVideoRemota: function () {
-        
-        console.log("Inicializar comunicação remota de video.");
-
-        connection.start()
-            .then(() => {
-                console.log("Conexão com o servidor de sinalização estabelecida.");
-                if (EmAtendimento.EstabelecerComunicacao()) 
-                {//Connexao remota estabelecida...
-                    $(".video-profissional-aguardando").hide();
-                    $(".video-profissional-aguardando").removeClass("d-flex");
-                } 
-                else 
-                {
-                    //Desativar camera...
-                    videoRemoto.srcObject = null;
-                    $(".video-profissional-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
-                    $(".video-profissional-aguardando").addClass("d-flex");
-                    $(".video-profissional-aguardando").show();
-                }
-            })
-            .catch((err) => {
-                console.error(err.toString());
-            });
-        
-        connection.on('UserDisconnected', async (senderId) => {
-            console.log("Desconectado: " + senderId);
-            connection.close();
-        });
-        
-    },
     EstabelecerComunicacao: function () {
         
         try {
@@ -237,6 +174,37 @@ EmAtendimento = {
             console.error(erro);
             return false;
         }
+    },
+    InitComunicacaoVideoRemota: function () {
+        
+        console.log("Inicializar comunicação remota de video.");
+
+        connection.start()
+            .then(() => {
+                console.log("Conexão com o servidor de sinalização estabelecida.");
+                if (EmAtendimento.EstabelecerComunicacao()) 
+                {//Connexao remota estabelecida...
+                    $(".video-remoto-aguardando").hide();
+                    $(".video-remoto-aguardando").removeClass("d-flex");
+                } 
+                else 
+                {
+                    //Desativar camera...
+                    videoRemoto.srcObject = null;
+                    $(".video-remoto-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
+                    $(".video-remoto-aguardando").addClass("d-flex");
+                    $(".video-remoto-aguardando").show();
+                }
+            })
+            .catch((err) => {
+                console.error(err.toString());
+            });
+        
+        connection.on('UserDisconnected', async (senderId) => {
+            console.log("Desconectado: " + senderId);
+            connection.close();
+        });
+        
     }
 }
 $(function () {
