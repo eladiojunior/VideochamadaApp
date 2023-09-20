@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using System.Collections.Concurrent;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
+using videochamada.frontend.Models;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 
 namespace videochamada.frontend.Helper;
 
 public class VideoChamadaHub : Hub
 {
-    private IServiceAtendimento _serviceAtendimento = null;
-
-    public VideoChamadaHub(IServiceAtendimento serviceAtendimento)
-    {
-        this._serviceAtendimento = serviceAtendimento;
-    }
-
+    private static readonly ConcurrentDictionary<string, UsuarioHubModel> _usuarios = new ConcurrentDictionary<string, UsuarioHubModel>();
+    
     public override async Task OnConnectedAsync()
     {
         var connectionId = Context.ConnectionId;
+        await Clients.Client(connectionId).SendAsync("ReceiveSignal", connectionId);
         await base.OnConnectedAsync();
     }
     
@@ -23,7 +22,20 @@ public class VideoChamadaHub : Hub
         var connectionId = Context.ConnectionId;
         await base.OnDisconnectedAsync(exception);
     }
-    
+
+    public async Task EnviarUsuarioAtendimento(string connectionId, string idAtendimento)
+    {
+        Console.WriteLine("EnviarUsuarioAtendimento: " + connectionId + " - " + idAtendimento);
+        
+    }
+
+
+
+
+
+
+
+
     public async Task SendOffer(string offer, string connectionId)
     {
         Console.WriteLine("SendOffer: " + connectionId);

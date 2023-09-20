@@ -156,9 +156,15 @@ EmAtendimento = {
                 console.error(err.toString());
             });
         
+        //Identificar usuário desconectado...
         connection.on('UserDisconnected', async (senderId) => {
             console.log("Desconectado: " + senderId);
             connection.close();
+        });
+        
+        //Receber o identificador da connexão...
+        connection.on("ReceiveSignal", (signal, connectionId) => {
+            console.log(`Receber connectionId deste, signal: ${signal}, com o ID: ${connectionId}`);
         });
         
     },

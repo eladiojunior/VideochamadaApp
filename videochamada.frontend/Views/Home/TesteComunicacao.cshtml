@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Testando comunicação....";
+}
+<div class="status text-muted">
+    [ConnectionID]
+</div>
+
+<div>
+    <h2>Dispositivos de áudio:</h2>
+    <select id="audioDevice">
+    </select>
+</div>
+@section Scripts
+{
+    <script src="~/js/teste-conexao.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        navigator.mediaDevices.enumerateDevices()
+          .then(devices => {
+            let audioDevices = devices.filter(device => device.kind === 'audioinput');
+            carregarSelect(audioDevices);
+          })
+          .catch(err => {
+            console.log('Erro ao listar dispositivos:', err);
+          });
+        function carregarSelect(audioDevices) {
+            audioDevices.forEach(device => {
+              let option = document.createElement('option');
+              option.value = device.deviceId;
+              option.text = device.label;
+              document.getElementById('audioDevice').appendChild(option);
+            });
+        }
+    </script>
+}
