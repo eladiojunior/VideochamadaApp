@@ -109,20 +109,17 @@ public class AtendimentoController : GenericController
         
         var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
         if (atendimento == null)
-        {
             ExibirErro("Atendimento não encontrado para continuar.");
-        }
-        var modelCliente = _serviceCliente.ObterCliente(atendimento.IdCliente);
-        if (modelCliente == null)
-        {
+
+        var cliente = atendimento.Cliente;
+        if (cliente == null)
             ExibirErro("Erro ao identificar o Cliene do atendimento.");
-        }
 
         if (!HasErros())
         {//Cancelar atendimento
             var avaliacaoAtendimento = new AvaliacaoAtendimentoModel();
             avaliacaoAtendimento.IdAtendimento = idAtendimento;
-            avaliacaoAtendimento.IdCliente = atendimento.IdCliente;
+            avaliacaoAtendimento.IdCliente = atendimento.Cliente.Id;
             avaliacaoAtendimento.Comentario = "Cancelado pelo Cliente.";
             _serviceAtendimento.EncerrarAtendimento(avaliacaoAtendimento, SituacaoAtendimentoEnum.Cancelado);            
         }
@@ -182,7 +179,7 @@ public class AtendimentoController : GenericController
             return RedirectToAction("Index", "Home");
         
         var modelAvaliacao = new AvaliacaoAtendimentoModel();
-        modelAvaliacao.IdCliente = modelAtendimento.IdCliente;
+        modelAvaliacao.IdCliente = modelAtendimento.Cliente.Id;
         modelAvaliacao.IdAtendimento = modelAtendimento.Id;
         modelAvaliacao.HasDesistencia = true;
         
@@ -299,7 +296,7 @@ public class AtendimentoController : GenericController
             return RedirectToAction("Index", "Home");
             
         var modelAvaliacao = new AvaliacaoAtendimentoModel();
-        modelAvaliacao.IdCliente = atendimentoAberto.IdCliente;
+        modelAvaliacao.IdCliente = atendimentoAberto.Cliente.Id;
         modelAvaliacao.IdAtendimento = atendimentoAberto.Id;
         modelAvaliacao.HasDesistencia = true;
         

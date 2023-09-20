@@ -5,6 +5,7 @@ let videoRemoto; //Area do Profissional
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/videochamadaHub")
+    .withAutomaticReconnect()
     .build();
 
 EmAtendimento = {
@@ -179,7 +180,7 @@ EmAtendimento = {
             peerConnection.onicecandidate = function (event) {
                 if (event.candidate) {
                     connection.invoke("SendIceCandidate", 
-                        JSON.stringify({ 'iceCandidate': event.candidate, 'connectionId': idProfissional }));
+                        JSON.stringify({ 'iceCandidate': event.candidate }), idProfissional);
                 }
             };
 
@@ -198,7 +199,7 @@ EmAtendimento = {
                 await peerConnection.setLocalDescription(answer);
                 
                 connection.invoke("SendAnswer", 
-                    JSON.stringify({ 'answer': answer, 'connectionId': idProfissional }));
+                    JSON.stringify({ 'answer': answer }), idProfissional);
             });
 
             connection.on("ReceiveAnswer", async (answer) => {
@@ -215,7 +216,8 @@ EmAtendimento = {
             async function makeOffer() {
                 const offer = await peerConnection.createOffer();
                 await peerConnection.setLocalDescription(offer);
-                connection.invoke("SendOffer", JSON.stringify({ 'offer': offer, 'connectionId': idProfissional}));
+                connection.invoke("SendOffer", 
+                    JSON.stringify({ 'offer': offer }), idProfissional);
             }
 
             // Adicione os streams locais (deve ser feito depois de obter acesso à câmera/microfone)
@@ -228,7 +230,6 @@ EmAtendimento = {
             
             makeOffer().then(result => {
                 console.log("Iniciando negociação...");
-                
             });
             
             return true;
@@ -244,4 +245,3 @@ $(function () {
     EmAtendimento.InitControleVideo();
     EmAtendimento.InitDispositivoCameraMicrofone();
 });
-

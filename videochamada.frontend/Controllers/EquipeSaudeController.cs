@@ -204,9 +204,8 @@ public class EquipeSaudeController : GenericController
         
         var model = new ProfissionalSaudeEmAtendimentoModel();
         model.IdAtendimento = atendimento.Id;
-        model.IdCliente = atendimento.IdCliente;
-        var cliente = _serviceCliente.ObterCliente(atendimento.IdCliente);
-        model.Cliente = cliente;
+        model.IdCliente = atendimento.Cliente.Id;
+        model.Cliente = atendimento.Cliente;
         model.Cliente.Arquivos = _serviceAtendimento.ListarArquivosAtendimento(atendimento.Id);
 
         //Recuperar profissional do atendimento...

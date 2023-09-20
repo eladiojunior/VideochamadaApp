@@ -30,8 +30,8 @@ public class ServiceAtendimento : IServiceAtendimento
             return null;
         
         var atendimento = new AtendimentoModel();
-        atendimento.IdCliente = cliente.Id;
         atendimento.Id = ServiceHelper.GerarId(); //Gerar ID
+        atendimento.Cliente = cliente;
         atendimento.Situacao = SituacaoAtendimentoEnum.Registrado;
         atendimento.DataRegistro = DateTime.Now;
         atendimento.HasTermoUso = model.HasTermoUso;
@@ -66,7 +66,7 @@ public class ServiceAtendimento : IServiceAtendimento
         };
         
         var atendimentoAberto = _atendimentos.Values.FirstOrDefault(c => 
-            c.IdCliente.Equals(clienteModel.Id) && listaSituacaoAberto.Contains(c.Situacao) && c.DataFinal == null);
+            c.Cliente.Id.Equals(clienteModel.Id) && listaSituacaoAberto.Contains(c.Situacao) && c.DataFinal == null);
         if (atendimentoAberto == null)
             return null;
         
@@ -76,14 +76,14 @@ public class ServiceAtendimento : IServiceAtendimento
 
     public AtendimentoModel EntrarFilaAtendimento(AtendimentoModel atendimento)
     {
-        var clienteModel = _serviceCliente.ObterCliente(atendimento.IdCliente);
-        if (clienteModel == null)
+        var cliente = _serviceCliente.ObterCliente(atendimento.Cliente.Id);
+        if (cliente == null)
             return null;
-        var posicaoFila = GerenciadorFilaCliente.Get().PosicaoNaFila(atendimento.IdCliente);
+        var posicaoFila = GerenciadorFilaCliente.Get().PosicaoNaFila(cliente.Id);
         if (posicaoFila == 0) 
         {//Registrar cliente na fila...
             AtualizarSituacaoAtendimento(atendimento.Id, SituacaoAtendimentoEnum.FilaAtendimento);
-            GerenciadorFilaCliente.Get().EntrarNaFila(clienteModel);
+            GerenciadorFilaCliente.Get().EntrarNaFila(cliente);
         }
         return atendimento;
     }
@@ -182,7 +182,7 @@ public class ServiceAtendimento : IServiceAtendimento
 
     public List<AtendimentoModel> ListarAtendimentosCliente(string idCliente)
     {
-        return _atendimentos.Values.Where(w => w.IdCliente.Equals(idCliente)).OrderByDescending(o => o.DataRegistro).ToList();
+        return _atendimentos.Values.Where(w => w.Cliente.Id.Equals(idCliente)).OrderByDescending(o => o.DataRegistro).ToList();
     }
 
     public AtendimentoModel ObterAtendimento(string idAtendimento)

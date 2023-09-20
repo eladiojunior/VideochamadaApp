@@ -7,7 +7,17 @@
     }
     @foreach (var item in Model)
     {
-        @item.DataRegistro.ToString("g")
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@item.Cliente.Nome</h5>
+                <div class="grid">
+                    <div class="g-col-4">Início Atendimento: @(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g"):"")</div>
+                    <div class="g-col-4">Arquivos: @(item.ArquivosAtendimento != null ? item.ArquivosAtendimento.Count.ToString("0"):"0")</div>
+                    <div class="g-col-4">Mensagens Chat: @(item.ChatAtendimento != null ? item.ChatAtendimento.QtdMensagens.ToString("0"):"0")</div>
+                </div>
+                <a asp-controller="EquipeSaude" asp-action="EmAtendimento" asp-route-idAtendimento="@item.Id" class="btn btn-success btn-primary">Abrir Atendimento</a>
+            </div>
+        </div>
     }
     </div>    
 </div>

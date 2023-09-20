@@ -1,11 +1,11 @@
-﻿namespace videochamada.frontend.Models;
+﻿using VideoChatApp.FrontEnd.Services.Enums;
+
+namespace videochamada.frontend.Models;
 
 public class MensagemChatModel
 {
-    public int Tipo { get; set; }
-    public string Conteudo { get; set; }
-    public string Destinatario { get; set; }
-    public string Remetente { get; set; }
+    public OrigemMensagemEnum Origem { get; set; }
+    public string Texto { get; set; }
     public DateTime DataHoraEnvio { get; set; }
     public DateTime? DataHoraRebimento { get; set; }
     public DateTime? DataHoraLeitura { get; set; }

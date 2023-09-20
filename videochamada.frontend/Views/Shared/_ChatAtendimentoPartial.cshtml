@@ -1,51 +1,51 @@
-﻿@model ChatAtendimentoModel
+﻿@using VideoChatApp.FrontEnd.Services.Enums
+@model ChatAtendimentoModel
 <div class="card mt-2">
     <div class="card-header">
         <span class="chat-titulo">Chat do Atendimento</span>
     </div>
     <div id="chat-box" class="chat-container">
-        <div class="message">
-            <img class="img-chat-sender" src="~/imgs/chat-sender.png" alt="Enviado">
-            <div class="message-content message-content-sender">
-                Olá! Como você está?
+        @if (Model == null || Model.QtdMensagens == 0)
+        {
+            <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
+                <span class="material-symbols-outlined fs-1 text-muted">mode_comment</span>
+                <span class="text-center text-muted mt-2" style='font-size:10px;'>Você não tem mensagens no Chat. Para iniciar basta escrever algo e pressione ENTER ;)</span>
             </div>
-        </div>
-        <div class="message">
-            <div class="message-content message-content-receiver">
-                Olá! Estou bem, obrigado por perguntar. E você?
-            </div>
-            <img class="img-chat img-chat-receiver" src="~/imgs/chat-receiver.png" alt="Receiver">
-        </div>
-        <div class="message">
-            <img class="img-chat img-chat-sender" src="~/imgs/chat-sender.png" alt="Sender">
-            <div class="message-content message-content-sender">
-                Estou ótimo, obrigado! Quer se encontrar para um café?
-            </div>
-        </div>
-        <div class="message">
-            <div class="img-chat img-chat-sender"></div>
-            <div class="message-content message-content-sender">
-                Testando envio de mensagem curta!
-            </div>
-        </div>
-        <div class="message">
-            <div class="img-chat img-chat-sender"></div>
-            <div class="message-content message-content-sender">
-                Testando envio de mensagem longa! Muito longa como um livro, como um livro como um livro como um livro como um livro como um livro como um livro como um livro como um livro como um livro.
-            </div>
-        </div>
-        <div class="message">
-            <div class="img-chat img-chat-sender"></div>
-            <div class="message-content message-content-sender">
-                Oi
-            </div>
-        </div>
-        <div class="message">
-            <div class="message-content message-content-receiver">
-                Nova mensagem do profissional.
-            </div>
-            <img class="img-chat img-chat-receiver" src="~/imgs/chat-receiver.png" alt="Receiver">
-        </div>
+        }
+        else
+        {
+            OrigemMensagemEnum? origemAtual = null;
+            bool hasExibirAvatar = false;
+            foreach (var mensagem in Model.Mensagens)
+            {
+                if (origemAtual == null || origemAtual != mensagem.Origem)
+                {
+                    hasExibirAvatar = true;
+                    origemAtual = mensagem.Origem;
+                }
+                if (origemAtual == OrigemMensagemEnum.Cliente)
+                {
+                    <div class="message">
+                        @if (hasExibirAvatar) {
+                            <img class="img-chat-sender" src="~/imgs/chat-sender.png" alt="Enviado">
+                        } else {
+                            <div class="img-chat img-chat-sender"></div>
+                        }
+                        <div class="message-content message-content-sender">@mensagem.Texto</div>
+                    </div>
+                } else if (origemAtual == OrigemMensagemEnum.ProfissionalSaude)
+                {
+                    <div class="message">
+                        <div class="message-content message-content-receiver">@mensagem.Texto</div>
+                        @if (hasExibirAvatar) {
+                            <img class="img-chat img-chat-receiver" src="~/imgs/chat-receiver.png" alt="Receiver">
+                        } else {
+                            <div class="img-chat img-chat-receiver"></div>
+                        }
+                    </div>
+                }
+            }
+        }
     </div>
     <div class="input-container">
         <input class="input-mensagem-chat" type="text" placeholder="Digite sua mensagem">

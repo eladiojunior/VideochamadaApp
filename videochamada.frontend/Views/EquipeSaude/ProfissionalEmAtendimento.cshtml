@@ -20,7 +20,17 @@
 <div class="row">
     <div class="col-xl-2 d-none d-xl-block">
         <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Em Atendimento"/>
-        @await Html.PartialAsync("_ProfissionalAtendimentoPartial", Model.ProfissionalSaude)
+        <div class="profissional">
+            @await Html.PartialAsync("_ProfissionalAtendimentoPartial", Model.ProfissionalSaude)    
+        </div>
+        <div class="list-group" style="font-size: 12px;">
+            <a class="list-group-item list-group-item-action" title="Detalhes das informações do cliente em atendimento."
+               data-bs-toggle="offcanvas" href="#offcanvasInfoCliente">Informações do Cliente</a>
+            <a class="list-group-item list-group-item-action" title="Arquivos enviados e recebidos no atendimento do cliente." 
+               data-bs-toggle="offcanvas" href="#offcanvasArquivosAtendimento">Arquivos Atendimento</a>
+            <a class="list-group-item list-group-item-action" title="Histórico de saúde do cliente em atendimento" 
+               data-bs-toggle="modal" href="#modalHistoricoSaudeCliente">Histórico de Saúde</a>
+        </div>
     </div>
     <div class="col-12 col-xl-10">
         <div class="row pt-2">
@@ -87,6 +97,40 @@
             <div class="modal-footer">
                 <a asp-action="SairDoAtendimento" asp-controller="Atendimento" class="btn btn-danger">Sim, quero sair</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não quero</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasInfoCliente" aria-labelledby="offcanvasInfoClienteLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasInfoClienteLabel">Detalhes do Cliente</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        Dados do Cliente...
+    </div>
+</div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasArquivosAtendimento" aria-labelledby="offcanvasArquivosAtendimentoLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasArquivosAtendimentoLabel">Arquivos do Atendimento do Cliente</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        Arquivos do Atendimento do Cliente...
+    </div>
+</div>
+<div class="modal fade" id="modalHistoricoSaudeCliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalHistoricoSaudeClienteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalHistoricoSaudeClienteLabel">Histórico de Saúde do Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Histórico de Saude do Cliente...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>

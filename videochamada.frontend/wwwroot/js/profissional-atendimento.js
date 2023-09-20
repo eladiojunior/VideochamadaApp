@@ -127,15 +127,27 @@ AreaAtendimentoProfissional = {
             },
             success: function (result) {
                 if (!result.hasErro) {
-                    if (hasRealizados)
+                    if (hasRealizados) 
+                    {
                         $(".atendimentos-realizados").html(result.model);
-                    else
+                        AreaAtendimentoProfissional.InitAcoesListaAtendimentoRealizado();
+                    }
+                    else 
+                    {
                         $(".atendimentos-emAndamento").html(result.model);
+                        AreaAtendimentoProfissional.InitAcoesListaAtendimentoEmAndamento();
+                    }
                 }
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("CarregarAtendimentosProfissional: " + errorThrown);
             }
         });
+    },
+    InitAcoesListaAtendimentoEmAndamento: function () {
+        
+    },
+    InitAcoesListaAtendimentoRealizado: function () {
+
     },
     VerificarFilaAtendimento: function () {
         $.ajax({

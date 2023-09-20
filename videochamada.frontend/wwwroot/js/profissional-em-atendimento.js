@@ -5,6 +5,7 @@ let videoRemoto; //Area do Cliente
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/videochamadaHub")
+    .withAutomaticReconnect()
     .build();
 
 EmAtendimento = {
@@ -97,7 +98,37 @@ EmAtendimento = {
             $(".mensagem-usuario").text("Você está em uma videochamada com um profissional de saúde.");
         }, 3000);
     },
-    
+    InitComunicacaoVideoRemota: function () {
+
+        console.log("Inicializar comunicação remota de video.");
+
+        connection.start()
+            .then(() => {
+                console.log("Conexão com o servidor de sinalização estabelecida.");
+                if (EmAtendimento.EstabelecerComunicacao())
+                {//Connexao remota estabelecida...
+                    $(".video-remoto-aguardando").hide();
+                    $(".video-remoto-aguardando").removeClass("d-flex");
+                }
+                else
+                {
+                    //Desativar camera...
+                    videoRemoto.srcObject = null;
+                    $(".video-remoto-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
+                    $(".video-remoto-aguardando").addClass("d-flex");
+                    $(".video-remoto-aguardando").show();
+                }
+            })
+            .catch((err) => {
+                console.error(err.toString());
+            });
+
+        connection.on('UserDisconnected', async (senderId) => {
+            console.log("Desconectado: " + senderId);
+            connection.close();
+        });
+
+    },
     EstabelecerComunicacao: function () {
         
         try {
@@ -115,8 +146,8 @@ EmAtendimento = {
             // Lidar com o ICE Candidate Events
             peerConnection.onicecandidate = function (event) {
                 if (event.candidate) {
-                    connection.invoke("SendIceCandidate", 
-                        JSON.stringify({ 'iceCandidate': event.candidate, 'connectionId': idCliente }));
+                    connection.invoke("SendIceCandidate",
+                        JSON.stringify({ 'iceCandidate': event.candidate }), idCliente);
                 }
             };
 
@@ -133,9 +164,9 @@ EmAtendimento = {
                 await peerConnection.setRemoteDescription(remoteOffer);
                 const answer = await peerConnection.createAnswer();
                 await peerConnection.setLocalDescription(answer);
-                
-                connection.invoke("SendAnswer", 
-                    JSON.stringify({ 'answer': answer, 'connectionId': idCliente }));
+
+                connection.invoke("SendAnswer",
+                    JSON.stringify({ 'answer': answer }), idCliente);
             });
 
             connection.on("ReceiveAnswer", async (answer) => {
@@ -152,7 +183,8 @@ EmAtendimento = {
             async function makeOffer() {
                 const offer = await peerConnection.createOffer();
                 await peerConnection.setLocalDescription(offer);
-                connection.invoke("SendOffer", JSON.stringify({ 'offer': offer, 'connectionId': idCliente}));
+                connection.invoke("SendOffer", 
+                    JSON.stringify({ 'offer': offer }), idCliente);
             }
 
             // Adicione os streams locais (deve ser feito depois de obter acesso à câmera/microfone)
@@ -165,7 +197,6 @@ EmAtendimento = {
             
             makeOffer().then(result => {
                 console.log("Iniciando negociação...");
-                
             });
             
             return true;
@@ -174,37 +205,6 @@ EmAtendimento = {
             console.error(erro);
             return false;
         }
-    },
-    InitComunicacaoVideoRemota: function () {
-        
-        console.log("Inicializar comunicação remota de video.");
-
-        connection.start()
-            .then(() => {
-                console.log("Conexão com o servidor de sinalização estabelecida.");
-                if (EmAtendimento.EstabelecerComunicacao()) 
-                {//Connexao remota estabelecida...
-                    $(".video-remoto-aguardando").hide();
-                    $(".video-remoto-aguardando").removeClass("d-flex");
-                } 
-                else 
-                {
-                    //Desativar camera...
-                    videoRemoto.srcObject = null;
-                    $(".video-remoto-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
-                    $(".video-remoto-aguardando").addClass("d-flex");
-                    $(".video-remoto-aguardando").show();
-                }
-            })
-            .catch((err) => {
-                console.error(err.toString());
-            });
-        
-        connection.on('UserDisconnected', async (senderId) => {
-            console.log("Desconectado: " + senderId);
-            connection.close();
-        });
-        
     }
 }
 $(function () {
@@ -212,4 +212,3 @@ $(function () {
     EmAtendimento.InitControleVideo();
     EmAtendimento.InitDispositivoCameraMicrofone();
 });
-

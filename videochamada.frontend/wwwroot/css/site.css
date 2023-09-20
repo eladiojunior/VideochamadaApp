@@ -327,7 +327,7 @@ body {
 }
 
 .area-profissional-saude {
-  padding: 5px 10px 5px 10px;
+  padding: 10px;
 }
 .info-profissional-saude {
   font-size: 15px;
@@ -339,6 +339,15 @@ body {
   font-size: 15px;
   color: #4b4b4b;
   font-weight: bold;
+}
+.profissional .info-profissional-saude {
+  font-size: 12px;
+}
+.profissional .info-profissional-saude-titulo {
+  font-size: 13px;
+}
+.profissional .area-profissional-saude {
+  font-size: 12px;
 }
 .mensagem-usuario {
   background-color: white;

@@ -9,10 +9,11 @@ else
     <div class="card mt-2 mt-xl-0">
         <div class="area-dados-cliente">
             <span class="info-dados-cliente-titulo">Cliente</span>
+            <input id="idCliente" value="@Model.Id" type="hidden"/>
             <div class="info-dados-cliente mb-2">
                 <span class="d-block">@Model.Nome</span>    
                 <div class="d-flex align-items-center text-muted" title="Sexo e idade do cliente">
-                    <span>&nbsp;Sexo: @Model.Sexo.ObterTextoEnum() | Idade: @Model.Idade</span>
+                    <span>Sexo: @Model.Sexo.ObterTextoEnum() - Idade: @Model.Idade</span>
                 </div>
                 <div class="d-flex align-items-center text-muted" title="E-mail do cliente">
                     <span class="material-symbols-outlined">alternate_email</span>
