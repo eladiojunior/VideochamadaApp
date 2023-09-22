@@ -5,6 +5,7 @@
         <span class="chat-titulo">Chat do Atendimento</span>
     </div>
     <div id="chat-box" class="chat-container">
+        <input type="hidden" id="qtdMensagensChat" value="@(Model!=null?Model.QtdMensagens:0)"/>
         @if (Model == null || Model.QtdMensagens == 0)
         {
             <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
@@ -27,20 +28,27 @@
                 if (origemAtual == UsuarioOrigemMensagemEnum.Cliente)
                 {
                     <div class="message">
-                        @if (hasExibirAvatar) {
+                        @if (hasExibirAvatar)
+                        {
                             <img class="img-chat img-chat-sender" src="~/imgs/chat-sender.png" alt="Enviado">
-                        } else {
+                        }
+                        else
+                        {
                             <div class="img-chat img-chat-sender"></div>
                         }
                         <div class="message-content message-content-sender">@mensagem.Texto</div>
                     </div>
-                } else if (origemAtual == UsuarioOrigemMensagemEnum.ProfissionalSaude)
+                }
+                else if (origemAtual == UsuarioOrigemMensagemEnum.ProfissionalSaude)
                 {
                     <div class="message">
                         <div class="message-content message-content-receiver">@mensagem.Texto</div>
-                        @if (hasExibirAvatar) {
+                        @if (hasExibirAvatar)
+                        {
                             <img class="img-chat img-chat-receiver" src="~/imgs/chat-receiver.png" alt="Receiver">
-                        } else {
+                        }
+                        else
+                        {
                             <div class="img-chat img-chat-receiver"></div>
                         }
                     </div>

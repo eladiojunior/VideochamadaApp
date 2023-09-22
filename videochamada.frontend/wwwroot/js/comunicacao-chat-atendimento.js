@@ -27,6 +27,7 @@
 
         //Receber mensagem enviada
         connection.on('ReceberMensagem', (idUsuario, mensagem) => {
+            const intQtdMensagensChat = parseInt($("#qtdMensagensChat").val());
             const hasSender = (idUsuarioHub === idUsuario);
             const hasAvatar = (ultimoIdUsuario !== idUsuario);
             let strMensagem = "<div class='message'>";
@@ -45,6 +46,8 @@
             }
             strMensagem += "</div>";
             const divAreaChat = $(".chat-container");
+            if (intQtdMensagensChat === 0 )
+                divAreaChat.text("");    
             divAreaChat.append(strMensagem);
             divAreaChat.scrollTop(divAreaChat.offset().top);
             ultimoIdUsuario = idUsuario;
