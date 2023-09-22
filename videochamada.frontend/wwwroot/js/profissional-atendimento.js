@@ -58,7 +58,6 @@ AreaAtendimentoProfissional = {
                     return;
                 }
                 AreaAtendimentoProfissional.AvisarAtendimentoDeCliente();
-                alert("IdAtendimento: " + result.model.id);
                 AreaAtendimentoProfissional.RedirecionarParaAtendimento(result.model.id);
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("VerificacaoProximoClienteAtendimento: " + errorThrown);

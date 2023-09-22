@@ -1,4 +1,7 @@
-﻿@model List<ArquivoClienteAtendimentoModel>
+﻿@model List<ArquivoAtendimentoModel>
+@{
+    var IdUsuario = ViewData["IdUsuario"]?.ToString() ?? "";
+}
 @if (Model == null || !Model.Any())
 {
     <div class="mt-3 text-muted text-center">
@@ -20,9 +23,12 @@ else
                     <span class="text-muted">@arquivo.DataHoraEnvio.ToString("g")</span>
                 </div>
                 <span class="rounded-pill">
-                    <a href="#" data-id-arquivo="@arquivo.Id" class="remover-arquivo-atendimento" title="Clique para remover o arquivo do atendimento.">
-                        <span class="material-symbols-outlined">delete</span>
-                    </a>
+                    @if (arquivo.IdUsuario.Equals(IdUsuario))
+                    {
+                        <a href="#" data-id-arquivo="@arquivo.Id" class="remover-arquivo-atendimento" title="Clique para remover o arquivo do atendimento.">
+                            <span class="material-symbols-outlined">delete</span>
+                        </a>
+                    }
                 </span>
             </li>
         }

@@ -169,7 +169,7 @@ body {
   margin-bottom: 5px;
 }
 .message .img-chat {
-  width: 30px;
+  width: 34px;
   height: 30px;
 }
 .message img {
@@ -186,7 +186,7 @@ body {
 .message-content {
   padding: 8px 12px;
   border-radius: 10px;
-  max-width: 85%;
+  width: 100%;
 }
 .message-content-sender {
   background-color: #34b7f1;

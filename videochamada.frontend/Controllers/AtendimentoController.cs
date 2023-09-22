@@ -235,11 +235,10 @@ public class AtendimentoController : GenericController
         if (atendimentoAberto == null)
             return RedirectToAction("Index", "Home");
         
-        var model = new ClenteEmAtendimentoModel();
+        var model = new UsuarioEmAtendimentoModel();
         model.IdAtendimento = atendimentoAberto.Id;
         model.IdCliente = idCliente;
         model.Cliente = cliente;
-        model.Cliente.Arquivos = _serviceAtendimento.ListarArquivosAtendimento(atendimentoAberto.Id);
 
         //Recuperar profissional do atendimento...
         var profissionalAtendimento = atendimentoAberto.ProfissionalSaude;
@@ -250,6 +249,9 @@ public class AtendimentoController : GenericController
 
         //Recuperar o histórico de chat do atendimento...
         model.ChatAtendimento = _serviceAtendimento.ObterChatAtendimento(atendimentoAberto.Id);
+        
+        //Recuperar os arquivos do atendimento...
+        model.ArquivosAtendimento = _serviceAtendimento.ListarArquivosAtendimento(atendimentoAberto.Id);
         
         return View("ClienteEmAtendimento", model);
     }
@@ -305,60 +307,43 @@ public class AtendimentoController : GenericController
     }
     
     [HttpGet]
-    public ActionResult DownloadArquivoAtendimento(string idArquivo)
+    public ActionResult DownloadArquivoAtendimento(string idAtendimento, string idArquivo)
     {
         
-        var idCliente = ObterIdCliente();
-        if (string.IsNullOrEmpty(idCliente))
+        var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
+        if (atendimento == null)
             return View("Error");
         
-        var cliente = _serviceCliente.ObterCliente(idCliente);
-        if (cliente == null)
-            return View("Error");
-        
-        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
-        if (atendimentoAberto == null)
-            return View("Error");
-        
-        var arquivoAtendimento = _serviceAtendimento.ObterArquivoAtendimento(atendimentoAberto.Id, idArquivo);
+        var arquivoAtendimento = _serviceAtendimento.ObterArquivoAtendimento(atendimento.Id, idArquivo);
         if (arquivoAtendimento == null)
             return View("Error");
 
-        return File(arquivoAtendimento.BytesArquivo, arquivoAtendimento.TipoExtensao,
+        return File(arquivoAtendimento.BytesArquivo, 
+            arquivoAtendimento.TipoExtensao,
             arquivoAtendimento.NomeOriginal);
 
     }
 
     [HttpPost]
-    public IActionResult RemoverArquivoAtendimento(string idArquivo)
+    public IActionResult RemoverArquivoAtendimento(string idAtendimento, string idArquivo)
     {
         
-        var idCliente = ObterIdCliente();
-        if (string.IsNullOrEmpty(idCliente))
-            return JsonResultErro("Id do cliente não identificado.");
-        var cliente = _serviceCliente.ObterCliente(idCliente);
-        if (cliente == null)
-            return JsonResultErro($"Cliente não identificado com o Id {idCliente}.");
-        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
-        if (atendimentoAberto == null)
-            return JsonResultErro($"Atendimento não identificado para o Cliente Id {idCliente}.");
+        var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return JsonResultErro($"Atendimento não identificado com o Id {idAtendimento}.");
         
-        _serviceAtendimento.RemoverArquivoAtendimento(atendimentoAberto.Id, idArquivo);
+        _serviceAtendimento.RemoverArquivoAtendimento(atendimento.Id, idArquivo);
 
         return JsonResultSucesso($"Arquivo removido do atendimento.");;
         
     }
 
     [HttpPost]
-    public IActionResult EnviarArquivosAtendimento(ArquivoClienteAtendimentoEnviarModel model)
+    public IActionResult EnviarArquivosAtendimento(ArquivoAtendimentoEnviarModel model)
     {
 
         if (!ModelState.IsValid)
             return JsonResultErro(ModelState);
-
-        var cliente = _serviceCliente.ObterCliente(model.IdCliente);
-        if (cliente == null)
-            return JsonResultErro("Cliente não identificado.");
 
         var atendimentoAberto = _serviceAtendimento.ObterAtendimento(model.IdAtendimento);
         if (atendimentoAberto == null)
@@ -367,6 +352,7 @@ public class AtendimentoController : GenericController
         try
         {
             var arquivoModel = ObterArquivoModel(model.Arquivo);
+            arquivoModel.IdUsuario = model.IdUsuario;
             var arquivoRegistrado = _serviceAtendimento.RegistrarArquivoAtendimentoModel(model.IdAtendimento, arquivoModel);
             return JsonResultSucesso(arquivoRegistrado,"Arquivo registrado com sucesso.");
         }
@@ -382,9 +368,9 @@ public class AtendimentoController : GenericController
     /// </summary>
     /// <param name="arquivo">Arquivo enviado da View.</param>
     /// <returns></returns>
-    private ArquivoClienteAtendimentoModel ObterArquivoModel(IFormFile arquivo)
+    private ArquivoAtendimentoModel ObterArquivoModel(IFormFile arquivo)
     {
-        var arquivoResult = new ArquivoClienteAtendimentoModel();
+        var arquivoResult = new ArquivoAtendimentoModel();
         arquivoResult.NomeOriginal = arquivo.FileName;
         arquivoResult.TipoExtensao = arquivo.ContentType;
         using var memoryStream = new MemoryStream();
@@ -403,7 +389,7 @@ public class AtendimentoController : GenericController
         
         var listarArquivos = _serviceAtendimento.ListarArquivosAtendimento(idAtendimento);
 
-        return JsonResultSucesso(RenderRazorViewToString("_ClienteArquivosAtendimentoPartial", listarArquivos), "Lista de arquivos do atendimento atualizada.");
+        return JsonResultSucesso(RenderRazorViewToString("_ArquivosAtendimentoPartial", listarArquivos), "Lista de arquivos do atendimento atualizada.");
 
     }
     

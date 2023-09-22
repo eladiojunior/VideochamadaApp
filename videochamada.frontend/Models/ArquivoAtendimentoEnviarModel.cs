@@ -1,8 +1,8 @@
 ﻿namespace videochamada.frontend.Models;
 
-public class ArquivoClienteAtendimentoEnviarModel
+public class ArquivoAtendimentoEnviarModel
 {
-    public string IdCliente { get; set; }
+    public string IdUsuario { get; set; }
     public string IdAtendimento { get; set; }
     public IFormFile Arquivo { get; set; }
 }

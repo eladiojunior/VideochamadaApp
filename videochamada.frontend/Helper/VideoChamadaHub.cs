@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using videochamada.frontend.Models;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 
@@ -9,32 +8,98 @@ namespace videochamada.frontend.Helper;
 public class VideoChamadaHub : Hub
 {
     private static readonly ConcurrentDictionary<string, UsuarioHubModel> _usuarios = new ConcurrentDictionary<string, UsuarioHubModel>();
+    private IServiceAtendimento _serviceAtendimento;
+
+    public VideoChamadaHub(IServiceAtendimento serviceAtendimento)
+    {
+        _serviceAtendimento = serviceAtendimento;
+    }
     
     public override async Task OnConnectedAsync()
     {
         var connectionId = Context.ConnectionId;
-        await Clients.Client(connectionId).SendAsync("ReceiveSignal", connectionId);
+        await Clients.Client(connectionId).SendAsync("UsuarioConectado", connectionId);
         await base.OnConnectedAsync();
     }
     
     public override async Task OnDisconnectedAsync(Exception exception)
     {
         var connectionId = Context.ConnectionId;
+        var usuarioHub = ObterUsuarioHub(connectionId);
+        if (usuarioHub != null)
+        {
+            RemoverUsuarioHub(connectionId);
+            await Groups.RemoveFromGroupAsync(connectionId, usuarioHub.IdAtendimento);
+        }
+        await Clients.Others.SendAsync("UsuarioDesconectado", connectionId);
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task EnviarUsuarioAtendimento(string connectionId, string idAtendimento)
+    public async Task ConectarAtendimento(string idAtendimento, string idUsuario)
     {
-        Console.WriteLine("EnviarUsuarioAtendimento: " + connectionId + " - " + idAtendimento);
-        
+        var usuario = ObterUsuario(idAtendimento);
+        if (usuario != null)
+        {
+            if (!usuario.HasExisteIdUsuario(idUsuario))
+            {
+                usuario.AddUsuario(Context.ConnectionId, idUsuario);
+                await Groups.AddToGroupAsync(Context.ConnectionId, idAtendimento);
+            }
+        }
+        else
+        {
+            var usuarioHub = new UsuarioHubModel();
+            usuarioHub.IdAtendimento = idAtendimento;
+            usuarioHub.AddUsuario(Context.ConnectionId, idUsuario);
+            _usuarios.TryAdd(idAtendimento, usuarioHub);
+            await Groups.AddToGroupAsync(Context.ConnectionId, idAtendimento); 
+        }
     }
-
-
-
-
-
-
-
+    
+    public async Task EnviarMensagem(string mensagem)
+    {
+        var connectionId = Context.ConnectionId;
+        var usuarioHub = ObterUsuarioHub(connectionId);
+        if (usuarioHub != null)
+        {
+            var idUsuario = usuarioHub.ObterUsuario(connectionId);
+            await Clients.Group(usuarioHub.IdAtendimento).SendAsync("ReceberMensagem", idUsuario, mensagem);
+            await _serviceAtendimento.RegistrarMensagemChatAtendimento(usuarioHub.IdAtendimento, idUsuario, mensagem);
+        }
+    }
+    
+    public async Task EnviarArquivo(string nomeArquivo)
+    {
+        var connectionId = Context.ConnectionId;
+        var usuarioHub = ObterUsuarioHub(connectionId);
+        if (usuarioHub != null)
+        {
+            var idUsuario = usuarioHub.ObterUsuario(connectionId);
+            await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("ReceberArquivo", idUsuario, nomeArquivo);
+        }
+    }
+    
+    private UsuarioHubModel ObterUsuarioHub(string connectionId)
+    {
+        return _usuarios.Values.FirstOrDefault(w => w.HasExisteIdUsuarioHub(connectionId));
+    }
+    private UsuarioHubModel ObterUsuario(string idAtendimento)
+    {
+        return _usuarios.GetValueOrDefault(idAtendimento)!;
+    }
+    private void RemoverUsuarioHub(string connectionId)
+    {
+        var usuarioHub = ObterUsuarioHub(connectionId);
+        if (usuarioHub == null) return; 
+        //Remover do grupo de atendimento...
+        usuarioHub.RemoverUsuarioHub(connectionId);
+        if (usuarioHub.QtdUsuarios() == 0)
+        {//Remover da lista de Hubs.
+            _usuarios.Remove(usuarioHub.IdAtendimento, out var item);
+        }
+    }
+    
+    
 
     public async Task SendOffer(string offer, string connectionId)
     {

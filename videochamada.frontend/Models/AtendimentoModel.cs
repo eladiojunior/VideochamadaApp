@@ -41,7 +41,7 @@ public class AtendimentoModel
     public List<HistoricoSituacaoAtendimentoModel> HistoricoSituacaoAtendimento { get; set; }
     
     //Lista de arquivos do cliente no atendimento
-    public List<ArquivoClienteAtendimentoModel> ArquivosAtendimento { get; set; }
+    public List<ArquivoAtendimentoModel> ArquivosAtendimento { get; set; }
     public ChatAtendimentoModel ChatAtendimento { get; set; }
 
     internal void AddHistorico(HistoricoSituacaoAtendimentoModel historicoSituacaoAtendimento)
@@ -51,11 +51,11 @@ public class AtendimentoModel
         HistoricoSituacaoAtendimento.Add(historicoSituacaoAtendimento);
     }
     
-    internal void AddArquivo(ArquivoClienteAtendimentoModel arquivoClienteAtendimento)
+    internal void AddArquivo(ArquivoAtendimentoModel arquivoAtendimento)
     {
         if (ArquivosAtendimento == null)
-            ArquivosAtendimento = new List<ArquivoClienteAtendimentoModel>();
-        ArquivosAtendimento.Add(arquivoClienteAtendimento);
+            ArquivosAtendimento = new List<ArquivoAtendimentoModel>();
+        ArquivosAtendimento.Add(arquivoAtendimento);
     }
 
 }

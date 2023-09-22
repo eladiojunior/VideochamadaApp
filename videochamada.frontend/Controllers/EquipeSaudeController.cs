@@ -202,11 +202,10 @@ public class EquipeSaudeController : GenericController
         if (atendimento == null)
             return RedirectToAction("Index", "EquipeSaude");
         
-        var model = new ProfissionalSaudeEmAtendimentoModel();
+        var model = new UsuarioEmAtendimentoModel();
         model.IdAtendimento = atendimento.Id;
         model.IdCliente = atendimento.Cliente.Id;
         model.Cliente = atendimento.Cliente;
-        model.Cliente.Arquivos = _serviceAtendimento.ListarArquivosAtendimento(atendimento.Id);
 
         //Recuperar profissional do atendimento...
         var profissionalAtendimento = atendimento.ProfissionalSaude;
@@ -218,6 +217,9 @@ public class EquipeSaudeController : GenericController
 
         //Recuperar o histórico de chat do atendimento...
         model.ChatAtendimento = _serviceAtendimento.ObterChatAtendimento(atendimento.Id);
+
+        //Recuperar lista de arquivos do atendimento...
+        model.ArquivosAtendimento = _serviceAtendimento.ListarArquivosAtendimento(atendimento.Id);
         
         return View("ProfissionalEmAtendimento", model);
         

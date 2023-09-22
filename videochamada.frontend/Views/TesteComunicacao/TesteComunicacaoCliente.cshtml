@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Testando comunicação....";
+}
+<span class="d-block idConnectionHub">0</span>
+<span class="d-block idAtendimento">0</span>
+<span class="d-block idCliente">0</span>
+<br/>
+<div>
+    <h2>Dispositivos de áudio:</h2>
+    <select id="audioDevice" style="width: 100px;"></select>
+</div>
+<hr/>
+<div>
+    <textarea class="d-block mensagem-texto" name="mensagem" cols="5" rows="5" style="width: 500px;"></textarea>
+    <button class="button-enviar-mensagem" type="button">Enviar Mensagem</button>
+</div>
+<div>
+    <input class="d-block nome-arquivo" name="arquivo" style="width: 100px;"/>
+    <button class="button-enviar-arquivo" type="button">Enviar Arquivo</button>
+</div>
+<hr/>
+<div class="mensagens-texto">
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/teste-conexao-cliente.js" asp-append-version="true"></script>
+    <script src="~/js/teste-conexao.js" asp-append-version="true"></script>
+}

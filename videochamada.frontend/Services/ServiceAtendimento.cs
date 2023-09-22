@@ -293,7 +293,7 @@ public class ServiceAtendimento : IServiceAtendimento
         
     }
 
-    public ArquivoClienteAtendimentoModel ObterArquivoAtendimento(string idAtendimento, string idArquivo)
+    public ArquivoAtendimentoModel ObterArquivoAtendimento(string idAtendimento, string idArquivo)
     {
         if (string.IsNullOrEmpty(idAtendimento) || string.IsNullOrEmpty(idArquivo))
             return null;
@@ -314,7 +314,7 @@ public class ServiceAtendimento : IServiceAtendimento
         atendimento.ArquivosAtendimento.Remove(arquivo);
     }
 
-    public List<ArquivoClienteAtendimentoModel> ListarArquivosAtendimento(string idAtendimento)
+    public List<ArquivoAtendimentoModel> ListarArquivosAtendimento(string idAtendimento)
     {
         if (string.IsNullOrEmpty(idAtendimento))
             return null;
@@ -324,7 +324,7 @@ public class ServiceAtendimento : IServiceAtendimento
         return atendimento.ArquivosAtendimento;
     }
 
-    public ArquivoClienteAtendimentoModel RegistrarArquivoAtendimentoModel(string idAtendimento, ArquivoClienteAtendimentoModel arquivo)
+    public ArquivoAtendimentoModel RegistrarArquivoAtendimentoModel(string idAtendimento, ArquivoAtendimentoModel arquivo)
     {
         if (string.IsNullOrEmpty(idAtendimento))
             return null;
@@ -345,7 +345,36 @@ public class ServiceAtendimento : IServiceAtendimento
         
     }
 
-    private string GerarNomeArquivoFisico(ArquivoClienteAtendimentoModel arquivo)
+    public async Task RegistrarMensagemChatAtendimento(string idAtendimento, string idUsuario, string mensagem)
+    {
+        
+        var atendimento = ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return;
+        
+        var mensagemChat = new MensagemChatModel();
+        mensagemChat.IdUsuario = idUsuario;
+        mensagemChat.UsuarioUsuarioOrigem = ObterTipoOrigemUsuario(atendimento, idUsuario);
+        mensagemChat.DataHoraEnvio = DateTime.Now;
+        mensagemChat.Texto = mensagem;
+        mensagemChat.IpMaquinaUsuario = _listenerServerClient.IpMaquinaUsuario();
+        mensagemChat.Latitude = atendimento.Latitude;
+        mensagemChat.Longitude = atendimento.Longitude;
+        
+        //Registrar a mensagem.
+        if (atendimento.ChatAtendimento == null)
+            atendimento.ChatAtendimento = new ChatAtendimentoModel();
+        atendimento.ChatAtendimento.AddMensagem(mensagemChat);
+        
+    }
+
+    private UsuarioOrigemMensagemEnum ObterTipoOrigemUsuario(AtendimentoModel atendimento, string idUsuario)
+    {
+        var hasProfissional = (atendimento.ProfissionalSaude!.Id.Equals(idUsuario));
+        return (hasProfissional ? UsuarioOrigemMensagemEnum.ProfissionalSaude : UsuarioOrigemMensagemEnum.Cliente);
+    }
+
+    private string GerarNomeArquivoFisico(ArquivoAtendimentoModel arquivo)
     {
         var posInit = arquivo.NomeOriginal.IndexOf(".");
         var posTamanho = arquivo.NomeOriginal.Length - posInit;

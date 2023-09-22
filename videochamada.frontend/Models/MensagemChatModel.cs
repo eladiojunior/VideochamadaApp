@@ -4,7 +4,8 @@ namespace videochamada.frontend.Models;
 
 public class MensagemChatModel
 {
-    public OrigemMensagemEnum Origem { get; set; }
+    public UsuarioOrigemMensagemEnum UsuarioUsuarioOrigem { get; set; }
+    public string IdUsuario { get; set; }
     public string Texto { get; set; }
     public DateTime DataHoraEnvio { get; set; }
     public DateTime? DataHoraRebimento { get; set; }

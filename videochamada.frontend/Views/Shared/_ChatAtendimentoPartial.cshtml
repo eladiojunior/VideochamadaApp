@@ -14,26 +14,27 @@
         }
         else
         {
-            OrigemMensagemEnum? origemAtual = null;
-            bool hasExibirAvatar = false;
+            UsuarioOrigemMensagemEnum? origemAtual = null;
+            var hasExibirAvatar = false;
             foreach (var mensagem in Model.Mensagens)
             {
-                if (origemAtual == null || origemAtual != mensagem.Origem)
+                hasExibirAvatar = false;
+                if (origemAtual == null || origemAtual != mensagem.UsuarioUsuarioOrigem)
                 {
                     hasExibirAvatar = true;
-                    origemAtual = mensagem.Origem;
+                    origemAtual = mensagem.UsuarioUsuarioOrigem;
                 }
-                if (origemAtual == OrigemMensagemEnum.Cliente)
+                if (origemAtual == UsuarioOrigemMensagemEnum.Cliente)
                 {
                     <div class="message">
                         @if (hasExibirAvatar) {
-                            <img class="img-chat-sender" src="~/imgs/chat-sender.png" alt="Enviado">
+                            <img class="img-chat img-chat-sender" src="~/imgs/chat-sender.png" alt="Enviado">
                         } else {
                             <div class="img-chat img-chat-sender"></div>
                         }
                         <div class="message-content message-content-sender">@mensagem.Texto</div>
                     </div>
-                } else if (origemAtual == OrigemMensagemEnum.ProfissionalSaude)
+                } else if (origemAtual == UsuarioOrigemMensagemEnum.ProfissionalSaude)
                 {
                     <div class="message">
                         <div class="message-content message-content-receiver">@mensagem.Texto</div>

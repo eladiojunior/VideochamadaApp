@@ -1,4 +1,4 @@
-﻿@model ProfissionalSaudeEmAtendimentoModel
+﻿@model UsuarioEmAtendimentoModel
 @{
     ViewBag.Title = "Atendimento [Em andamento]";
 }
@@ -20,6 +20,8 @@
 <div class="row">
     <div class="col-xl-2 d-none d-xl-block">
         <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Em Atendimento"/>
+        <input type="hidden" id="idAtendimento" value="@Model.IdAtendimento"/>
+        <input id="idUsuario" value="@Model.ProfissionalSaude.Id" type="hidden"/>
         <div class="profissional">
             @await Html.PartialAsync("_ProfissionalAtendimentoPartial", Model.ProfissionalSaude)    
         </div>
@@ -112,11 +114,13 @@
 </div>
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasArquivosAtendimento" aria-labelledby="offcanvasArquivosAtendimentoLabel">
     <div class="offcanvas-header">
-        <h5 id="offcanvasArquivosAtendimentoLabel">Arquivos do Atendimento do Cliente</h5>
+        <h5 id="offcanvasArquivosAtendimentoLabel">Arquivos do Atendimento</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        Arquivos do Atendimento do Cliente...
+        <div class="lista-arquivos-atendimento">
+            @await Html.PartialAsync("_ArquivosAtendimentoPartial", Model.ArquivosAtendimento, new ViewDataDictionary(ViewData) { {"IdUsuario", Model.ProfissionalSaude.Id }})
+        </div>
     </div>
 </div>
 <div class="modal fade" id="modalHistoricoSaudeCliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalHistoricoSaudeClienteLabel" aria-hidden="true">
@@ -137,5 +141,7 @@
 </div>
 @section Scripts
 {
-    <script src="~/js/profissional-em-atendimento.js" asp-append-version="true"></script>
+    <script src="~/js/comunicacao-usuarios.js" asp-append-version="true"></script>
+    <script src="~/js/comunicacao-chat-atendimento.js" asp-append-version="true"></script>
+    <script src="~/js/comunicacao-arquivos-atendimento.js" asp-append-version="true"></script>
 }

@@ -1,4 +1,4 @@
-﻿@model ClenteEmAtendimentoModel
+﻿@model UsuarioEmAtendimentoModel
 @{
     ViewBag.Title = "Atendimento [Em andamento]";
 }
@@ -21,7 +21,26 @@
     <div class="col-xl-2 d-none d-xl-block">
         <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Em Atendimento"/>
         <input type="hidden" id="idAtendimento" value="@Model.IdAtendimento"/>
-        @await Html.PartialAsync("_ClienteAtendimentoPartial", Model.Cliente)
+        <input id="idUsuario" value="@Model.Cliente.Id" type="hidden"/>
+        <div class="card mt-2">
+            <div class="area-cliente">
+                <span class="info-cliente-titulo">Cliente</span>
+                <span class="d-block">@Model.Cliente.Nome</span>
+                <div class="info-cliente mt-2 mb-2">
+                    <div class="d-flex align-items-center text-muted" title="Arquivos do Atendimento">
+                        <span class="material-symbols-outlined">archive</span>
+                        <span class="px-1">Arquivos</span>
+                    </div>
+                    <div class="atendimento-separador"></div>
+                    <div class="lista-arquivos-atendimento">
+                        @await Html.PartialAsync("_ArquivosAtendimentoPartial", Model.ArquivosAtendimento, new ViewDataDictionary(ViewData) { {"IdUsuario", Model.Cliente.Id }})
+                    </div>
+                </div>
+                <div class="vstack gap-2 mx-auto">
+                    <button type="button" class="btn btn-sm btn-secondary button-init-enviar-arquivo">Enviar Arquivo</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-12 col-xl-10">
         <div class="row pt-2">
@@ -65,6 +84,27 @@
                     <div class="col-12">
                         @await Html.PartialAsync("_ChatAtendimentoPartial", Model.ChatAtendimento)
                     </div>
+                    <div class="col-12 d-xl-none d-block">
+                        <div class="card mt-2">
+                            <div class="area-cliente">
+                                <span class="info-cliente-titulo">Cliente</span>
+                                <span class="d-block">@Model.Cliente.Nome</span>
+                                <div class="info-cliente mt-2 mb-2">
+                                    <div class="d-flex align-items-center text-muted" title="Arquivos do Atendimento">
+                                        <span class="material-symbols-outlined">archive</span>
+                                        <span class="px-1">Arquivos</span>
+                                    </div>
+                                    <div class="atendimento-separador"></div>
+                                    <div class="lista-arquivos-atendimento">
+                                        @await Html.PartialAsync("_ArquivosAtendimentoPartial", Model.ArquivosAtendimento, new ViewDataDictionary(ViewData) { {"IdUsuario", Model.Cliente.Id }})
+                                    </div>
+                                </div>
+                                <div class="vstack gap-2 mx-auto">
+                                    <button type="button" class="btn btn-sm btn-secondary button-init-enviar-arquivo">Enviar Arquivo</button>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
                     <div class="col-12 mt-2 d-inline-block d-xl-none text-end">
                         <button type="button" class="btn btn-sm btn-primary button-posicao-video">
                             <span class="material-symbols-outlined">arrow_upward</span>
@@ -72,6 +112,35 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalEnviarArquivoAtendimento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEnviarArquivoAtendimentoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="formArquivo" enctype="multipart/form-data" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEnviarArquivoAtendimentoLabel">Enviar arquivos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert modal-mensagem-arquivo" style="display: none;"></div>
+                    <div class="area-upload-arquivo">
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label"><strong>Selecione um arquivo e clique em "Enviar"</strong></label>
+                            <input class="form-control" type="file" accept=".jpg, .jpeg, .gif, .png, .pdf" id="formFile" name="Arquivo">
+                        </div>
+                        <div class="text-muted">Regras: Permitido arquivos de <strong>Imagem</strong> (jpg/jpeg, gif e png) e <strong>Documento</strong> (pdf) com tamanho máximo de <strong>2MB (MegaByte)</strong> por arquivo.</div>
+                    </div>
+                    <div class="area-progress-upload-arquivo progress" style="height: 20px;display: none;">
+                      <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary button-enviar-arquivo">Enviar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -94,6 +163,7 @@
 </div>
 @section Scripts
 {
-    <script src="~/js/cliente-em-atendimento.js" asp-append-version="true"></script>
-    <script src="~/js/cliente-arquivos-atendimento.js" asp-append-version="true"></script>
+    <script src="~/js/comunicacao-usuarios.js" asp-append-version="true"></script>
+    <script src="~/js/comunicacao-chat-atendimento.js" asp-append-version="true"></script>
+    <script src="~/js/comunicacao-arquivos-atendimento.js" asp-append-version="true"></script>
 }

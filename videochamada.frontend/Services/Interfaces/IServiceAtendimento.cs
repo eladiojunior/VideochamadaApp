@@ -21,10 +21,11 @@ public interface IServiceAtendimento
     TimeSpan TempoMedioAtendimentos(DateTime filtroDatahora);
     TimeSpan TempoMedioNaFilaAtendimento(DateTime filtroDatahora);
     int NotaMediaAtendimentos(DateTime? filtroDatahora);
-    ArquivoClienteAtendimentoModel ObterArquivoAtendimento(string idAtendimento, string idArquivo);
+    ArquivoAtendimentoModel ObterArquivoAtendimento(string idAtendimento, string idArquivo);
     void RemoverArquivoAtendimento(string idAtendimento, string idArquivo);
-    List<ArquivoClienteAtendimentoModel> ListarArquivosAtendimento(string idAtendimento);
+    List<ArquivoAtendimentoModel> ListarArquivosAtendimento(string idAtendimento);
     ChatAtendimentoModel ObterChatAtendimento(string idAtendimento);
-    ArquivoClienteAtendimentoModel RegistrarArquivoAtendimentoModel(string idAtendimento, ArquivoClienteAtendimentoModel arquivo);
+    ArquivoAtendimentoModel RegistrarArquivoAtendimentoModel(string idAtendimento, ArquivoAtendimentoModel arquivo);
     ClienteModel ObterProximoClienteAtendimento();
+    Task RegistrarMensagemChatAtendimento(string idAtendimento, string idUsuario, string mensagem);
 }

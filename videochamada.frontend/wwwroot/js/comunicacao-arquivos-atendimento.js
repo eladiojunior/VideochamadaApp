@@ -1,5 +1,6 @@
 ﻿ArquivoAtendimento = {
-    Init: function () {
+    InitControles: function () {
+        
         $(".button-init-enviar-arquivo").click(function () {
             ArquivoAtendimento.ModelUploadArquivo(true);
         });
@@ -7,11 +8,18 @@
             ArquivoAtendimento.EnviarArquivo();
         });
         ArquivoAtendimento.InitRemoverArquivo();
+
+        //Receber arquivo recebido
+        connection.on('ReceberArquivo', (idUsuario, nomeArquivo) => {
+            ComunicacaoUsuarios.MensagemUsuario("Novo arquivo recebido ["+nomeArquivo+"]... verifique.");
+        });
+        
     },
     InitRemoverArquivo: function () {
         $(".remover-arquivo-atendimento").click(function () {
+            let idAtendimento = $("#idAtendimento").val();
             let idArquivo = $(this).data("id-arquivo");
-            ArquivoAtendimento.RemoverArquivo(idArquivo);
+            ArquivoAtendimento.RemoverArquivo(idAtendimento, idArquivo);
         });        
     },
     ModelUploadArquivo: function (has_controle) {
@@ -37,13 +45,13 @@
             
             ArquivoAtendimento.ResetMensagemUsuario();
             
-            var idCliente = $("#idCliente").val();
+            var idUsuario = $("#idUsuario").val();
             var idAtendimento = $("#idAtendimento").val();
             
             ArquivoAtendimento.AreaProgressUpload(true);
             
             const formData = new FormData();
-            formData.append("idCliente", idCliente);
+            formData.append("idUsuario", idUsuario);
             formData.append("idAtendimento", idAtendimento);
             formData.append("arquivo", objFileInput[0].files[0]);
             $.ajax({
@@ -63,6 +71,7 @@
                     }
                     ArquivoAtendimento.AreaProgressUpload(false);
                     ArquivoAtendimento.ModelUploadArquivo(false);
+                    connection.invoke("EnviarArquivo", result.model.nomeOriginal);
                     ArquivoAtendimento.AtualizarListaArquivos();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -129,18 +138,21 @@
         return true;
         
     },
-    RemoverArquivo: function (idArquivo) {
+    RemoverArquivo: function (idAtendimento, idArquivo) {
         $.ajax({
             cache: false,
             type: "POST",
             url: _contexto + "Atendimento/RemoverArquivoAtendimento",
-            data: {'idArquivo': idArquivo},
+            data: {
+                'idAtendimento':idAtendimento, 
+                'idArquivo': idArquivo
+            },
             success: function (result) {
                 if (result.hasErro) {
-                    EmAtendimento.MensagemCliente(result.erros[0]);
+                    ComunicacaoUsuarios.MensagemUsuario(result.erros[0]);
                     return;
                 }
-                EmAtendimento.MensagemCliente(result.mensagem);
+                ComunicacaoUsuarios.MensagemUsuario(result.mensagem);
                 ArquivoAtendimento.AtualizarListaArquivos();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -158,12 +170,12 @@
             data: {'idAtendimento': idAtendimento},
             success: function (result) {
                 if (result.hasErro) {
-                    EmAtendimento.MensagemCliente(result.erros[0]);
+                    ComunicacaoUsuarios.MensagemUsuario(result.erros[0]);
                     return;
                 }
                 $(".lista-arquivos-atendimento").html(result.model);
                 ArquivoAtendimento.InitRemoverArquivo();
-                EmAtendimento.MensagemCliente(result.mensagem);
+                ComunicacaoUsuarios.MensagemUsuario(result.mensagem);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("AtualizarListaArquivos: " + errorThrown);
@@ -189,6 +201,6 @@
     
 }
 $(function () {
-    ArquivoAtendimento.Init();
+    ArquivoAtendimento.InitControles();
 });
 

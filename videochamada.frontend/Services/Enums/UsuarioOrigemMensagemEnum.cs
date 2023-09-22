@@ -2,7 +2,7 @@
 
 namespace VideoChatApp.FrontEnd.Services.Enums;
 
-public enum OrigemMensagemEnum
+public enum UsuarioOrigemMensagemEnum
 {
     [Description("Cliente")]
     Cliente=1,
