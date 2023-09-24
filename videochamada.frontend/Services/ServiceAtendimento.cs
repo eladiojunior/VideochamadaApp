@@ -345,12 +345,12 @@ public class ServiceAtendimento : IServiceAtendimento
         
     }
 
-    public async Task RegistrarMensagemChatAtendimento(string idAtendimento, string idUsuario, string mensagem)
+    public async Task<MensagemChatModel> RegistrarMensagemChatAtendimento(string idAtendimento, string idUsuario, string mensagem)
     {
         
         var atendimento = ObterAtendimento(idAtendimento);
         if (atendimento == null)
-            return;
+            return null;
         
         var mensagemChat = new MensagemChatModel();
         mensagemChat.IdUsuario = idUsuario;
@@ -365,7 +365,8 @@ public class ServiceAtendimento : IServiceAtendimento
         if (atendimento.ChatAtendimento == null)
             atendimento.ChatAtendimento = new ChatAtendimentoModel();
         atendimento.ChatAtendimento.AddMensagem(mensagemChat);
-        
+
+        return mensagemChat;
     }
 
     private UsuarioOrigemMensagemEnum ObterTipoOrigemUsuario(AtendimentoModel atendimento, string idUsuario)

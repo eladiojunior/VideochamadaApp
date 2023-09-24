@@ -11,11 +11,12 @@ const connection = new signalR.HubConnectionBuilder()
 let idConnectionHub = "";
 let idAtendimentoHub = "";
 let idUsuarioHub = "";
-let ultimoIdUsuario = "";
 
 let streamMediaLocal;
 let videoLocal; 
 let videoRemoto;
+
+let hasVideoLocal = true;
 
 ComunicacaoUsuarios = {
 
@@ -59,9 +60,20 @@ ComunicacaoUsuarios = {
             ComunicacaoUsuarios.InitDispositivoCameraMicrofone();
             return;
         }
-        //Desativar camera...
-        videoLocal.srcObject = null;
-        streamMediaLocal = null;
+        //Desativar câmera... local
+        let videoTrack = streamMediaLocal.getVideoTracks()[0];
+        if (videoTrack) {
+            videoTrack.stop(); // Isso vai desativar a câmera
+            streamMediaLocal.removeTrack(videoTrack); // Isso vai remover a faixa de vídeo do stream local
+            // Atualizar RTCPeerConnection
+            let videoSender = peerConnection.getSenders().find(s => s.track && s.track.kind === 'video');
+            if (videoSender) {
+                peerConnection.removeTrack(videoSender);
+            }
+        }
+        hasVideoLocal = false;
+        //videoLocal.srcObject = null;
+        //streamMediaLocal = null;
         $(".video-local-aguardando").html("<span class='material-symbols-outlined fs-2 text-secondary'>video_camera_front_off</span>");
         $(".video-local-aguardando").addClass("d-flex");
         $(".video-local-aguardando").show();
@@ -91,8 +103,25 @@ ComunicacaoUsuarios = {
         obj_button_microfone.removeClass("off");
         obj_button_microfone.addClass(has_controle?"on":"off");
         obj_button_microfone.find("span.material-symbols-outlined").text(has_controle?"mic":"mic_off");
-        if (videoLocal)
-            videoLocal.muted = !has_controle;
+        if (videoLocal === null)
+            return;
+        let audioTrack = streamMediaLocal.getAudioTracks()[0];
+        if (audioTrack) {
+            if (has_controle) {
+                //Para ativar novamente, caso tenha sido desativado
+                audioTrack.enabled = true;
+                streamMediaLocal.addTrack(audioTrack);
+                let sender = peerConnection.addTrack(audioTrack, streamMediaLocal);
+            } else {// Desativar o áudio local
+                audioTrack.stop(); // Isso vai desativar o microfone
+                streamMediaLocal.removeTrack(audioTrack); // Isso vai remover a faixa de áudio do stream local
+                // Atualizar RTCPeerConnection
+                let audioSender = peerConnection.getSenders().find(s => s.track && s.track.kind === 'audio');
+                if (audioSender) {
+                    peerConnection.removeTrack(audioSender); // Isso vai parar de enviar a faixa de áudio
+                }
+            }
+        }
         ComunicacaoUsuarios.MensagemUsuario(`Microfone: ${has_controle?"ATIVADO":"DESATIVADO"} na videochamada.`);
     },
     MensagemUsuario: function (msg) {

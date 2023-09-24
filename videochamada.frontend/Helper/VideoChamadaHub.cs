@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
 using videochamada.frontend.Models;
+using VideoChatApp.FrontEnd.Services.Enums;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 
 namespace videochamada.frontend.Helper;
@@ -63,8 +64,11 @@ public class VideoChamadaHub : Hub
         if (usuarioHub != null)
         {
             var idUsuario = usuarioHub.ObterUsuario(connectionId);
-            await Clients.Group(usuarioHub.IdAtendimento).SendAsync("ReceberMensagem", idUsuario, mensagem);
-            await _serviceAtendimento.RegistrarMensagemChatAtendimento(usuarioHub.IdAtendimento, idUsuario, mensagem);
+            var mensagemChat = _serviceAtendimento.RegistrarMensagemChatAtendimento(usuarioHub.IdAtendimento, idUsuario, mensagem).Result;
+            if (mensagemChat == null)
+                return;
+            var codOrigemEnvio = mensagemChat.UsuarioUsuarioOrigem.ObterCodigoEnum().ToString();
+            await Clients.Group(usuarioHub.IdAtendimento).SendAsync("ReceberMensagem", idUsuario, codOrigemEnvio, mensagem);
         }
     }
     

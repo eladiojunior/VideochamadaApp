@@ -15,6 +15,7 @@
         }
         else
         {
+            var ultimoIdUsuario = "";
             UsuarioOrigemMensagemEnum? origemAtual = null;
             var hasExibirAvatar = false;
             foreach (var mensagem in Model.Mensagens)
@@ -53,7 +54,9 @@
                         }
                     </div>
                 }
+                ultimoIdUsuario = mensagem.IdUsuario;
             }
+            <input type="hidden" id="ultimoIdUsuario" value="@ultimoIdUsuario"/>
         }
     </div>
     <div class="input-container">

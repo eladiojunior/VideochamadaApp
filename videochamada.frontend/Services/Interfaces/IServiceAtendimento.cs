@@ -27,5 +27,5 @@ public interface IServiceAtendimento
     ChatAtendimentoModel ObterChatAtendimento(string idAtendimento);
     ArquivoAtendimentoModel RegistrarArquivoAtendimentoModel(string idAtendimento, ArquivoAtendimentoModel arquivo);
     ClienteModel ObterProximoClienteAtendimento();
-    Task RegistrarMensagemChatAtendimento(string idAtendimento, string idUsuario, string mensagem);
+    Task<MensagemChatModel> RegistrarMensagemChatAtendimento(string idAtendimento, string idUsuario, string mensagem);
 }
