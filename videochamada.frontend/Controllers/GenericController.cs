@@ -105,11 +105,12 @@ public class GenericController : Controller
         var viewResult = razorViewEngine.FindView(actionContext, viewName, false);
         if (viewResult?.View == null)
             throw new ArgumentException($"{viewName} does not match any available view");
-        var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
-            { Model = model };
+
+        //var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { Model = model };
+        ViewData.Model = model;
+        var viewDictionary = ViewData;
         var viewContext = new ViewContext(actionContext, viewResult.View, viewDictionary,
-            new TempDataDictionary(actionContext.HttpContext, tempDataProvider),
-            sw, new HtmlHelperOptions()
+            new TempDataDictionary(actionContext.HttpContext, tempDataProvider), sw, new HtmlHelperOptions()
         );
         viewResult.View.RenderAsync(viewContext);
         return sw.ToString();

@@ -119,10 +119,16 @@
     </div>
     <div class="offcanvas-body">
         <div class="lista-arquivos-atendimento">
-            @await Html.PartialAsync("_ArquivosAtendimentoPartial", Model.ArquivosAtendimento, new ViewDataDictionary(ViewData) { {"IdUsuario", Model.ProfissionalSaude.Id }})
+            @await Html.PartialAsync("_ArquivosAtendimentoPartial", Model.ArquivosAtendimento, new ViewDataDictionary(ViewData) { {"IdUsuario", Model.ProfissionalSaude.Id }, {"IdAtendimento", Model.IdAtendimento}})
+        </div>
+        <div>
+            <div class="vstack gap-2 mx-auto">
+                <button type="button" class="btn btn-sm btn-secondary button-init-enviar-arquivo">Enviar Arquivo</button>
+            </div>
         </div>
     </div>
 </div>
+@await Html.PartialAsync("_EnviarArquivoAtendimentoPartial")
 <div class="modal fade" id="modalHistoricoSaudeCliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalHistoricoSaudeClienteLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-fullscreen-sm-down">
         <div class="modal-content">

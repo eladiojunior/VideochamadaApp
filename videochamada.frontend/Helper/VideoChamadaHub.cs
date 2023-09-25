@@ -79,7 +79,18 @@ public class VideoChamadaHub : Hub
         if (usuarioHub != null)
         {
             var idUsuario = usuarioHub.ObterUsuario(connectionId);
-            await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("ReceberArquivo", idUsuario, nomeArquivo);
+            await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("ReceberArquivo", idUsuario, "incluido", nomeArquivo);
+        }
+    }
+    
+    public async Task RemoverArquivo(string idArquivo)
+    {
+        var connectionId = Context.ConnectionId;
+        var usuarioHub = ObterUsuarioHub(connectionId);
+        if (usuarioHub != null)
+        {
+            var idUsuario = usuarioHub.ObterUsuario(connectionId);
+            await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("ReceberArquivo", idUsuario, "removido", idArquivo);
         }
     }
     

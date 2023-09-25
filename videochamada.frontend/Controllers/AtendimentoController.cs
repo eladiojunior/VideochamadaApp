@@ -300,7 +300,7 @@ public class AtendimentoController : GenericController
         var modelAvaliacao = new AvaliacaoAtendimentoModel();
         modelAvaliacao.IdCliente = atendimentoAberto.Cliente.Id;
         modelAvaliacao.IdAtendimento = atendimentoAberto.Id;
-        modelAvaliacao.HasDesistencia = true;
+        modelAvaliacao.HasDesistencia = false;
         
         return View("AvaliarAtendimento", modelAvaliacao);
         
@@ -381,7 +381,7 @@ public class AtendimentoController : GenericController
     }
     
     [HttpGet]
-    public ActionResult ListarArquivosAtendimento(string idAtendimento)
+    public ActionResult ListarArquivosAtendimento(string idAtendimento, string idUsuario)
     {
         
         if (string.IsNullOrEmpty(idAtendimento))
@@ -389,6 +389,8 @@ public class AtendimentoController : GenericController
         
         var listarArquivos = _serviceAtendimento.ListarArquivosAtendimento(idAtendimento);
 
+        ViewData["IdUsuario"] = idUsuario == null ? "" : idUsuario;
+        ViewData["IdAtendimento"] = idAtendimento == null ? "" : idAtendimento;
         return JsonResultSucesso(RenderRazorViewToString("_ArquivosAtendimentoPartial", listarArquivos), "Lista de arquivos do atendimento atualizada.");
 
     }

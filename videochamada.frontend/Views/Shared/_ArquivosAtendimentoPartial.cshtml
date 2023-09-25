@@ -1,6 +1,7 @@
 ﻿@model List<ArquivoAtendimentoModel>
 @{
     var IdUsuario = ViewData["IdUsuario"]?.ToString() ?? "";
+    var IdAtendimento = ViewData["IdAtendimento"]?.ToString() ?? "";
 }
 @if (Model == null || !Model.Any())
 {
@@ -11,26 +12,28 @@
 }
 else
 {
-    <ul class="list-group list-group-flush lista-arquivos">
+    <div class="list-group list-group-flush lista-arquivos">
         @foreach (var arquivo in Model)
         {
-            <li class="list-group-item d-flex justify-content-between align-items-start px-0">
-                <div class="me-auto" style="max-width: 140px;">
-                    <div class="fw-bold">
-                        <a asp-action="DownloadArquivoAtendimento" asp-controller="Atendimento" 
-                           asp-route-idArquivo="@arquivo.Id" title="Clique para download do arquivo.">@arquivo.NomeOriginal</a>
-                    </div>
-                    <span class="text-muted">@arquivo.DataHoraEnvio.ToString("g")</span>
+            <div class="list-group-item p-1 pt-2">
+                <div class="d-flex justify-content-start text-truncate">
+                    <a asp-action="DownloadArquivoAtendimento" asp-controller="Atendimento" 
+                       asp-route-idAtendimento="@IdAtendimento" asp-route-idArquivo="@arquivo.Id" title="Clique para download do arquivo.">
+                        @arquivo.NomeOriginal
+                    </a>
                 </div>
-                <span class="rounded-pill">
-                    @if (arquivo.IdUsuario.Equals(IdUsuario))
-                    {
-                        <a href="#" data-id-arquivo="@arquivo.Id" class="remover-arquivo-atendimento" title="Clique para remover o arquivo do atendimento.">
-                            <span class="material-symbols-outlined">delete</span>
-                        </a>
-                    }
-                </span>
-            </li>
+                <div class="d-flex justify-content-end">
+                    <small class="pt-1 px-1">@arquivo.DataHoraEnvio.ToString("g")</small>
+                    <span>
+                        @if (arquivo.IdUsuario.Equals(IdUsuario))
+                        {
+                            <a href="#" data-id-arquivo="@arquivo.Id" class="remover-arquivo-atendimento" title="Clique para remover o arquivo do atendimento.">
+                                <span class="material-symbols-outlined">delete</span>
+                            </a>
+                        }
+                    </span>
+                </div>
+            </div>
         }
-    </ul>
+    </div>
 }

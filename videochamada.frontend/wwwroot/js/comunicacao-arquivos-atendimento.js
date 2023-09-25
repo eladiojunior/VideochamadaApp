@@ -10,8 +10,13 @@
         ArquivoAtendimento.InitRemoverArquivo();
 
         //Receber arquivo recebido
-        connection.on('ReceberArquivo', (idUsuario, nomeArquivo) => {
-            ComunicacaoUsuarios.MensagemUsuario("Novo arquivo recebido ["+nomeArquivo+"]... verifique.");
+        connection.on('ReceberArquivo', (idUsuario, acao, arquivo) => {
+            if (acao === 'removido') {
+                ComunicacaoUsuarios.MensagemUsuario("Arquivo removido [" + arquivo + "]...");
+            } else if (acao === 'incluido') {
+                ComunicacaoUsuarios.MensagemUsuario("Novo arquivo recebido [" + arquivo + "]... verifique.");
+            }
+            ArquivoAtendimento.AtualizarListaArquivos();
         });
         
     },
@@ -153,6 +158,7 @@
                     return;
                 }
                 ComunicacaoUsuarios.MensagemUsuario(result.mensagem);
+                connection.invoke("RemoverArquivo", idArquivo);
                 ArquivoAtendimento.AtualizarListaArquivos();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -162,12 +168,16 @@
     },
     AtualizarListaArquivos: function () {
         var idAtendimento = $("#idAtendimento").val();
+        var idUsuario = $("#idUsuario").val();
         console.log("Atualizar a lista de arquivos..." + idAtendimento);
         $.ajax({
             cache: false,
             type: "GET",
             url: _contexto + "Atendimento/ListarArquivosAtendimento",
-            data: {'idAtendimento': idAtendimento},
+            data: {
+                'idAtendimento': idAtendimento,
+                'idUsuario': idUsuario
+            },
             success: function (result) {
                 if (result.hasErro) {
                     ComunicacaoUsuarios.MensagemUsuario(result.erros[0]);

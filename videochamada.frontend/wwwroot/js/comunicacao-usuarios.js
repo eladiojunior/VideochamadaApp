@@ -12,6 +12,7 @@ let idConnectionHub = "";
 let idAtendimentoHub = "";
 let idUsuarioHub = "";
 
+let peerConnection;
 let streamMediaLocal;
 let videoLocal; 
 let videoRemoto;
@@ -185,7 +186,7 @@ ComunicacaoUsuarios = {
 
             // Configura o objeto RTCPeerConnection
             let configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
-            let peerConnection = new RTCPeerConnection(configuration);
+            peerConnection = new RTCPeerConnection(configuration);
             videoRemoto = document.getElementById("video-remoto");
 
             // Lidar com o ICE Candidate Events
