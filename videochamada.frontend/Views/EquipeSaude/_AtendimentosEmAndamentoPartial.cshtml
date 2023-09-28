@@ -10,12 +10,23 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">@item.Cliente.Nome</h5>
-                <div class="grid">
-                    <div class="g-col-4">Início Atendimento: @(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g"):"")</div>
-                    <div class="g-col-4">Arquivos: @(item.ArquivosAtendimento != null ? item.ArquivosAtendimento.Count.ToString("0"):"0")</div>
-                    <div class="g-col-4">Mensagens Chat: @(item.ChatAtendimento != null ? item.ChatAtendimento.QtdMensagens.ToString("0"):"0")</div>
+                <div class="row">
+                    <div class="col-9">
+                        <div class="row bg-secondary text-white">
+                            <div class="col-4 text-center">Início Atendimento</div>
+                            <div class="col-4 text-center">Arquivos Atendimento</div>
+                            <div class="col-4 text-center">Mensagens Chat</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-center">@(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g"):"")</div>
+                            <div class="col-4 text-center">@(item.ArquivosAtendimento != null ? item.ArquivosAtendimento.Count.ToString("0"):"0")</div>
+                            <div class="col-4 text-center">@(item.ChatAtendimento != null ? item.ChatAtendimento.QtdMensagens.ToString("0"):"0")</div>
+                        </div>
+                    </div>
+                    <div class="col-3 d-grid gap-2">
+                        <a asp-controller="EquipeSaude" target="_blank" asp-action="EmAtendimento" asp-route-idAtendimento="@item.Id" class="btn btn-primary">Abrir Atendimento</a>                        
+                    </div>
                 </div>
-                <a asp-controller="EquipeSaude" asp-action="EmAtendimento" asp-route-idAtendimento="@item.Id" class="btn btn-success btn-primary">Abrir Atendimento</a>
             </div>
         </div>
     }

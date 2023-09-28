@@ -393,4 +393,28 @@ public class ServiceAtendimento : IServiceAtendimento
         return atendimento.ChatAtendimento;
     }
 
+    public void FinalizarAtendimento(string idAtendimento)
+    {
+        
+        var atendimento = ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            throw new ServiceException($"Atendimento [{idAtendimento}] não encontrado.");
+        
+        //Verificar se o atendimento está em andamento...
+        if (atendimento.Situacao != SituacaoAtendimentoEnum.EmAtendimento)
+            return;
+
+        atendimento.DataFinal = DateTime.Now;
+        var idProfissional = atendimento.ProfissionalSaude?.Id;
+        if (string.IsNullOrEmpty(idProfissional))
+            return;
+
+        var profissionalSaude = _serviceEquipeSaude.ObterProfissionalSaude(idProfissional);
+        if (profissionalSaude != null)
+        {
+            profissionalSaude.EmAtendimento = false;
+        }
+        
+    }
+    
 }

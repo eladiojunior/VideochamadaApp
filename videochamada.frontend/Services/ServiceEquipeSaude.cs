@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using videochamada.frontend.Models;
+using VideoChatApp.FrontEnd.Services.Enums;
 using VideoChatApp.FrontEnd.Services.Exceptions;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 
@@ -115,7 +116,7 @@ public class ServiceEquipeSaude : IServiceEquipeSaude
 
     public int QtdProfissionalSaudeEmAtendimento()
     {
-        return _profissionais.Values.Count(c => c.EmAtendimento == true);
+        return _profissionais.Values.Count(c => c.EmAtendimento);
     }
 
     private ProfissionalSaudeModel ObterProfissionalSaudePorEmail(string email)

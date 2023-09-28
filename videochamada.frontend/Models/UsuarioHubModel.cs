@@ -33,4 +33,9 @@ public class UsuarioHubModel
     {
         return usuarios[idUsuarioHub];
     }
+
+    public string ObterUsuarioDiferenteDe(string connectionId)
+    {
+        return usuarios.FirstOrDefault(w => !w.Key.Contains(connectionId)).Value;
+    }
 }

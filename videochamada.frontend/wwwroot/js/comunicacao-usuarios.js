@@ -11,6 +11,7 @@ const connection = new signalR.HubConnectionBuilder()
 let idConnectionHub = "";
 let idAtendimentoHub = "";
 let idUsuarioHub = "";
+let tipoUsuario = "";
 
 let peerConnection;
 let streamMediaLocal;
@@ -137,7 +138,9 @@ ComunicacaoUsuarios = {
         console.log("Inicializar comunicação remota entre usuários.");
         idAtendimentoHub = $("#idAtendimento").val();
         idUsuarioHub = $("#idUsuario").val();
-        console.log("Atendimento: " + idAtendimentoHub + " - Usuario: " + idUsuarioHub);
+        tipoUsuario = $("#tipoUsuario").val();
+        
+        console.log("Atendimento: " + idAtendimentoHub + " - Usuario: " + idUsuarioHub + " - TipoUsuario: " + tipoUsuario);
         
         connection.start()
         .then(() => {
@@ -156,10 +159,17 @@ ComunicacaoUsuarios = {
         
         //Identificar usuário desconectado...
         connection.on('UsuarioDesconectado', (connectionId) => {
-            console.log("Usuário desconectado: " + connectionId);
+            if (connectionId === idUsuarioHub) {
+                if (tipoUsuario === 'PROFISSIONAL_SAUDE') {
+                    alert("Cliente [" + connectionId + "] saiu do atendimento.");
+                    window.close();
+                } else if (tipoUsuario === 'CLIENTE') {
+                    alert("Profissional de Saúde [" + connectionId + "] saiu do atendimento.");
+                    window.location.href = _contexto + "Atendimento/SairDoAtendimento";
+                }
+            }
             connection.close();
         });
-
     },
     InitComunicacaoVideoRemota: function () {
         

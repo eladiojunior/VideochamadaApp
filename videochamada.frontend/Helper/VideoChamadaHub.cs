@@ -27,12 +27,14 @@ public class VideoChamadaHub : Hub
     {
         var connectionId = Context.ConnectionId;
         var usuarioHub = ObterUsuarioHub(connectionId);
+        var idUsuario = "";
         if (usuarioHub != null)
         {
+            idUsuario = usuarioHub.ObterUsuarioDiferenteDe(connectionId);
             RemoverUsuarioHub(connectionId);
             await Groups.RemoveFromGroupAsync(connectionId, usuarioHub.IdAtendimento);
+            await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("UsuarioDesconectado", idUsuario);
         }
-        await Clients.Others.SendAsync("UsuarioDesconectado", connectionId);
         await base.OnDisconnectedAsync(exception);
     }
 
@@ -56,7 +58,16 @@ public class VideoChamadaHub : Hub
             await Groups.AddToGroupAsync(Context.ConnectionId, idAtendimento); 
         }
     }
-    
+
+    public async Task DesconectarAtendimento(string idAtendimento, string idUsuario)
+    {
+        var usuarioHub = ObterUsuario(idAtendimento);
+        if (usuarioHub != null)
+        {
+            var idOutroUsuario = usuarioHub.ObterUsuarioDiferenteDe(idUsuario);
+            await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("UsuarioDesconectado", idOutroUsuario);
+        }
+    }
     public async Task EnviarMensagem(string mensagem)
     {
         var connectionId = Context.ConnectionId;

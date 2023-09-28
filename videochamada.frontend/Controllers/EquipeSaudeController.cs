@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using videochamada.frontend.Models;
+using VideoChatApp.FrontEnd.Services.Enums;
 using VideoChatApp.FrontEnd.Services.Exceptions;
 using VideoChatApp.FrontEnd.Services.Interfaces;
 
@@ -185,10 +186,25 @@ public class EquipeSaudeController : GenericController
         return JsonResultSucesso(model);
     }
 
-    [HttpGet]
-    public IActionResult FinalizarAtendimento()
+    [HttpPost]
+    public IActionResult FinalizarAtendimento(string idAtendimento)
     {
-        throw new NotImplementedException();
+        try
+        {
+            
+            if (string.IsNullOrEmpty(idAtendimento))
+                return JsonResultErro("Id de Atendimento não informado.");
+            
+            _serviceAtendimento.FinalizarAtendimento(idAtendimento);
+        
+            return JsonResultSucesso("Atendimento finalizado com sueceso.");
+            
+        }
+        catch (ServiceException erro)
+        {
+            return JsonResultErro(erro.Message);
+        }
+
     }
     
     [HttpGet]
