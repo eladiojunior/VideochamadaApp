@@ -25,9 +25,6 @@ AreaAtendimentoProfissional = {
                 }
             });
         });
-        $(".btn-finalizar-atendimento").click(function () {
-            AreaAtendimentoProfissional.FinalizarAtendimento();
-        });
     },
     InitVerificacaoDashboard: function () {
         //Verificar a fila de atendimento e profissionais Online
@@ -171,24 +168,6 @@ AreaAtendimentoProfissional = {
         $(".qtd-profissionais-online").text(qtdProfissionaisOnline);
         $(".qtd-clientes-filaatendimento").text(qtdClienteFilaAtendimento);
         $(".qtd-clientes-ematendimento").text(qtdClienteEmAtendimento);
-    },
-    FinalizarAtendimento: function () {
-        $.ajax({
-            cache: false,
-            type: "POST",
-            url: _contexto + "EquipeSaude/FinalizarAtendimento",
-            data: {"idAtendimento" : idAtendimentoHub},
-            dataType: "json",
-            success: function (result) {
-                if (result.hasErro) {
-                    ComunicacaoUsuarios.MensagemUsuario(result.erros[0]);
-                    return;
-                }
-                window.close();
-            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.error("FinalizarAtendimento: " + errorThrown);
-            }
-        });
     }
 }
 $(function () {

@@ -22,7 +22,6 @@
         <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Em Atendimento"/>
         <input type="hidden" id="idAtendimento" value="@Model.IdAtendimento"/>
         <input id="idUsuario" value="@Model.Cliente.Id" type="hidden"/>
-        <input id="tipoUsuario" value="CLIENTE" type="hidden"/>
         <div class="card mt-2">
             <div class="area-cliente">
                 <span class="info-cliente-titulo">Cliente</span>
@@ -128,7 +127,7 @@
                 <h4>Deseja realmente <strong>sair</strong> do atendimento em andamento?</h4>
             </div>
             <div class="modal-footer">
-                <a asp-action="SairDoAtendimento" asp-controller="Atendimento" class="btn btn-danger">Sim, quero sair</a>
+                <button type="button"  class="btn btn-danger button-finalizar-atendimento">Sim, quero sair</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não quero</button>
             </div>
         </div>
@@ -139,4 +138,5 @@
     <script src="~/js/comunicacao-usuarios.js" asp-append-version="true"></script>
     <script src="~/js/comunicacao-chat-atendimento.js" asp-append-version="true"></script>
     <script src="~/js/comunicacao-arquivos-atendimento.js" asp-append-version="true"></script>
+    <script src="~/js/cliente-em-atendimento.js" asp-append-version="true"></script>
 }

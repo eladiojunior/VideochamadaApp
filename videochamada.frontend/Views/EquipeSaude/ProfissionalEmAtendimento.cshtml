@@ -22,7 +22,6 @@
         <img src="~/imgs/atendimentoCliente.png" class="img-fluid" alt="Imagem de Em Atendimento"/>
         <input type="hidden" id="idAtendimento" value="@Model.IdAtendimento"/>
         <input id="idUsuario" value="@Model.ProfissionalSaude.Id" type="hidden"/>
-        <input id="tipoUsuario" value="PROFISSIONAL_SAUDE" type="hidden"/>
         <div class="profissional">
             @await Html.PartialAsync("_ProfissionalAtendimentoPartial", Model.ProfissionalSaude)    
         </div>
@@ -98,7 +97,7 @@
                 <h4>Deseja realmente <strong>sair</strong> do atendimento em andamento?</h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-finalizar-atendimento">Sim, quero sair</button>
+                <button type="button" class="btn btn-danger button-finalizar-atendimento">Sim, quero sair</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não quero</button>
             </div>
         </div>
@@ -151,4 +150,5 @@
     <script src="~/js/comunicacao-usuarios.js" asp-append-version="true"></script>
     <script src="~/js/comunicacao-chat-atendimento.js" asp-append-version="true"></script>
     <script src="~/js/comunicacao-arquivos-atendimento.js" asp-append-version="true"></script>
+    <script src="~/js/profissional-em-atendimento.js" asp-append-version="true"></script>
 }

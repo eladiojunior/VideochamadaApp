@@ -66,7 +66,7 @@ public class ServiceAtendimento : IServiceAtendimento
         };
         
         var atendimentoAberto = _atendimentos.Values.FirstOrDefault(c => 
-            c.Cliente.Id.Equals(clienteModel.Id) && listaSituacaoAberto.Contains(c.Situacao) && c.DataFinal == null);
+            c.Cliente.Id.Equals(clienteModel.Id) && listaSituacaoAberto.Contains(c.Situacao));
         if (atendimentoAberto == null)
             return null;
         
@@ -105,25 +105,30 @@ public class ServiceAtendimento : IServiceAtendimento
         return GerenciadorFilaCliente.Get().PosicaoNaFila(idCliente);
     }
 
-    public void EncerrarAtendimento(AvaliacaoAtendimentoModel atendimento, SituacaoAtendimentoEnum situacaoAtendimento)
+    public void EncerrarAtendimento(string idAtendimento, SituacaoAtendimentoEnum situacaoAtendimento)
     {
-        var clienteModel = _serviceCliente.ObterCliente(atendimento.IdCliente);
-        if (clienteModel == null)
-            return;
-
-        var atendimentoModel = _atendimentos.GetValueOrDefault(atendimento.IdAtendimento);
-        if (atendimentoModel == null)
+        var atendimento = _atendimentos.GetValueOrDefault(idAtendimento);
+        if (atendimento == null)
             return;
 
         //Registrar histórico...
-        AtualizarSituacaoAtendimento(atendimento.IdAtendimento, situacaoAtendimento);
+        AtualizarSituacaoAtendimento(atendimento.Id, situacaoAtendimento);
 
-        atendimentoModel.DataFinal = DateTime.Now;
-        atendimentoModel.Situacao = situacaoAtendimento;
-        atendimentoModel.Nota = atendimento.Nota;
-        atendimentoModel.ComentarioNota = atendimento.Comentario;
+        atendimento.DataFinal = DateTime.Now;
+        atendimento.Situacao = situacaoAtendimento;
         
-        VerificarRemoverClienteFilaAtendimento(atendimento.IdCliente);
+        VerificarRemoverClienteFilaAtendimento(atendimento.Cliente.Id);
+        
+    }
+
+    public void AvaliarAtendimento(AvaliacaoAtendimentoModel avaliarAtendimento)
+    {
+        var atendimento = _atendimentos.GetValueOrDefault(avaliarAtendimento.IdAtendimento);
+        if (atendimento == null)
+            return;
+
+        atendimento.Nota = avaliarAtendimento.Nota;
+        atendimento.ComentarioNota = avaliarAtendimento.Comentario;
         
     }
 

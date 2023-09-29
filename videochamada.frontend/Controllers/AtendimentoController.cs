@@ -121,7 +121,7 @@ public class AtendimentoController : GenericController
             avaliacaoAtendimento.IdAtendimento = idAtendimento;
             avaliacaoAtendimento.IdCliente = atendimento.Cliente.Id;
             avaliacaoAtendimento.Comentario = "Cancelado pelo Cliente.";
-            _serviceAtendimento.EncerrarAtendimento(avaliacaoAtendimento, SituacaoAtendimentoEnum.Cancelado);            
+            _serviceAtendimento.EncerrarAtendimento(idAtendimento, SituacaoAtendimentoEnum.Cancelado);            
         }
         
         ExibirAlerta("Cancelamos seu atendimento em aberto, ficará no seu histórico para consulta.");
@@ -174,14 +174,20 @@ public class AtendimentoController : GenericController
     {
         
         var idCliente = ObterIdCliente();
-        var modelAtendimento = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
-        if (modelAtendimento == null)
+        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
+        if (atendimentoAberto == null)
             return RedirectToAction("Index", "Home");
         
         var modelAvaliacao = new AvaliacaoAtendimentoModel();
-        modelAvaliacao.IdCliente = modelAtendimento.Cliente.Id;
-        modelAvaliacao.IdAtendimento = modelAtendimento.Id;
-        modelAvaliacao.HasDesistencia = true;
+        modelAvaliacao.IdCliente = atendimentoAberto.Cliente.Id;
+        modelAvaliacao.IdAtendimento = atendimentoAberto.Id;
+        modelAvaliacao.HasDesistencia = (atendimentoAberto.Situacao != SituacaoAtendimentoEnum.EmAtendimento);
+        
+        var situacaoAtendimento = modelAvaliacao.HasDesistencia
+            ? SituacaoAtendimentoEnum.Desistencia
+            : SituacaoAtendimentoEnum.Finalizado;
+        
+        _serviceAtendimento.EncerrarAtendimento(atendimentoAberto.Id, situacaoAtendimento);
         
         return View("AvaliarAtendimento", modelAvaliacao);
         
@@ -194,10 +200,8 @@ public class AtendimentoController : GenericController
         if (!ModelState.IsValid)
             return View("AvaliarAtendimento", model);
 
-        var situacaoAtendimento = model.HasDesistencia
-            ? SituacaoAtendimentoEnum.Desistencia
-            : SituacaoAtendimentoEnum.Finalizado;
-        _serviceAtendimento.EncerrarAtendimento(model, situacaoAtendimento);
+        _serviceAtendimento.AvaliarAtendimento(model);
+        
         return RedirectToAction("Index", "Home");
         
     }

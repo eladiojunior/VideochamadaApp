@@ -9,7 +9,8 @@ public interface IServiceAtendimento
     AtendimentoModel ObterAtendimentoAberto(string idCliente);
     AtendimentoModel EntrarFilaAtendimento(AtendimentoModel atendimento);
     int PosicaoFilaAtendimento(string idCliente);
-    void EncerrarAtendimento(AvaliacaoAtendimentoModel atendimento, SituacaoAtendimentoEnum situacaoAtendimento);
+    void EncerrarAtendimento(string idAtendimento, SituacaoAtendimentoEnum situacaoAtendimento);
+    void AvaliarAtendimento(AvaliacaoAtendimentoModel avaliarAtendimento);
     int QtdClienteFilaAtendimento();
     int QtdClienteEmAtendimento();
     List<AtendimentoModel> ListarAtendimentosCliente(string idCliente);

@@ -11,7 +11,6 @@ const connection = new signalR.HubConnectionBuilder()
 let idConnectionHub = "";
 let idAtendimentoHub = "";
 let idUsuarioHub = "";
-let tipoUsuario = "";
 
 let peerConnection;
 let streamMediaLocal;
@@ -138,9 +137,6 @@ ComunicacaoUsuarios = {
         console.log("Inicializar comunicação remota entre usuários.");
         idAtendimentoHub = $("#idAtendimento").val();
         idUsuarioHub = $("#idUsuario").val();
-        tipoUsuario = $("#tipoUsuario").val();
-        
-        console.log("Atendimento: " + idAtendimentoHub + " - Usuario: " + idUsuarioHub + " - TipoUsuario: " + tipoUsuario);
         
         connection.start()
         .then(() => {
@@ -154,27 +150,21 @@ ComunicacaoUsuarios = {
         //Receber usuário conectado...
         connection.on("UsuarioConectado", (connectionId) => {
             idConnectionHub = connectionId;
-            console.log("Usuário conectado: " + idConnectionHub, idAtendimentoHub, idUsuarioHub);
         });
         
         //Identificar usuário desconectado...
         connection.on('UsuarioDesconectado', (connectionId) => {
             if (connectionId === idUsuarioHub) {
-                if (tipoUsuario === 'PROFISSIONAL_SAUDE') {
-                    alert("Cliente [" + connectionId + "] saiu do atendimento.");
-                    window.close();
-                } else if (tipoUsuario === 'CLIENTE') {
-                    alert("Profissional de Saúde [" + connectionId + "] saiu do atendimento.");
-                    window.location.href = _contexto + "Atendimento/SairDoAtendimento";
-                }
+                EmAtendimentoUsuario.AlertaAtendimentoEncerrado();
             }
             connection.close();
         });
     },
+    SairAtendimento: function () {
+        connection.invoke("DesconectarAtendimento", idAtendimentoHub, idUsuarioHub);
+    },
     InitComunicacaoVideoRemota: function () {
-        
         console.log("Inicializar comunicação remota de video.");
-        
         if (ComunicacaoUsuarios.EstabelecerComunicacaoVideoRemota())
         {//Connexao remota estabelecida...
             $(".video-remoto-aguardando").hide();
