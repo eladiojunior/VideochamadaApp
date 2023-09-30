@@ -6,7 +6,7 @@ public class TesteComunicacaoController : Controller
 {
     public IActionResult Index()
     {
-        return View("TesteComunicacaoCliente");
+        return View("TesteQualidadeConexao");
     }
     
     public IActionResult Cliente()
