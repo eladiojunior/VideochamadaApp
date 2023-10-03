@@ -35,6 +35,7 @@ AreaAtendimentoProfissional = {
     InitVerificacaoProximoClienteAtendimento: function () {
         //Time para verificação do próximo cliente da fila de atendimento.
         timeVerificarCliente = window.setInterval(function () {
+            console.log("Verificar próximo cliente da fila...");
             AreaAtendimentoProfissional.VerificacaoProximoClienteAtendimento();
         }, 5000);
     },
@@ -63,9 +64,15 @@ AreaAtendimentoProfissional = {
                 console.error("VerificacaoProximoClienteAtendimento: " + errorThrown);
             }
         });
-        
-        console.log("Verificar próximo cliente...");
-        
+    },
+    RetomarVerificacaoProximoCliente: function () {
+        console.log("Retomar verificação de próximo cliente da fila.");
+        AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
+        const keyTab = $(this).data("bs-target");
+        if (keyTab === '#emAndamento')
+            AreaAtendimentoProfissional.CarregarAtendimentosProfissional(false);
+        else if (keyTab === '#realizados')
+            AreaAtendimentoProfissional.CarregarAtendimentosProfissional(true);
     },
     RedirecionarParaAtendimento: function (idAtendimento) {
         //Abrir modal com aguarde!

@@ -61,6 +61,7 @@ public class VideoChamadaHub : Hub
         var usuarioHub = ObterUsuario(idAtendimento);
         if (usuarioHub != null)
         {
+            _serviceAtendimento.EncerrarAtendimento(idAtendimento, SituacaoAtendimentoEnum.Finalizado);
             var idOutroUsuario = usuarioHub.ObterUsuarioDiferenteDe(Context.ConnectionId);
             await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("UsuarioDesconectado", idOutroUsuario);
         }
@@ -123,18 +124,28 @@ public class VideoChamadaHub : Hub
     }
     
     //Métodos para controle do VideRemoto    
-
+    public async Task ControleAudioVideoAtendimento(string equipamento, bool hasControle)
+    {
+        var connectionId = Context.ConnectionId;
+        var usuarioHub = ObterUsuarioHub(connectionId);
+        if (usuarioHub != null)
+            await Clients.OthersInGroup(usuarioHub.IdAtendimento).SendAsync("ReceiveAudioVideoAtendimento", equipamento, hasControle);
+    }
+    
     public async Task SendOffer(string offer, string connectionId)
     {
-        await Clients.Others.SendAsync("ReceiveOffer", offer);
+        await Clients.OthersInGroup(connectionId).SendAsync("ReceiveOffer", offer);
+        //await Clients.Others.SendAsync("ReceiveOffer", offer);
     }
     public async Task SendAnswer(string answer, string connectionId)
     {
-        await Clients.Others.SendAsync("ReceiveAnswer", answer);
+        await Clients.OthersInGroup(connectionId).SendAsync("ReceiveAnswer", answer);
+        //await Clients.Others.SendAsync("ReceiveAnswer", answer);
     }
     public async Task SendIceCandidate(string iceCandidate, string connectionId)
     {
-        await Clients.Others.SendAsync("ReceiveIceCandidate", iceCandidate);
+        await Clients.OthersInGroup(connectionId).SendAsync("ReceiveIceCandidate", iceCandidate);
+        //await Clients.Others.SendAsync("ReceiveIceCandidate", iceCandidate);
     }
     
 }

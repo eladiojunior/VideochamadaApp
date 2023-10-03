@@ -44,6 +44,15 @@ public class AtendimentoModel
     public List<ArquivoAtendimentoModel> ArquivosAtendimento { get; set; }
     public ChatAtendimentoModel ChatAtendimento { get; set; }
 
+    public String TempoAtendimento {
+        get
+        {
+            if (!DataFinal.HasValue || !DataInicial.HasValue)
+                return "00:00";
+            var tempoAtendimento = (DataFinal.Value - DataInicial.Value);
+            return tempoAtendimento.ToString(@"hh\:mm");
+        }
+    }
     internal void AddHistorico(HistoricoSituacaoAtendimentoModel historicoSituacaoAtendimento)
     {
         if (HistoricoSituacaoAtendimento == null)

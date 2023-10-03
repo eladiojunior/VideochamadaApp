@@ -111,11 +111,11 @@ public class ServiceAtendimento : IServiceAtendimento
         if (atendimento == null)
             return;
 
-        //Registrar histórico...
-        AtualizarSituacaoAtendimento(atendimento.Id, situacaoAtendimento);
-
         atendimento.DataFinal = DateTime.Now;
         atendimento.Situacao = situacaoAtendimento;
+
+        //Registrar histórico...
+        AtualizarSituacaoAtendimento(atendimento.Id, situacaoAtendimento);
         
         VerificarRemoverClienteFilaAtendimento(atendimento.Cliente.Id);
         

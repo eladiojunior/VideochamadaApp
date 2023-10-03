@@ -11,30 +11,36 @@
             <div class="card-body">
                 <h5 class="card-title">@item.Cliente.Nome</h5>
                 <div class="row">
-                    <div class="col-8">
-                        <div class="row">
-                            <div class="col-3">Início Atendimento:</div>
-                            <div class="col-1 text-center">@(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g"):"")</div>
-                            <div class="col-3">Final Atendimento:</div>
-                            <div class="col-1 text-center">@(item.DataFinal.HasValue ? item.DataInicial.Value.ToString("g"):"")</div>
-                            <div class="col-3">Nota Atendimento:</div>
-                            <div class="col-1 text-center">@(item.Nota.ToString("00"))</div>
+                    <div class="col-9">
+                        <div class="row bg-secondary text-white">
+                            <div class="col-4 text-center">Início Atendimento</div>
+                            <div class="col-4 text-center">Final Atendimento</div>
+                            <div class="col-4 text-center">Nota Atendimento</div>
                         </div>
                         <div class="row">
-                            <div class="col-3">Arquivos Atendimento: </div>
-                            <div class="col-1 text-center">@(item.ArquivosAtendimento != null ? item.ArquivosAtendimento.Count.ToString("0"):"0")</div>
-                            <div class="col-3">Mensagens Chat:</div>
-                            <div class="col-1 text-center">@(item.ChatAtendimento != null ? item.ChatAtendimento.QtdMensagens.ToString("0"):"0")</div>
+                            <div class="col-4 text-center">@(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g"):"")</div>
+                            <div class="col-4 text-center">@(item.DataFinal.HasValue ? item.DataInicial.Value.ToString("g"):"")</div>
+                            <div class="col-4 text-center">@(item.Nota.ToString("00"))</div>
+                        </div>
+                        <div class="row bg-secondary text-white">
+                            <div class="col-4 text-center">Arquivos Atendimento</div>
+                            <div class="col-4 text-center">Mensagens Chat</div>
+                            <div class="col-4 text-center">Tempo Atendimento</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-center">@(item.ArquivosAtendimento != null ? item.ArquivosAtendimento.Count.ToString("0"):"0")</div>
+                            <div class="col-4 text-center">@(item.ChatAtendimento != null ? item.ChatAtendimento.QtdMensagens.ToString("0"):"0")</div>
+                            <div class="col-4 text-center">@(item.TempoAtendimento)</div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <a href="#" class="btn btn-secondary">Histórico</a>                        
+                    <div class="col-3">
+                        <div class="d-grid gap-2">
+                            <a href="#" class="btn btn-secondary">Histórico</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        @item.DataRegistro.ToString("g")
     }
     </div>    
 </div>

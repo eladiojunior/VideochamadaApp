@@ -95,12 +95,15 @@
     AreaProgressUpload: function (has_controle) {
         const area_upload = $(".area-upload-arquivo");
         const area_progress_upload = $(".area-progress-upload-arquivo");
+        const buttons_modal = $(".buttons-modal");
         if (has_controle) {
+            buttons_modal.hide();
             area_upload.hide();
             area_progress_upload.find(".progress-bar").css("width", "0%");
             area_progress_upload.find(".progress-bar").text("0%");
             area_progress_upload.show();
         } else {
+            buttons_modal.show();
             area_upload.show();
             area_progress_upload.hide();
         }

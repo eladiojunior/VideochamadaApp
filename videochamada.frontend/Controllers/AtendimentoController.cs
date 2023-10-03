@@ -91,7 +91,6 @@ public class AtendimentoController : GenericController
         switch (atendimento.Situacao)
         {
             case SituacaoAtendimentoEnum.Registrado:
-                return RedirectToAction("InicioAtendimento", "Atendimento");
             case SituacaoAtendimentoEnum.VerificacaoDispositivo:
                 return RedirectToAction("VerificarDispositivo", "Atendimento");
             case SituacaoAtendimentoEnum.FilaAtendimento:
@@ -271,7 +270,9 @@ public class AtendimentoController : GenericController
             return JsonResultErro($"Profissional de Saúde não encontrado com o ID [{idProfissional}].");
         if (!profissional.Online)
             return JsonResultErro("Profissional de Saúde não está disponível (online) para atendimento.");
-
+        if (profissional.EmAtendimento)
+            return JsonResultErro("Profissional de Saúde já em atendimento... aguarde.");
+        
         var clienteAtendimento = _serviceAtendimento.ObterProximoClienteAtendimento();
         if (clienteAtendimento == null)
             return JsonResultErro("Nenhum Cliente na fila de atendimento.");
@@ -285,25 +286,22 @@ public class AtendimentoController : GenericController
     }
     
     [HttpGet]
-    public IActionResult SairDoAtendimento()
+    public IActionResult SairDoAtendimento(string idAtendimento)
     {
         
-        var idCliente = ObterIdCliente();
-        var cliente = _serviceCliente.ObterCliente(idCliente);
-        if (cliente == null)
-            return RedirectToAction("Index", "Home");
-        
-        var atendimentoAberto = _serviceAtendimento.ObterAtendimentoAberto(idCliente);
-        if (atendimentoAberto == null)
+        var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
+        if (atendimento == null)
             return RedirectToAction("Index", "Home");
 
         //Verificar se o atendimento está em andamento...
-        if (atendimentoAberto.Situacao != SituacaoAtendimentoEnum.EmAtendimento)
-            return RedirectToAction("Index", "Home");
+        if (atendimento.Situacao == SituacaoAtendimentoEnum.EmAtendimento)
+        {
+            _serviceAtendimento.EncerrarAtendimento(idAtendimento, SituacaoAtendimentoEnum.Finalizado);
+        }
             
         var modelAvaliacao = new AvaliacaoAtendimentoModel();
-        modelAvaliacao.IdCliente = atendimentoAberto.Cliente.Id;
-        modelAvaliacao.IdAtendimento = atendimentoAberto.Id;
+        modelAvaliacao.IdCliente = atendimento.Cliente.Id;
+        modelAvaliacao.IdAtendimento = atendimento.Id;
         modelAvaliacao.HasDesistencia = false;
         
         return View("AvaliarAtendimento", modelAvaliacao);
