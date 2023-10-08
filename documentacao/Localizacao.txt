@@ -1,0 +1,30 @@
+MAPA
+http://www.openstreetmap.org/?mlat=@item.Latitude.ToString("G")&mlon=@item.Longitude.ToString("G")&zoom=30"
+
+
+https://nominatim.openstreetmap.org/reverse?lat=-23.5880894&lon=-46.6321951&format=json&json_callback=preencherDados
+Resultado JSON
+preencherDados({"place_id":7523426,"licence":"Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright","osm_type":"way","osm_id":427405329,"lat":"-23.5881622","lon":"-46.63214668131618","class":"amenity","type":"parking","place_rank":30,"importance":9.99999999995449e-06,"addresstype":"amenity","name":"","display_name":"Rua Vergueiro, Vila Mariana, São Paulo, Região Imediata de São Paulo, Região Metropolitana de São Paulo, Região Geográfica Intermediária de São Paulo, São Paulo, Região Sudeste, 04101-300, Brasil","address":{"road":"Rua Vergueiro","suburb":"Vila Mariana","city_district":"Vila Mariana","city":"São Paulo","municipality":"Região Imediata de São Paulo","county":"Região Metropolitana de São Paulo","state_district":"Região Geográfica Intermediária de São Paulo","state":"São Paulo","ISO3166-2-lvl4":"BR-SP","region":"Região Sudeste","postcode":"04101-300","country":"Brasil","country_code":"br"},"boundingbox":["-23.5883484","-23.5879788","-46.6324757","-46.6320474"]})
+
+
+http://nominatim.openstreetmap.org/reverse?lat=-23.5880894&lon=-46.6321951
+Resultado XML:
+
+<reversegeocode timestamp="Sun, 08 Oct 2023 21:08:06 +00:00" attribution="Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright" querystring="lat=-23.5880894&lon=-46.6321951&format=xml">
+<result place_id="7523426" osm_type="way" osm_id="427405329" lat="-23.5881622" lon="-46.6321467" boundingbox="-23.5883484,-23.5879788,-46.6324757,-46.6320474" place_rank="30" address_rank="30">Rua Vergueiro, Vila Mariana, São Paulo, Região Imediata de São Paulo, Região Metropolitana de São Paulo, Região Geográfica Intermediária de São Paulo, São Paulo, Região Sudeste, 04101-300, Brasil</result>
+<addressparts>
+<road>Rua Vergueiro</road>
+<suburb>Vila Mariana</suburb>
+<city_district>Vila Mariana</city_district>
+<city>São Paulo</city>
+<municipality>Região Imediata de São Paulo</municipality>
+<county>Região Metropolitana de São Paulo</county>
+<state_district>Região Geográfica Intermediária de São Paulo</state_district>
+<state>São Paulo</state>
+<ISO3166-2-lvl4>BR-SP</ISO3166-2-lvl4>
+<region>Região Sudeste</region>
+<postcode>04101-300</postcode>
+<country>Brasil</country>
+<country_code>br</country_code>
+</addressparts>
+</reversegeocode>

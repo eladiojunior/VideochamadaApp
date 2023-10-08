@@ -109,7 +109,7 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        Dados do Cliente...
+        @await Html.PartialAsync("_InfoClienteAtendimentoPartial", Model.Cliente)
     </div>
 </div>
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasArquivosAtendimento" aria-labelledby="offcanvasArquivosAtendimentoLabel">

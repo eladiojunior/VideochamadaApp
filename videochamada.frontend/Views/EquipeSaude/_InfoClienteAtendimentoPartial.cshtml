@@ -1,0 +1,80 @@
+﻿@using VideoChatApp.FrontEnd.Services.Enums
+@model ClienteModel
+@if (Model == null)
+{
+    <div class="alert alert-danger">Não identificamos informações do Cliente.</div>    
+}
+else
+{
+    <div class="card mt-2 mt-xl-0">
+        <div class="area-dados-cliente">
+            <span class="info-dados-cliente-titulo">@Model.Nome</span>
+            <div class="info-dados-cliente mb-2">
+                <div class="d-flex align-items-center text-muted" title="Sexo e idade do cliente">
+                    <span>Sexo: @Model.Sexo.ObterTextoEnum() - Idade: @Model.Idade</span>
+                </div>
+                <div class="d-flex align-items-center text-muted" title="E-mail do cliente">
+                    <span class="material-icons">alternate_email</span>
+                    <span class="px-1">&nbsp;@Model.Email</span>
+                </div>
+                <div class="d-flex align-items-center text-muted" title="Telefone do cliente">
+                    <span class="material-icons">phone_iphone</span>
+                    <span class="px-1">&nbsp;@Model.Telefone</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5 class="mt-3">Atendimentos</h5>
+    @if (Model.Atendimentos == null || !Model.Atendimentos.Any())
+    {
+        <div class="alert alert-warning">Seu primeiro atendimento.</div>
+    }
+    else
+    {
+        @foreach (var item in Model.Atendimentos)
+        {
+        <div class="card">
+            <div class="card-body">
+                <div class="area-profissional-saude">
+                    <span class="info-profissional-saude-titulo">Profissional de Saúde</span>
+                    <span class="d-block">@item.ProfissionalSaude.Nome</span>
+                    <div class="info-profissional-saude mt-2 mb-2">
+                        <div class="d-flex align-items-center text-muted" title="Especialidade do profissional">
+                            <span class="material-icons">assignment_ind</span>
+                            <span class="px-1">&nbsp;@item.ProfissionalSaude.Especialidade</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size: 12px;">
+                    <div class="row bg-secondary text-white">
+                        <div class="col-4 text-center">Início Atendimento</div>
+                        <div class="col-4 text-center">Final Atendimento</div>
+                        <div class="col-4 text-center">Nota Atendimento</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-center">@(item.DataInicial.HasValue ? item.DataInicial.Value.ToString("g") : "")</div>
+                        <div class="col-4 text-center">@(item.DataFinal.HasValue ? item.DataFinal.Value.ToString("g") : "")</div>
+                        <div class="col-4 text-center">@(item.Nota.ToString("00"))</div>
+                    </div>
+                    <div class="row bg-secondary text-white">
+                        <div class="col-4 text-center">Arquivos Atendimento</div>
+                        <div class="col-4 text-center">Mensagens Chat</div>
+                        <div class="col-4 text-center">Tempo Atendimento</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-center">@(item.ArquivosAtendimento != null ? item.ArquivosAtendimento.Count.ToString("0") : "0")</div>
+                        <div class="col-4 text-center">@(item.ChatAtendimento != null ? item.ChatAtendimento.QtdMensagens.ToString("0") : "0")</div>
+                        <div class="col-4 text-center">@(item.TempoAtendimento)</div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h5>Geolocalização do Atendimento</h5>
+                    <iframe height="350" width="100%"
+                            title="Mapa da localicação do atendimento." src="http://www.openstreetmap.org/?mlat=@item.Latitude.ToString("G").Replace(",",".")&mlon=@item.Longitude.ToString("G").Replace(",",".")&zoom=30">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        }
+    }
+}
