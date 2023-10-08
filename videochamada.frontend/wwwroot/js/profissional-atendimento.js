@@ -1,4 +1,5 @@
 ﻿let timeVerificarCliente;
+let hasVerificarProximoCliente = true;
 AreaAtendimentoProfissional = {
     InitControleAtendimento: function () {
         $("#btnOnline").click(function () {
@@ -7,24 +8,26 @@ AreaAtendimentoProfissional = {
             labalCheck.removeClass("btn-outline-success");
             const isChecked = $(this).prop('checked');
             AreaAtendimentoProfissional
-                .AtualizarSituacaoAtendimentoProfissional(isChecked, function (hasErro, mensagemErro) {
-                if (hasErro) {
-                    console.error(mensagemErro);
-                    return;
-                }
-                if (isChecked) {
-                    labalCheck.addClass("btn-outline-success");
-                    labalCheck.text("Atendendo (Online)");
-                    AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
-                    console.log("Profissional de Saúde está atendendo (Online).");
-                } else {
-                    labalCheck.addClass("btn-outline-secondary");
-                    labalCheck.text("Não estou atendendo");
-                    console.log("Profissional de Saúde NÃO está atendendo (Offline).");
-                    clearTimeout(timeVerificarCliente);
-                }
-            });
+                .AtualizarSituacaoAtendimentoProfissional(isChecked, 
+                    function (hasErro, mensagemErro) {
+                    if (hasErro) {
+                        console.error(mensagemErro);
+                        return;
+                    }
+                    if (isChecked) {
+                        labalCheck.addClass("btn-outline-success");
+                        labalCheck.text("Atendendo (Online)");
+                        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);
+                        console.log("Profissional de Saúde está atendendo (Online).");
+                    } else {
+                        labalCheck.addClass("btn-outline-secondary");
+                        labalCheck.text("Não estou atendendo");
+                        console.log("Profissional de Saúde NÃO está atendendo (Offline).");
+                        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(false);
+                    }
+                });
         });
+        AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
     },
     InitVerificacaoDashboard: function () {
         //Verificar a fila de atendimento e profissionais Online
@@ -39,12 +42,19 @@ AreaAtendimentoProfissional = {
             AreaAtendimentoProfissional.VerificacaoProximoClienteAtendimento();
         }, 5000);
     },
+    ControleVerificacaoProximoClienteAtendimetno: function (hasVerificar) {
+        hasVerificarProximoCliente = hasVerificar;
+    },
     VerificacaoProximoClienteAtendimento: function () {
+        
         let idProfissional = $("#idProfissional").val();
-        if (!idProfissional) return;
+        if (!idProfissional) 
+            return;
+        if (!hasVerificarProximoCliente)
+            return;
         
         console.log("Para a verificação da fila até o retorno.");
-        clearTimeout(timeVerificarCliente);
+        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(false);
         
         $.ajax({
             cache: false,
@@ -53,21 +63,21 @@ AreaAtendimentoProfissional = {
             data: { idProfissional: idProfissional },
             dataType: "json",
             success: function (result) {
-                if (result.hasErro) {
-                    console.log(result.erros);
-                    AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
+                if (!result.hasErro) {
+                    AreaAtendimentoProfissional.AvisarAtendimentoDeCliente();
+                    AreaAtendimentoProfissional.RedirecionarParaAtendimento(result.model.id);
                     return;
                 }
-                AreaAtendimentoProfissional.AvisarAtendimentoDeCliente();
-                AreaAtendimentoProfissional.RedirecionarParaAtendimento(result.model.id);
+                AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);    
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("VerificacaoProximoClienteAtendimento: " + errorThrown);
+                AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);
             }
         });
     },
     RetomarVerificacaoProximoCliente: function () {
         console.log("Retomar verificação de próximo cliente da fila.");
-        AreaAtendimentoProfissional.InitVerificacaoProximoClienteAtendimento();
+        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);
         const keyTab = $(this).data("bs-target");
         if (keyTab === '#emAndamento')
             AreaAtendimentoProfissional.CarregarAtendimentosProfissional(false);
@@ -76,6 +86,7 @@ AreaAtendimentoProfissional = {
     },
     RedirecionarParaAtendimento: function (idAtendimento) {
         //Abrir modal com aguarde!
+        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(false);
         const modalRedirect = new bootstrap.Modal(document.getElementById('modalRedirect'), {});
         modalRedirect.show();
         //Redirecionar proficional para o atendimento do cliente...

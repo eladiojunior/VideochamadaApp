@@ -33,15 +33,16 @@ ComunicacaoUsuarios = {
         const ALTA_QUALIDADE_VIDEO = { video: { width: { min: 1280 }, height: { min: 720 }, frameRate: { min: 30 } }};
         const MEDIA_QUALIDADE_VIDEO = { video: { width: { min: 640 }, height: { min: 480 }, frameRate: { min: 24, ideal: 30 } }};
         const BAIXA_QUALIDADE_VIDEO = { video: { width: { min: 480 }, height: { min: 360 }, frameRate: { min: 15, ideal: 24 } }};
+        const qualidadeVideoStream= (qualidadeConexao === 1 ? ALTA_QUALIDADE_VIDEO : (qualidadeConexao === 2 ? MEDIA_QUALIDADE_VIDEO: BAIXA_QUALIDADE_VIDEO));
+        
+        console.log(qualidadeVideoStream);
         
         videoLocal = document.getElementById('video-local');
-        
-        const qualidadeVideoStream= (qualidadeConexao === 1 ? ALTA_QUALIDADE_VIDEO : (qualidadeConexao === 2 ? MEDIA_QUALIDADE_VIDEO: BAIXA_QUALIDADE_VIDEO));
         //Variavel para pegar permissão de camera e microfone, definição de acordo com navegador.
-        navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia);
-        navigator.mediaDevices.getUserMedia({
-            qualidadeVideoStream, audio: true 
-        })
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        navigator.mediaDevices.getUserMedia(
+            { video: true, audio: true }
+        )
         .then(stream => {
             streamMediaLocal = stream;
             ComunicacaoUsuarios.SucessoPermissaoDispositivo();
@@ -49,7 +50,6 @@ ComunicacaoUsuarios = {
         .catch(error => {
             ComunicacaoUsuarios.ErroPermissaoDispositivo(error);
         });
-
     },
     SucessoPermissaoDispositivo: function () {
         $(".video-local-aguardando").hide();
@@ -75,7 +75,7 @@ ComunicacaoUsuarios = {
     },
     AtualizarQualidadeVideo: function () {
         const qualidadeVideoStream = (qualidadeConexao === 1 ? ALTA_QUALIDADE_VIDEO : (qualidadeConexao === 2 ? MEDIA_QUALIDADE_VIDEO: BAIXA_QUALIDADE_VIDEO));
-        navigator.mediaDevices.getUserMedia({ qualidadeVideoStream, audio: true });
+        //navigator.mediaDevices.getUserMedia({ qualidadeVideoStream, audio: true });
         console.log("Atualizar a qualidade do vídeo: " + qualidadeVideoStream);
     },
     ControlarDispositivoCamera: function (hasControle) {
@@ -230,6 +230,7 @@ ComunicacaoUsuarios = {
             peerConnection.getStats(null).then(stats => {
                 stats.forEach(report => {
                     if (report.type === 'candidate-pair' && report.state === 'succeeded') {
+                        console.log(report.currentRoundTripTime);
                         if (report.currentRoundTripTime <= BAIXA_LATENCIA) {
                             console.log(report.currentRoundTripTime + ' -> 0ms a 100ms: Baixa Latência (Qualidade Alta)');
                             if (qualidadeConexao !== 1)
@@ -274,7 +275,6 @@ ComunicacaoUsuarios = {
                 await peerConnection.setRemoteDescription(remoteOffer);
                 const answer = await peerConnection.createAnswer();
                 await peerConnection.setLocalDescription(answer);
-
                 connection.invoke("SendAnswer",
                     JSON.stringify({ 'answer': answer }), idAtendimentoHub);
             });

@@ -271,7 +271,11 @@ public class AtendimentoController : GenericController
         if (!profissional.Online)
             return JsonResultErro("Profissional de Saúde não está disponível (online) para atendimento.");
         if (profissional.EmAtendimento)
-            return JsonResultErro("Profissional de Saúde já em atendimento... aguarde.");
+        {
+            var atendimentoProfissional = _serviceAtendimento.ObterAtendimentoAbertoPorProfissional(idProfissional);
+            if (atendimentoProfissional != null)
+                return JsonResultErro("Profissional de Saúde já em atendimento... aguarde.");
+        }
         
         var clienteAtendimento = _serviceAtendimento.ObterProximoClienteAtendimento();
         if (clienteAtendimento == null)

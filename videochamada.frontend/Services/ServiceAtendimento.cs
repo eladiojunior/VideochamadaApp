@@ -421,5 +421,19 @@ public class ServiceAtendimento : IServiceAtendimento
         }
         
     }
+
+    /// <summary>
+    /// Recuperar um Atendimento Aberto que o Profissional de Saúde seja o Id informado.
+    /// </summary>
+    /// <param name="idProfissional">Identificador do profissional de saúde.</param>
+    /// <returns></returns>
+    public AtendimentoModel ObterAtendimentoAbertoPorProfissional(string idProfissional)
+    {
+        var atendimento = _atendimentos.Values
+            .FirstOrDefault(c => 
+                c.Situacao == SituacaoAtendimentoEnum.EmAtendimento && 
+                c.ProfissionalSaude!=null && c.ProfissionalSaude.Id.Equals(idProfissional));
+        return atendimento ?? null;
+    }
     
 }
