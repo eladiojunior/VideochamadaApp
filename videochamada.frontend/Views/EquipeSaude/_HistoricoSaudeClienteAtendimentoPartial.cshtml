@@ -34,12 +34,12 @@ else
                 else
                 {
                     <div class="row">
-                        <div class="col-3 bg-light text-center">Último Atendimento</div>
+                        <div class="col-3 bg-light">Último Atendimento</div>
                         <div class="col-5 bg-light">Profissional</div>
                         <div class="col-4 bg-light">Especialidade</div>
                     </div>
                     <div class="row">
-                        <div class="col-3 text-center">@ultimoAtendimento.DataRegistro.ToString("g")</div>
+                        <div class="col-3">@ultimoAtendimento.DataRegistro.ToString("g")</div>
                         <div class="col-5">@ultimoAtendimento.ProfissionalSaude.Nome</div>
                         <div class="col-4">@ultimoAtendimento.ProfissionalSaude.Especialidade</div>
                     </div>
@@ -67,11 +67,11 @@ else
         @foreach (var item in Model.Atendimentos)
         {
             <div class="border-top">
-                <p class="text-muted float-end texto-10-comentarios">Data Atendimento: @(item.DataRegistro.ToString("g")) - Tempo: @(item.TempoAtendimento)</p>
-                <p class="font-monospace float-none">
+                <p class="text-muted float-end texto-12-comentarios">Data Atendimento: @(item.DataRegistro.ToString("g")) - Tempo: @(item.TempoAtendimento)</p>
+                <p class="font-monospace d-block">
                     @(string.IsNullOrEmpty(item.TextoMotivoAtendimento) ? "{Nenhuma anotação registrada}" : item.TextoMotivoAtendimento)
                 </p>
-                <p class="text-muted float-start texto-10-comentarios">Profissional: @(item.ProfissionalSaude.Nome) - Especialidade: @(item.ProfissionalSaude.Especialidade)</p>
+                <p class="text-muted float-start texto-12-comentarios">Profissional: @(item.ProfissionalSaude.Nome) - Especialidade: @(item.ProfissionalSaude.Especialidade)</p>
             </div>
         }
     }
