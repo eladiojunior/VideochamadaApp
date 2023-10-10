@@ -137,7 +137,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Histórico de Saude do Cliente...
+                @await Html.PartialAsync("_HistoricoSaudeClienteAtendimentoPartial", Model.Cliente)
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -151,4 +151,5 @@
     <script src="~/js/comunicacao-chat-atendimento.js" asp-append-version="true"></script>
     <script src="~/js/comunicacao-arquivos-atendimento.js" asp-append-version="true"></script>
     <script src="~/js/profissional-em-atendimento.js" asp-append-version="true"></script>
+    <script src="~/js/profissional-historicosaude-cliente.js" asp-append-version="true"></script>
 }

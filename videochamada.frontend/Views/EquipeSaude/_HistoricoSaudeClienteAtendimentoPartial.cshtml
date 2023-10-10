@@ -1,0 +1,78 @@
+﻿@using VideoChatApp.FrontEnd.Services.Enums
+@model ClienteModel
+@if (Model == null)
+{
+    <div class="alert alert-danger">Não identificamos informações do Cliente.</div>    
+}
+else
+{
+    <div class="row">
+        <div class="col-1">
+            <img class="img-fluid rounded-circle" src="~/imgs/avatarUsuario.png" title="Foto do Cliente" alt="FotoCliente"/>
+        </div>
+        <div class="col-11">
+            <div class="row">
+                <div class="col-5 bg-light">Nome Cliente</div>
+                <div class="col-2 bg-light text-center">Sexo</div>
+                <div class="col-3 bg-light text-center">Data Nascimento</div>
+                <div class="col-2 bg-light text-center">Idade</div>
+            </div>
+            <div class="row">
+                <div class="col-5"><strong>@Model.Nome</strong></div>
+                <div class="col-2 text-center">@Model.Sexo.ObterTextoEnum()</div>
+                <div class="col-3 text-center">@Model.DataNascimento.ToShortDateString()</div>
+                <div class="col-2 text-center">@Model.Idade</div>
+            </div>
+            @{
+                var ultimoAtendimento = Model.Atendimentos?.MaxBy(o => o.DataRegistro);
+                if (ultimoAtendimento == null)
+                {
+                    <div class="row">
+                        <div class="col-12 bg-light text-center">Primeiro atendimento do cliente, registre as informações abaixo.</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-3 bg-light text-center">Último Atendimento</div>
+                        <div class="col-5 bg-light">Profissional</div>
+                        <div class="col-4 bg-light">Especialidade</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 text-center">@ultimoAtendimento.DataRegistro.ToString("g")</div>
+                        <div class="col-5">@ultimoAtendimento.ProfissionalSaude.Nome</div>
+                        <div class="col-4">@ultimoAtendimento.ProfissionalSaude.Especialidade</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <h5 class="mt-3">Motivo do Atendimento</h5>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Descreva brevemente o motivo de seu atendimento de hoje." id="textoMotivoAtendimento" style="height: 200px"></textarea>
+                <label for="textoMotivoAtendimento">Descreva brevemente o motivo de seu atendimento de hoje.</label>
+            </div>            
+            <div class="text-muted mensagem-motivo-atendimento texto-10-comentarios">Não se preocupe, vamos salvar seu texto automaticamente...</div>
+        </div>
+    </div>
+    <h5 class="mt-3">Histórico dos atendimentos anteriores</h5>
+    @if (Model.Atendimentos == null || !Model.Atendimentos.Any())
+    {
+        <div class="alert alert-warning">Primeiro atendimento... não possui histórico.</div>
+    }
+    else
+    {
+        @foreach (var item in Model.Atendimentos)
+        {
+            <div class="border-top">
+                <p class="text-muted float-end texto-10-comentarios">Data Atendimento: @(item.DataRegistro.ToString("g")) - Tempo: @(item.TempoAtendimento)</p>
+                <p class="font-monospace float-none">
+                    @(string.IsNullOrEmpty(item.TextoMotivoAtendimento) ? "{Nenhuma anotação registrada}" : item.TextoMotivoAtendimento)
+                </p>
+                <p class="text-muted float-start texto-10-comentarios">Profissional: @(item.ProfissionalSaude.Nome) - Especialidade: @(item.ProfissionalSaude.Especialidade)</p>
+            </div>
+        }
+    }
+}

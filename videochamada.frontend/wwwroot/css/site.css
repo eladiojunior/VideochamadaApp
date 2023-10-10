@@ -372,7 +372,9 @@ body {
   color: #4b4b4b;
   font-weight: bold;
 }
-
+.texto-10-comentarios {
+  font-size: 10px;
+}
 /* ---------- Área Videochamada ----------- */
 
 

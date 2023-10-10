@@ -17,13 +17,13 @@
                     return;
                 }
                 ComunicacaoUsuarios.SairAtendimento();
-                window.close();
                 
                 const window_opened = window.opener;
                 console.log(window_opened);
                 if (window_opened)
                     window_opened.AreaAtendimentoProfissional.RetomarVerificacaoProximoCliente();
                 
+                window.close();
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("FinalizarAtendimento: " + errorThrown);
             }

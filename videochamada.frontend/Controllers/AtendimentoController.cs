@@ -259,31 +259,30 @@ public class AtendimentoController : GenericController
         return View("ClienteEmAtendimento", model);
     }
 
-    [HttpGet]
+    [HttpPost]
     public IActionResult RecuperarProximoClienteFilaAtendimento(string idProfissional)
     {
-        
         if (string.IsNullOrEmpty(idProfissional))
-            return JsonResultErro("Id do Profissional de Saúde não informado.");
+            return JsonResultErro(new { EmAtendimento = false }, "Id do Profissional de Saúde não informado.");
         var profissional = _serviceEquipeSaude.ObterProfissionalSaude(idProfissional);
         if (profissional == null)
-            return JsonResultErro($"Profissional de Saúde não encontrado com o ID [{idProfissional}].");
+            return JsonResultErro(new { EmAtendimento = false }, $"Profissional de Saúde não encontrado com o ID [{idProfissional}].");
         if (!profissional.Online)
-            return JsonResultErro("Profissional de Saúde não está disponível (online) para atendimento.");
+            return JsonResultErro(new { EmAtendimento = false }, "Profissional de Saúde não está disponível (online) para atendimento.");
         if (profissional.EmAtendimento)
         {
             var atendimentoProfissional = _serviceAtendimento.ObterAtendimentoAbertoPorProfissional(idProfissional);
             if (atendimentoProfissional != null)
-                return JsonResultErro("Profissional de Saúde já em atendimento... aguarde.");
+                return JsonResultErro(new { EmAtendimento = true }, "Profissional de Saúde já em atendimento... aguarde.");
         }
         
         var clienteAtendimento = _serviceAtendimento.ObterProximoClienteAtendimento();
         if (clienteAtendimento == null)
-            return JsonResultErro("Nenhum Cliente na fila de atendimento.");
+            return JsonResultErro(new { EmAtendimento = false }, "Nenhum cliente na fila de atendimento.");
 
         var atendimento = _serviceAtendimento.IniciarAtendimentoProfissionalSaude(clienteAtendimento.Id, idProfissional);
         if (atendimento == null)
-            return JsonResultErro($"Atendimento não aberto para o próximo Cliente [{clienteAtendimento.Nome}].");
+            return JsonResultErro(new { EmAtendimento = false }, $"Atendimento não aberto para o próximo cliente [{clienteAtendimento.Nome}].");
 
         return JsonResultSucesso(atendimento, "Próximo cliente recuperado e atendimento em andamento.");
 
@@ -400,5 +399,21 @@ public class AtendimentoController : GenericController
         return JsonResultSucesso(RenderRazorViewToString("_ArquivosAtendimentoPartial", listarArquivos), "Lista de arquivos do atendimento atualizada.");
 
     }
+    
+    [HttpPost]
+    public IActionResult GravarTextoMotivoAtendimento(string idAtendimento, string textoMotivoAtendimento)
+    {
+        
+        var atendimento = _serviceAtendimento.ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return JsonResultErro($"Atendimento não identificado com o Id {idAtendimento}.");
+        
+        _serviceAtendimento.GravarTextoMotivoAtendimento(atendimento.Id, textoMotivoAtendimento);
+        
+        var model = new { DataHoraGravacao = DateTime.Now.ToString("G") };
+        return JsonResultSucesso(model, "Texto gravado com sucesso.");
+        
+    }
+    
     
 }

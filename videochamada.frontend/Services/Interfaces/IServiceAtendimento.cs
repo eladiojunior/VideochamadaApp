@@ -31,4 +31,5 @@ public interface IServiceAtendimento
     Task<MensagemChatModel> RegistrarMensagemChatAtendimento(string idAtendimento, string idUsuario, string mensagem);
     void FinalizarAtendimento(string idAtendimento);
     AtendimentoModel ObterAtendimentoAbertoPorProfissional(string idProfissional);
+    void GravarTextoMotivoAtendimento(string idAtendimento, string textoMotivoAtendimento);
 }

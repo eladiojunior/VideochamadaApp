@@ -44,6 +44,8 @@ public class AtendimentoModel
     public List<ArquivoAtendimentoModel> ArquivosAtendimento { get; set; }
     public ChatAtendimentoModel ChatAtendimento { get; set; }
 
+    public string TextoMotivoAtendimento { get; set; }
+    
     public String TempoAtendimento {
         get
         {

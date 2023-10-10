@@ -17,13 +17,13 @@ AreaAtendimentoProfissional = {
                     if (isChecked) {
                         labalCheck.addClass("btn-outline-success");
                         labalCheck.text("Atendendo (Online)");
-                        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);
+                        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimento(true);
                         console.log("Profissional de Saúde está atendendo (Online).");
                     } else {
                         labalCheck.addClass("btn-outline-secondary");
                         labalCheck.text("Não estou atendendo");
                         console.log("Profissional de Saúde NÃO está atendendo (Offline).");
-                        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(false);
+                        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimento(false);
                     }
                 });
         });
@@ -38,27 +38,29 @@ AreaAtendimentoProfissional = {
     InitVerificacaoProximoClienteAtendimento: function () {
         //Time para verificação do próximo cliente da fila de atendimento.
         timeVerificarCliente = window.setInterval(function () {
-            console.log("Verificar próximo cliente da fila...");
             AreaAtendimentoProfissional.VerificacaoProximoClienteAtendimento();
         }, 5000);
     },
-    ControleVerificacaoProximoClienteAtendimetno: function (hasVerificar) {
+    ControleVerificacaoProximoClienteAtendimento: function (hasVerificar) {
         hasVerificarProximoCliente = hasVerificar;
+        if (hasVerificar === false)
+            console.log("Parar verificação da fila de próximo cliente.");
     },
     VerificacaoProximoClienteAtendimento: function () {
         
         let idProfissional = $("#idProfissional").val();
         if (!idProfissional) 
             return;
-        if (!hasVerificarProximoCliente)
+        if (!hasVerificarProximoCliente) {
             return;
-        
-        console.log("Para a verificação da fila até o retorno.");
-        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(false);
+        }
+
+        console.log("Verificar próximo cliente da fila...");
+        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimento(false);
         
         $.ajax({
             cache: false,
-            type: "GET",
+            type: "POST",
             url: _contexto + "Atendimento/RecuperarProximoClienteFilaAtendimento",
             data: { idProfissional: idProfissional },
             dataType: "json",
@@ -66,18 +68,19 @@ AreaAtendimentoProfissional = {
                 if (!result.hasErro) {
                     AreaAtendimentoProfissional.AvisarAtendimentoDeCliente();
                     AreaAtendimentoProfissional.RedirecionarParaAtendimento(result.model.id);
-                    return;
+                } else {
+                    if (result.model.emAtendimento === false) {
+                        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimento(true);
+                    }
                 }
-                AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);    
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.error("VerificacaoProximoClienteAtendimento: " + errorThrown);
-                AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);
             }
         });
     },
     RetomarVerificacaoProximoCliente: function () {
         console.log("Retomar verificação de próximo cliente da fila.");
-        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(true);
+        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimento(true);
         const keyTab = $(this).data("bs-target");
         if (keyTab === '#emAndamento')
             AreaAtendimentoProfissional.CarregarAtendimentosProfissional(false);
@@ -86,7 +89,6 @@ AreaAtendimentoProfissional = {
     },
     RedirecionarParaAtendimento: function (idAtendimento) {
         //Abrir modal com aguarde!
-        AreaAtendimentoProfissional.ControleVerificacaoProximoClienteAtendimetno(false);
         const modalRedirect = new bootstrap.Modal(document.getElementById('modalRedirect'), {});
         modalRedirect.show();
         //Redirecionar proficional para o atendimento do cliente...

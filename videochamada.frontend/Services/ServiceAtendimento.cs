@@ -435,5 +435,20 @@ public class ServiceAtendimento : IServiceAtendimento
                 c.ProfissionalSaude!=null && c.ProfissionalSaude.Id.Equals(idProfissional));
         return atendimento ?? null;
     }
-    
+
+    /// <summary>
+    /// Grava o texto do motivo do atendimento, um histórico do atendimento do cliente.
+    /// </summary>
+    /// <param name="idAtendimento">Identificador do atendimento.</param>
+    /// <param name="textoMotivoAtendimento">Texto do Motivo do Atendimento.</param>
+    public void GravarTextoMotivoAtendimento(string idAtendimento, string textoMotivoAtendimento)
+    {
+        
+        var atendimento = ObterAtendimento(idAtendimento);
+        if (atendimento == null)
+            return;
+        
+        atendimento.TextoMotivoAtendimento = textoMotivoAtendimento;
+        
+    }
 }
